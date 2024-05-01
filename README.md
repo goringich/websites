@@ -4,10 +4,14 @@ Welcome to the Website Projects repository! This repository contains a collectio
 
 ## Projects Included:
 
-####    Project 1: Mogo
-####    Project 2: House
-####    Project 3: Llama
-####    Project 4: Buiseness
+- **Mogo**
+   
+- **House**
+   
+- **Llama**
+   
+- **Buiseness**
+
 
 Feel free to explore each project folder to learn more about the design, development process, and technologies used. Contributions, feedback, and suggestions are always welcome!
 
