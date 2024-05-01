@@ -1,0 +1,423 @@
+body{
+    margin: 0;
+    font-family: "Roboto" , sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    color: #1e1e1e;
+    line-height: auto;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+.container{
+    max-width: 1030px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+
+/* header */
+.header{
+    height: 100vh;
+    width: auto;
+    background-position: center;
+    background-size: cover;
+    /* background-position: center; */
+    /* background-size: contain; */
+    background-repeat: no-repeat;
+    /* padding-top: 150px; */
+
+    position: relative;
+}
+
+.header__inner{
+    text-align: center;
+    max-width: 530px;
+    max-height: 530px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 10px solid #f4d4a5;
+    padding-top: 13px;
+    padding-bottom: 160px;
+    /* margin-left: 200px; */
+
+    position: absolute;
+    top: 125px;
+    left: 200px;
+    z-index: 1;
+}
+
+.header__name{
+    font-family: 'Lato';
+    font-size: 35px;
+    font-weight: 700;
+    color: #bf4200;
+    text-transform: uppercase;
+
+    margin-bottom: 12px;    
+}
+
+.phone{
+    display: inline-block;
+
+    font-size: 35px;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #000;
+    font-weight: 300;
+
+    margin-bottom: 40px;
+}
+
+.header__title{
+    font-size: 50px;
+    font-weight: 700;
+    color: #1fad26;
+
+    text-transform: uppercase;
+    padding: 0 5px;
+}
+
+.header__sale{
+    margin-top: 40px;
+}
+
+
+/* main */
+.main{
+    text-align: center;
+}
+
+.main__title{
+    font-size: 41px;
+    color: #d07a2d;
+
+    margin: 60px 0;
+}
+
+.main__img{
+    margin: 90px 0;
+}
+
+/* PROJECT */
+.project__item{
+    margin-bottom: 125px;
+}
+
+.project__title,
+.gallery__title{
+    margin: 90px 0;
+    font-weight: 700;
+    color: #d0662d;
+    font-size: 41px;
+    text-transform: uppercase;
+}
+
+.project__name{
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.project__size,
+.project__aref,
+.project__price{
+    font-size: 25px;
+}
+
+.project__inner{
+    margin-bottom: 35px;
+}
+
+.project__price{
+    color: #17753b;
+}
+
+.project__images-item{
+    margin-bottom: 15px;
+}
+
+
+/* download */
+.download{
+    padding: 35px 0 0;
+    height: 300px;
+    max-width: 100%;
+    background-color: #f1dfbc;
+    text-align: center;
+    flex: wrap;
+}
+
+.download a{
+    border: 5px solid #effd15;
+    padding: 25px 15px;
+    background-color: #17753b;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.download img{
+    margin-bottom: 15px;
+}
+
+/* gallery */
+.gallery{
+    padding-top: 120px;
+}
+
+.galler__inner--items{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.gallery__inner img{
+    display: block;
+}
+
+.gallery__title{
+    margin: 0 0 40px;
+}
+
+.gallery__text{
+    font-size: 25px;
+    margin-bottom: 60px;
+}
+
+
+/* footer */
+.footer{
+    text-align: center;
+}
+
+.footer .phone{
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 70px;
+}
+
+.footer__email{
+    margin-bottom: 200px;
+}
+
+.footer__email a{
+    color: #2f8bc5;
+    font-weight: 300;
+}
+
+
+/* media */
+@media(min-width: 3000px){
+    .header__inner{
+        zoom: 1.2;
+    }
+}
+
+@media(min-width: 2500px){
+    .container{
+        zoom: 2;
+    }
+}
+
+@media (max-width: 2000px){
+    .header__inner {
+        zoom: 0.8;
+    }
+
+    .header__sale img{
+        zoom: 0.9;
+    }
+}
+
+@media (max-width: 1700px){
+    .header__inner{
+        zoom: 0.75;
+    }
+
+    .header__sale img{
+        zoom: 0.9;
+    }
+}
+
+@media (max-width: 1500px){
+    .header__inner{
+        zoom: 0.6;
+    }
+}
+
+@media (max-width: 1150px){
+    .header__inner{
+        zoom: 0.5;
+    }
+}
+
+@media (max-width: 1030px){
+    .gallery__inner{
+        text-align: center;
+    }
+
+    .gallery__inner--items{
+        text-align: center;
+        align-items: center;
+    }
+
+    .gallery__text{
+        margin-bottom: 40px;
+    }
+
+    .header__inner{
+        top: 460px;
+    }
+}
+
+@media (max-width: 1025px){
+    .header__inner{
+        zoom: 0.5;
+    }
+
+    .project__images-item img{
+        max-width: 100%;
+    }
+
+    .project__item:last-child{
+        margin-bottom: 50px;
+    }
+
+    .main__title, .main__text{
+        zoom: 0.7;
+    }
+
+    .main__img{
+        margin: 70px 0;
+    }
+}
+
+@media (max-width: 780px){
+    .header__inner{
+        zoom: 0.4;
+    }
+
+    .gallery__inner img{
+        zoom: 1.2;
+    }
+
+    .header__inner{
+        top: 750px;
+    }
+}
+
+@media (max-width: 730px){
+    .gallery{
+        padding-top: 75px;
+    }
+}
+
+@media (max-width: 630px){
+    .gallery__inner img{
+        zoom: 2;
+    }
+}
+
+@media (max-width: 575px){
+    .download a{
+        zoom: 0.9;
+    }
+
+    .gallery{
+        padding-top: 50px;
+    }
+
+    .main__title, .main__text{
+        zoom: 0.59;
+    }
+
+    .main__img{
+        margin: 80px 0 60px;
+    }
+
+    .project__title{
+        margin: 70px 0;
+    }
+
+    .gallery__inner{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+}
+
+@media (max-width: 520px){
+    /* download */
+    .download {
+        zoom: 0.8;
+    }
+
+    .download img{
+        margin-bottom: 0;
+    }
+
+    /* main */
+    .main__img{
+        margin: 50px 0;
+    }
+
+    .footer .phone{
+        margin-bottom: 50px;
+    }
+
+    .footer__email {
+        margin-bottom: 100px;
+    }
+
+    .gallery__inner img{
+        zoom: 1.5;
+    }
+}
+
+@media (max-width: 460px){
+    .download {
+        zoom: 0.7;
+    }
+}
+
+@media (max-width: 400px){
+    .download {
+        zoom: 0.6;
+    }
+
+    /* main */
+    .main__img{
+        margin: 40px 0;
+    }
+
+    .gallery__inner a{
+        zoom: 0.8;
+    }
+}
+
+@media (max-width: 480px){
+    .footer__email, 
+    .footer .phone{
+        zoom: 0.7;
+    }
+}
+
+@media (max-width: 380px){
+    .project__title{
+        zoom: 0.7;
+    }
+
+    .project__inner{
+        zoom: 0.7;
+    }
+
+    .project__item{
+        margin-bottom: 30px;
+    }
+}
+
+
