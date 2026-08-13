@@ -1,0 +1,17 @@
+{
+  "name": "kyokushin-nn",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Evidence-first Kyokushin/Shinkyokushin portal for Nizhny Novgorod",
+  "scripts": {
+    "start": "node server.mjs",
+    "verify": "node scripts/verify.mjs",
+    "test": "node --test test/*.test.mjs",
+    "check": "npm run verify && npm test",
+    "report": "node scripts/source-report.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
