@@ -7,6 +7,7 @@
   <meta name="description" content="Набор в группы начальной подготовки СинКёкусинкай каратэ от 5 лет. Залы в Нижнем Новгороде и Дзержинске, расписание и прямые контакты инструкторов.">
   <title>СинКёкусинкай каратэ — набор с 5 лет | Нижегородская федерация</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="photo.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -91,6 +92,30 @@
       <div><span>02</span> Расписание по дням</div>
       <div><span>03</span> Прямой контакт</div>
       <div><span>04</span> Маршрут в один клик</div>
+    </section>
+
+    <section class="photo-story" id="photos" aria-labelledby="photos-title">
+      <div class="section-heading photo-heading">
+        <div>
+          <p class="kicker">Настоящий клуб</p>
+          <h2 id="photos-title">Каратэ видно сразу</h2>
+        </div>
+        <div class="photo-heading-copy">
+          <p>Фото берём только из действующих источников наших клубов и федерации. Если источник не подтверждает человека — мы не подписываем его именем.</p>
+          <span class="verified-note"><span aria-hidden="true">✓</span> Проверяем источник, а не лицо</span>
+        </div>
+      </div>
+
+      <div class="photo-mosaic" id="photoMosaic" aria-live="polite"></div>
+
+      <div class="archive-head">
+        <div>
+          <p class="kicker">Фотоархив</p>
+          <h3>Больше тренировок, сборов и турниров</h3>
+        </div>
+        <p>Полные альбомы открываются в исходном источнике — без случайных картинок из поиска.</p>
+      </div>
+      <div class="archive-grid" id="photoCollections"></div>
     </section>
 
     <section class="groups-section" id="groups" aria-labelledby="groups-title">
@@ -193,6 +218,8 @@
 
   <a class="mobile-cta" href="#groups">Найти зал <span aria-hidden="true">↓</span></a>
 
+  <script src="media.js" defer></script>
   <script src="script.js" defer></script>
+  <script src="photo.js" defer></script>
 </body>
 </html>
