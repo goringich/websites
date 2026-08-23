@@ -29,8 +29,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
-          cache-dependency-path: kyokushin-nn/package.json
 
       - name: Verify site
         run: npm --prefix kyokushin-nn run check
