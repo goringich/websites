@@ -1,6 +1,12 @@
 const trainerPhotoRegistry = window.KYOKUSHIN_MEDIA?.trainerPhotos ?? {};
 const instructorListNode = document.querySelector("#instructorList");
 
+const initialsFor = (name) => name
+  .split(/\s+/)
+  .map((part) => part[0])
+  .join("")
+  .slice(0, 2);
+
 const decorateTrainerCards = () => {
   if (!instructorListNode) {
     return;
@@ -10,40 +16,35 @@ const decorateTrainerCards = () => {
     const panel = card.querySelector(".instructor-panel");
     const title = panel?.querySelector("h3");
     const trainerName = title?.textContent.trim();
-    const photo = trainerName ? trainerPhotoRegistry[trainerName] : null;
 
-    if (!panel || !title || !photo) {
+    if (!panel || !title || !trainerName) {
       return;
     }
 
+    const photo = trainerPhotoRegistry[trainerName];
     const frame = document.createElement("div");
     frame.className = "instructor-photo-frame";
-    frame.dataset.photoKind = photo.kind;
-
-    const image = document.createElement("img");
-    image.className = "instructor-photo-image";
-    image.src = photo.image;
-    image.alt = photo.kind === "person" ? trainerName : `Фото секции: ${trainerName}`;
-    image.loading = "lazy";
-    image.decoding = "async";
-    image.style.objectPosition = photo.position ?? "50% 40%";
 
     const fallback = document.createElement("span");
     fallback.className = "instructor-photo-fallback";
-    fallback.textContent = trainerName
-      .split(/\s+/)
-      .map((part) => part[0])
-      .join("")
-      .slice(0, 2);
+    fallback.textContent = initialsFor(trainerName);
+    frame.append(fallback);
 
-    image.addEventListener("error", () => frame.classList.add("is-error"), { once: true });
-    frame.append(image, fallback);
+    if (photo?.kind === "person" && photo.person === trainerName) {
+      frame.dataset.photoKind = "person";
 
-    if (photo.kind === "club") {
-      const label = document.createElement("span");
-      label.className = "instructor-photo-label";
-      label.textContent = "Фото секции";
-      frame.append(label);
+      const image = document.createElement("img");
+      image.className = "instructor-photo-image";
+      image.src = photo.image;
+      image.alt = trainerName;
+      image.loading = "lazy";
+      image.decoding = "async";
+      image.style.objectPosition = photo.position ?? "50% 35%";
+      image.addEventListener("error", () => frame.classList.add("is-error"), { once: true });
+      frame.prepend(image);
+    } else {
+      frame.classList.add("is-placeholder");
+      frame.setAttribute("aria-hidden", "true");
     }
 
     title.before(frame);
