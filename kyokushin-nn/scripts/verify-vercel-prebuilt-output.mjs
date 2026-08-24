@@ -29,6 +29,27 @@ for (const filename of requiredStaticFiles) {
   }
 }
 
+const routes = config.routes ?? [];
+const badIndexOverride = config.overrides?.["index.html"]?.path === "index";
+if (badIndexOverride) {
+  throw new Error("Vercel prebuilt config must not remap index.html to /index; that route was redirected back to / and produced a live root 404");
+}
+
+const indexSelfRedirect = routes.find((route) =>
+  Number(route.status) >= 300 &&
+  Number(route.status) < 400 &&
+  route.headers?.Location === "/$1" &&
+  String(route.src ?? "").includes("index")
+);
+if (indexSelfRedirect) {
+  throw new Error(`Vercel prebuilt config contains the rejected cleanUrls index redirect: ${indexSelfRedirect.src}`);
+}
+
+const rootRewrite = routes.find((route) => route.dest === "/index.html" && String(route.src ?? "").includes("^/$"));
+if (!rootRewrite) {
+  throw new Error("Vercel prebuilt config must contain an explicit root rewrite to /index.html");
+}
+
 const html = await readFile(resolve(staticRoot, "index.html"), "utf8");
 const health = JSON.parse(await readFile(resolve(staticRoot, "health.json"), "utf8"));
 const expectedRelease = process.env.KYOKUSHIN_RELEASE_ID;
@@ -46,4 +67,4 @@ if (health.artDirection !== "dojo-editorial-v3") {
   throw new Error(`static/health.json art direction mismatch: ${health.artDirection}`);
 }
 
-console.log(`verify-vercel-prebuilt-output: PASS — Build Output API v${config.version}, static root contains ${requiredStaticFiles.join(", ")}, release=${health.release}`);
+console.log(`verify-vercel-prebuilt-output: PASS — Build Output API v${config.version}, root routes to static/index.html, release=${health.release}`);
