@@ -1,0 +1,103 @@
+{
+  "schema_version": "2026-08-24.kyokushin-art-direction.v3",
+  "status": "ART_DIRECTION_CONTRACT",
+  "owner_feedback": {
+    "verdict": "rejected_current_visual_family",
+    "summary": "The current design is perceived as very weak and not sufficiently sophisticated; improve the system-level design capability and continue the site with much stronger art direction and motion.",
+    "authority": "explicit_owner_feedback_2026-08-24"
+  },
+  "visitor": "Parent, child, teenager or adult considering Shinkyokushinkai karate in Nizhny Novgorod or Dzerzhinsk.",
+  "primary_job": "Feel the physical culture and credibility of the federation, then quickly choose a hall/instructor and make direct contact.",
+  "first_impression": "A living martial-arts federation presented like a contemporary sports editorial/poster system, not a generic gym landing page.",
+  "first_screen_must_communicate": [
+    "Shinkyokushinkai karate",
+    "recruitment from age 5",
+    "Nizhny Novgorod / Dzerzhinsk",
+    "clear path to choose a section"
+  ],
+  "emotional_register": [
+    "physical",
+    "disciplined",
+    "focused",
+    "confident",
+    "documentary",
+    "alive"
+  ],
+  "design_direction": {
+    "name": "Dojo Editorial / Competition Poster",
+    "composition": "Asymmetric editorial grid with full-bleed documentary photography, poster-scale typography, sharp section transitions and selective rule/grid geometry inspired by tatami and competition structure.",
+    "typography": "Strong Cyrillic-capable condensed/display voice plus clean reading voice; deliberate line breaks and poster-like labels; no tiny-uppercase-everywhere pseudo-premium styling.",
+    "photography": "Fewer, larger real federation images; aggressive but identity-safe crops; action -> people -> proof -> invitation narrative.",
+    "materiality": "Black ink, warm paper/ivory, federation red, hard rules, subtle grain/print-register cues; no glassmorphism or decorative gradient blobs.",
+    "navigation": "Minimal editorial navigation with line/position states rather than rounded SaaS pills.",
+    "cards": "Use cards only for real object/task boundaries. Avoid repeating identical rounded rectangles as the page skeleton.",
+    "practical_directory": "The halls/schedule area becomes a clear sports directory/catalog: strong filter rail, compact rows/cards, readable addresses and direct phone/map actions."
+  },
+  "motion_grammar": {
+    "entry": "Hero typography and image establish energy with restrained mask/translate choreography; no loader and no content dependency on animation.",
+    "scroll": "Low-amplitude photo parallax, chapter/reveal masks and section progress; transforms/opacity only for continuous motion.",
+    "interaction": "Directional underline/edge motion, image focus shifts and tactile buttons; no universal card zoom.",
+    "state_change": "Filters and navigation preserve spatial continuity and exact URL state.",
+    "reduced_motion": "All decorative parallax/mask choreography disabled or reduced to opacity while content and state remain complete."
+  },
+  "positive_reference_properties": [
+    {
+      "source": "https://www.epmartialarts.com/the-ep-blog",
+      "properties": ["dominant action photography", "short forceful headline", "sports-specific visual world", "clear conversion action"]
+    },
+    {
+      "source": "https://www.behance.net/gallery/215504813/Website-for-Jiu-Jitsu-Organisation",
+      "properties": ["dark editorial information density", "competition/documentary media", "strong hierarchy", "large image-led modules"]
+    },
+    {
+      "source": "https://www.dpwebdesign.com.au/portfolio/websites/precision-mma-conditioning",
+      "properties": ["responsive sport identity", "coaches visible early", "direct class/timetable path"]
+    }
+  ],
+  "negative_references": [
+    {
+      "id": "current-v2-owner-rejection",
+      "properties": [
+        "generic dark athletic landing-page skeleton",
+        "hero + metrics strip + repeated cards",
+        "rounded/pill UI borrowed from SaaS patterns",
+        "red/radial-gradient decoration doing too much of the art-direction work",
+        "generic fade-up reveal used as primary motion language",
+        "trainer and gallery sections feel like component grids rather than editorial storytelling",
+        "limited brand-specific visual grammar"
+      ]
+    },
+    {
+      "id": "anti-ai-template",
+      "properties": [
+        "bento for its own sake",
+        "glassmorphism",
+        "floating gradient orbs",
+        "all sections sharing eyebrow-heading-copy-cards structure",
+        "more animation used to hide weak typography or photography"
+      ]
+    }
+  ],
+  "mandatory_truth": {
+    "halls": 18,
+    "instructors": 11,
+    "recruitment_age": "5+",
+    "cities": ["Нижний Новгород", "Дзержинск"],
+    "identity_safe_trainer_photos": true,
+    "invented_rank_or_schedule_forbidden": true
+  },
+  "forbidden_substitutions": [
+    "synthetic trainer/customer/athlete imagery implying real identity",
+    "decorative Japanese glyphs or calligraphy with unverified meaning",
+    "client-side binary bootstrap delivery",
+    "motion that blocks access to content",
+    "desktop-only composition disguised as responsive"
+  ],
+  "target_state_for_owner_review": "OWNER_REVIEW_CANDIDATE",
+  "current_expected_state_after_source_implementation": "IMPLEMENTED_CANDIDATE",
+  "perceptual_qa": {
+    "required": true,
+    "current_capture_environment": "blocked",
+    "blocker": "Current execution Chromium refuses local/file navigation with ERR_BLOCKED_BY_ADMINISTRATOR; source-only review cannot be promoted to PERCEPTUAL_REVIEW_PASS."
+  }
+}
