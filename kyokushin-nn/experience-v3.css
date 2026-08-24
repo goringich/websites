@@ -110,6 +110,111 @@ body[data-art-direction="dojo-editorial-v3"] .photo-story {
   border-top: 6px solid var(--v3-red, #ef2d1d);
 }
 
+/* Portrait scarcity is a design constraint, not a reason to manufacture nine empty photo cards.
+ * Pending trainer portraits become typography-led dojo posters; only verified portraits remain photo-led. */
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] {
+  position: relative;
+  min-height: 360px;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  isolation: isolate;
+  background: var(--v3-paper-bright, #fffaf0);
+}
+
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-media {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 0;
+  background:
+    linear-gradient(135deg, transparent 0 52%, rgba(239, 45, 29, .12) 52% 52.45%, transparent 52.45%),
+    repeating-linear-gradient(90deg, transparent 0 68px, rgba(12, 12, 10, .045) 68px 69px),
+    linear-gradient(155deg, #fffaf0 0%, #eee7da 100%);
+}
+
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-media::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 7px;
+  background: var(--v3-red, #ef2d1d);
+  content: "";
+}
+
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-initials {
+  right: -10px;
+  bottom: -24px;
+  color: rgba(12, 12, 10, .065);
+  font-size: clamp(118px, 13vw, 190px);
+  line-height: .8;
+}
+
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-number {
+  z-index: 3;
+  top: 18px;
+  left: 20px;
+}
+
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-body {
+  position: relative;
+  z-index: 2;
+  min-height: 360px;
+  justify-content: flex-end;
+  padding: 70px 26px 30px;
+  border-top: 0;
+  background: linear-gradient(to top, rgba(255, 250, 240, .96) 0 35%, rgba(255, 250, 240, .7) 58%, transparent 82%);
+}
+
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-role {
+  width: fit-content;
+  margin-bottom: 14px;
+  border-top: 2px solid var(--v3-red, #ef2d1d);
+  padding-top: 8px;
+}
+
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-body h3 {
+  max-width: 94%;
+  font-size: clamp(31px, 3.2vw, 48px);
+  line-height: .92;
+}
+
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-note {
+  max-width: 34ch;
+  margin-top: 11px;
+  color: #6f685e;
+}
+
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-facts {
+  width: min(100%, 310px);
+  margin-top: 20px;
+  border-top-color: rgba(12, 12, 10, .18);
+}
+
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-actions {
+  margin-top: 24px;
+  padding-top: 0;
+}
+
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"]:nth-child(5n) {
+  min-height: 420px;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"]:nth-child(5n) .roster-body {
+  min-height: 420px;
+  padding-right: clamp(28px, 5vw, 68px);
+  padding-left: clamp(28px, 5vw, 68px);
+}
+
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"]:nth-child(5n) .roster-body h3 {
+  max-width: 12ch;
+  font-size: clamp(38px, 4.6vw, 66px);
+}
+
 .roster-card:focus-within {
   outline: 3px solid rgba(239, 45, 29, .3);
   outline-offset: 3px;
@@ -120,6 +225,25 @@ body[data-art-direction="dojo-editorial-v3"] .photo-story {
 #groups,
 #how {
   scroll-margin-top: 86px;
+}
+
+@media (max-width: 820px) {
+  body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"],
+  body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"]:nth-child(5n) {
+    min-height: 330px;
+    grid-template-rows: 1fr;
+  }
+
+  body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-body,
+  body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"]:nth-child(5n) .roster-body {
+    min-height: 330px;
+    padding: 64px 22px 26px;
+  }
+
+  body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"]:nth-child(5n) .roster-body h3 {
+    max-width: 94%;
+    font-size: clamp(31px, 5vw, 46px);
+  }
 }
 
 @media (max-width: 620px) {
@@ -140,6 +264,38 @@ body[data-art-direction="dojo-editorial-v3"] .photo-story {
 
   body[data-art-direction="dojo-editorial-v3"] .photo-story {
     border-top-width: 4px;
+  }
+
+  body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"],
+  body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"]:nth-child(5n) {
+    min-height: 292px;
+    grid-template-rows: 1fr;
+  }
+
+  body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-body,
+  body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"]:nth-child(5n) .roster-body {
+    min-height: 292px;
+    padding: 58px 18px 22px;
+  }
+
+  body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-initials {
+    right: -8px;
+    bottom: -14px;
+    font-size: clamp(104px, 34vw, 148px);
+  }
+
+  body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-body h3,
+  body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"]:nth-child(5n) .roster-body h3 {
+    max-width: 12ch;
+    font-size: clamp(29px, 9.4vw, 38px);
+  }
+
+  body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-facts {
+    margin-top: 16px;
+  }
+
+  body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="pending"] .roster-actions {
+    margin-top: 18px;
   }
 }
 
