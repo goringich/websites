@@ -1,0 +1,30 @@
+{
+  "schema_version": "2026-08-24.kyokushin-problems.v1",
+  "project": "kyokushin-nn",
+  "problems": [
+    {
+      "id": "production-binary-bootstrap",
+      "severity": "critical",
+      "status": "active",
+      "class": "deployment_artifact_mismatch",
+      "symptom": "Users can receive 'Не удалось загрузить сайт' before the real page is rendered.",
+      "root_cause": "Production currently serves a small browser bootstrap that fetches p0.bin..p4.bin and reconstructs/decompresses the real HTML client-side instead of serving the verified self-contained dist/index.html directly.",
+      "source_affected": false,
+      "runtime_affected": true,
+      "fix_strategy": "Deploy the repository-generated self-contained artifact directly and add release/live smoke gates that reject binary/bootstrap delivery.",
+      "completion_gate": "The public production URL directly contains the self-contained build marker and required recruitment UI markers, contains no binary bootstrap markers, and passes scripts/production-smoke.mjs."
+    },
+    {
+      "id": "deployment-not-source-linked",
+      "severity": "high",
+      "status": "active",
+      "class": "delivery_control_gap",
+      "symptom": "A merged, green source change does not guarantee the public Vercel domain is running that build.",
+      "root_cause": "The current Vercel project is not Git-linked, so source CI and public production are separate authorities.",
+      "source_affected": false,
+      "runtime_affected": true,
+      "fix_strategy": "Make the GitHub release workflow the deterministic deployment owner when credentials are available, then require a live production smoke after deployment.",
+      "completion_gate": "A push to project/kyokushin-nn can deploy the verified build without manual repackaging and the same workflow proves the public URL."
+    }
+  ]
+}
