@@ -79,6 +79,13 @@ const trainerPhotos = {
     image: "https://sun9-54.userapi.com/s/v1/ig2/WUuluYR3wScSgcKv4oCm9jAmB-zvo_4dyFVFIljMw2UJTyrZHVhb0EWfnr3Sxt8TGXwNwaxUR_a_A_Xrc6p3fL8o.jpg?as=32x43%2C48x64%2C72x97%2C108x145%2C160x215%2C240x322%2C360x484%2C480x645%2C540x725%2C640x860%2C720x967%2C953x1280&cs=240x0&from=bu&quality=95",
     sourceUrl: "https://shin-nnov.orgs.biz/",
     position: "50% 30%"
+  },
+  "Кирилл Антоневич": {
+    kind: "person",
+    person: "Кирилл Антоневич",
+    image: "https://cdn1.tenchat.ru/static/vbc-gostinder/user-picture/c5fe4cf5-e2af-4cec-be74-0e4e6b2b3bc7.jpeg?crop=480%2C480%2Cx0%2Cy0&fmt=webp&height=480&width=480",
+    sourceUrl: "https://tenchat.ru/5138057",
+    position: "50% 36%"
   }
 };
 
