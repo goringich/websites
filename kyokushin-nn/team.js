@@ -151,7 +151,8 @@ const makeRosterCard = (instructor, index) => {
   const halls = document.createElement("a");
   halls.className = "roster-halls";
   halls.href = "#groups";
-  halls.dataset.trainerFilter = instructor.name;
+  const data = halls.dataset;
+  data.trainerFilter = instructor.name;
   halls.textContent = "Показать секции ↘";
   halls.setAttribute("aria-label", `Показать секции тренера ${instructor.name}`);
 
