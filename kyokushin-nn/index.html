@@ -35,9 +35,9 @@
 
   <script>
     (() => {
-      const assetCommit = "d168d942e06b7f36f9794303f9ad099234a8b650";
+      const assetCommit = "f013b5c70a12664699497984fe5af5e442342ad5";
       const rawBase = `https://raw.githubusercontent.com/goringich/websites/${assetCommit}/kyokushin-nn/`;
-      const cssFiles = ["styles.css", "cards.css", "media-viewer.css"];
+      const cssFiles = ["styles.css", "cards.css", "media-viewer.css", "art-direction-v2.css"];
 
       window.__KYOKUSHIN_ASSET_FALLBACK__ = { assetCommit, rawBase };
 
@@ -294,6 +294,7 @@
           if (!window.KYOKUSHIN_MEDIA) await runRawScript("media.js");
           if (!document.querySelector("#instructorList .instructor-card")) await runRawScript("script.js");
           if (document.querySelector("#instructorList .instructor-card:not([data-photo-ready])")) await runRawScript("trainer-photos.js");
+          if (!document.querySelector("#trainerRoster .roster-card")) await runRawScript("team.js");
           if (!document.querySelector("#photoMosaic > *")) await runRawScript("photo.js");
         } catch (error) {
           console.error("Kyokushin JS fallback failed", error);
