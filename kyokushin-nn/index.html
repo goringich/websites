@@ -5,12 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0d0d0c">
   <meta name="color-scheme" content="light">
+  <meta name="robots" content="index,follow">
   <meta name="description" content="Набор в группы начальной подготовки СинКёкусинкай каратэ от 5 лет. 18 залов в Нижнем Новгороде и Дзержинске, команда тренеров, расписание, фотографии и прямые контакты.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ru_RU">
   <meta property="og:title" content="СинКёкусинкай каратэ — Нижний Новгород">
   <meta property="og:description" content="11 инструкторов, 18 залов, живые фотографии, расписание и прямые контакты Нижегородской федерации.">
   <meta property="og:url" content="https://kyokushin-nn.vercel.app/">
+  <meta property="og:image" content="https://sun9-79.userapi.com/s/v1/ig2/sq5ZwNkzvkAvgC2XEa_GU_Af_ilyiA5Nvsunurfo_MPPUPZYp5yZcikMhDv5QWNBMdcUg35ytTiV5avADw2v569-.jpg?as=32x21%2C48x32%2C72x48%2C108x72%2C160x107%2C240x160%2C360x240%2C480x320%2C540x360%2C640x426%2C720x480%2C1080x720%2C1280x853&cs=510x340&from=bu&quality=95">
+  <meta property="og:image:alt" content="Тренировка Нижегородской федерации СинКёкусинкай">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://kyokushin-nn.vercel.app/">
   <title>СинКёкусинкай каратэ — набор с 5 лет | Нижегородская федерация</title>
 
@@ -32,12 +36,13 @@
   <link rel="stylesheet" href="cards.css">
   <link rel="stylesheet" href="media-viewer.css">
   <link rel="stylesheet" href="art-direction-v2.css">
+  <link rel="stylesheet" href="experience.css">
 
   <script>
     (() => {
-      const assetCommit = "f013b5c70a12664699497984fe5af5e442342ad5";
+      const assetCommit = "9ff68e7df16e9805398bc770d10a5bea56e5adaa";
       const rawBase = `https://raw.githubusercontent.com/goringich/websites/${assetCommit}/kyokushin-nn/`;
-      const cssFiles = ["styles.css", "cards.css", "media-viewer.css", "art-direction-v2.css"];
+      const cssFiles = ["styles.css", "cards.css", "media-viewer.css", "art-direction-v2.css", "experience.css"];
 
       window.__KYOKUSHIN_ASSET_FALLBACK__ = { assetCommit, rawBase };
 
@@ -276,7 +281,9 @@
   <script src="script.js" defer></script>
   <script src="trainer-photos.js" defer></script>
   <script src="team.js" defer></script>
+  <script src="finder.js" defer></script>
   <script src="photo.js" defer></script>
+  <script src="experience.js" defer></script>
   <script>
     window.addEventListener("load", () => {
       window.setTimeout(async () => {
@@ -295,7 +302,9 @@
           if (!document.querySelector("#instructorList .instructor-card")) await runRawScript("script.js");
           if (document.querySelector("#instructorList .instructor-card:not([data-photo-ready])")) await runRawScript("trainer-photos.js");
           if (!document.querySelector("#trainerRoster .roster-card")) await runRawScript("team.js");
+          if (!window.KYOKUSHIN_FINDER_READY) await runRawScript("finder.js");
           if (!document.querySelector("#photoMosaic > *")) await runRawScript("photo.js");
+          if (!window.KYOKUSHIN_EXPERIENCE_READY) await runRawScript("experience.js");
         } catch (error) {
           console.error("Kyokushin JS fallback failed", error);
         }
