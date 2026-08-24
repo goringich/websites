@@ -16,6 +16,7 @@ const required = [
   '<meta name="x-kyokushin-release" content="',
   '<meta name="x-kyokushin-art-direction" content="dojo-editorial-v3">',
   'data-art-direction="dojo-editorial-v3"',
+  'data-static-directory="true"',
   'id="groups"',
   'id="trainerRoster"',
   'id="photoMosaic"',
@@ -69,8 +70,9 @@ if (
   || health.build !== "self-contained"
   || health.release !== release
   || health.artDirection !== "dojo-editorial-v3"
+  || health.staticDirectory !== true
 ) {
-  throw new Error(`Health manifest does not match HTML release identity/art direction: ${JSON.stringify(health)}`);
+  throw new Error(`Health manifest does not match HTML release identity/art direction/static directory: ${JSON.stringify(health)}`);
 }
 
 const expectedRelease = process.env.KYOKUSHIN_RELEASE_ID?.trim();
@@ -82,4 +84,4 @@ if (Buffer.byteLength(html) < 100_000) {
   throw new Error(`Self-contained release is unexpectedly small: ${Buffer.byteLength(html)} bytes`);
 }
 
-console.log(`release-contract: PASS — pure-v3 release=${release}, artDirection=${health.artDirection}, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
+console.log(`release-contract: PASS — pure-v3 release=${release}, artDirection=${health.artDirection}, staticDirectory=${health.staticDirectory}, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
