@@ -53,3 +53,5 @@ const initialTrainer = new URL(window.location.href).searchParams.get("trainer")
 if (initialTrainer && typeof instructors !== "undefined" && instructors.some((item) => item.name === initialTrainer)) {
   applyTrainerFilter(initialTrainer, { scroll: false, updateUrl: false });
 }
+
+window.KYOKUSHIN_FINDER_READY = true;
