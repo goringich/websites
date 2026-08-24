@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 
-const [css, motion, experienceCss, experienceJs, buildScript, contractRaw, audit] = await Promise.all([
+const [html, css, motion, experienceCss, experienceJs, buildScript, contractRaw, audit] = await Promise.all([
+  readFile(new URL("../index.html", import.meta.url), "utf8"),
   readFile(new URL("../art-direction-v3.css", import.meta.url), "utf8"),
   readFile(new URL("../motion-v3.js", import.meta.url), "utf8"),
   readFile(new URL("../experience-v3.css", import.meta.url), "utf8"),
@@ -25,8 +26,38 @@ if (contract.design_direction?.name !== "Dojo Editorial / Competition Poster") {
 }
 
 for (const marker of [
+  '<meta name="x-kyokushin-art-direction" content="dojo-editorial-v3">',
+  'data-art-direction="dojo-editorial-v3"',
+  'href="experience-v3.css"',
+  'href="art-direction-v3.css"',
+  'src="experience-v3.js"',
+  'src="motion-v3.js"',
+  "fonts.googleapis.com/css2",
+  "family=Manrope",
+  "family=Unbounded"
+]) {
+  if (!html.includes(marker)) {
+    throw new Error(`Source HTML is not directly V3-ready: ${marker}`);
+  }
+}
+
+for (const forbiddenActiveSource of [
+  '<link rel="stylesheet" href="art-direction-v2.css">',
+  '<link rel="stylesheet" href="experience.css">',
+  '<script src="experience.js"',
+  "window.__KYOKUSHIN_ASSET_FALLBACK__",
+  "Kyokushin JS fallback failed"
+]) {
+  if (html.includes(forbiddenActiveSource)) {
+    throw new Error(`Rejected/legacy visual runtime is active in source HTML: ${forbiddenActiveSource}`);
+  }
+}
+
+for (const marker of [
   "--v3-red",
   "--v3-display",
+  '"Unbounded"',
+  '"Manrope"',
   ".hero {",
   "grid-template-columns: repeat(12",
   ".photo-mosaic {",
@@ -90,19 +121,22 @@ if (motion.includes("innerHTML") || experienceJs.includes("innerHTML")) {
 }
 
 for (const marker of [
-  'rejectedSourceCssFiles',
-  '"art-direction-v2.css"',
-  '"experience.css"',
-  'rejectedSourceJsFiles',
-  '"experience.js"',
+  'const cssFiles = [',
   '"experience-v3.css"',
   '"art-direction-v3.css"',
+  'const jsFiles = [',
   '"experience-v3.js"',
   '"motion-v3.js"',
-  "Rejected v2 visual layer leaked into production"
+  'const rejectedVisualFiles = [',
+  '"art-direction-v2.css"',
+  '"experience.css"',
+  '"experience.js"',
+  "Rejected V2 visual dependency is active in source HTML",
+  "Rejected v2 visual layer leaked into production",
+  "__KYOKUSHIN_ASSET_FALLBACK__"
 ]) {
   if (!buildScript.includes(marker)) {
-    throw new Error(`Pure-V3 production build contract missing marker: ${marker}`);
+    throw new Error(`Source-converged pure-V3 build contract missing marker: ${marker}`);
   }
 }
 
@@ -126,4 +160,4 @@ if (contract.perceptual_qa?.current_capture_environment !== "blocked") {
   throw new Error("Source work must not claim perceptual review before rendered evidence exists");
 }
 
-console.log("verify-art-direction-v3: PASS — pure V3 source/build architecture present; perceptual QA remains explicitly blocked");
+console.log("verify-art-direction-v3: PASS — direct source and production share the pure V3 stack with explicit typography loading; perceptual QA remains blocked");
