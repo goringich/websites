@@ -16,7 +16,7 @@ const requiredHtml = [
   "id=\"photoMosaic\"",
   "id=\"photoCollections\"",
   "brand-logo",
-  "Shinkyokushin.png",
+  "wkosydney.com.au/assets/images/logo.jpg",
   "photo.css",
   "media.js",
   "script.js",
@@ -29,8 +29,8 @@ for (const marker of requiredHtml) {
   }
 }
 
-if (html.includes(">極<")) {
-  throw new Error("Placeholder kanji logo must not be used");
+if (html.includes(">極<") || html.includes("Shinkyokushin.png")) {
+  throw new Error("Deprecated placeholder/wrong Shinkyokushin logo must not be used");
 }
 
 const cityNnCount = (script.match(/city: "Нижний Новгород"/g) || []).length;
@@ -143,5 +143,5 @@ for (const item of registry.photoCollections) {
 
 console.log(
   `verify: 18 venues, 11 instructors, ${registry.verifiedMedia.length} shared media, ` +
-  `${registry.photoCollections.length} federation collections, real logo guard PASS, identity guard PASS`
+  `${registry.photoCollections.length} federation collections, Kokoro logo guard PASS, identity guard PASS`
 );
