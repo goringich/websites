@@ -26,6 +26,7 @@ const required = [
   '<meta name="x-kyokushin-release" content="',
   '<meta name="x-kyokushin-art-direction" content="dojo-editorial-v3">',
   'data-art-direction="dojo-editorial-v3"',
+  'data-static-directory="true"',
   'data-bundle="experience-v3.css"',
   'data-bundle="art-direction-v3.css"',
   'data-bundle="experience-v3.js"',
@@ -53,7 +54,7 @@ const forbidden = [
 
 for (const marker of required) {
   if (!html.includes(marker)) {
-    throw new Error(`Production is not the verified pure-V3 self-contained release; missing: ${marker}`);
+    throw new Error(`Production is not the verified pure-V3 resilient release; missing: ${marker}`);
   }
 }
 
@@ -65,6 +66,12 @@ for (const marker of forbidden) {
 
 if (!release) {
   throw new Error("Production does not expose a release identity");
+}
+
+const staticInstructorCount = (html.match(/data-static-instructor=/g) || []).length;
+const staticVenueCount = (html.match(/data-static-venue=/g) || []).length;
+if (staticInstructorCount !== 11 || staticVenueCount !== 18) {
+  throw new Error(`Production static directory is incomplete: ${staticInstructorCount} instructors / ${staticVenueCount} venues`);
 }
 
 const healthUrl = new URL("/health.json", response.url);
@@ -86,8 +93,9 @@ if (
   || health.build !== "self-contained"
   || health.release !== release
   || health.artDirection !== "dojo-editorial-v3"
+  || health.staticDirectory !== true
 ) {
-  throw new Error(`Production health manifest does not match HTML release/art direction: ${JSON.stringify(health)}`);
+  throw new Error(`Production health manifest does not match HTML release/art direction/static directory: ${JSON.stringify(health)}`);
 }
 
 if (expectedRelease && release !== expectedRelease) {
@@ -101,5 +109,9 @@ console.log(JSON.stringify({
   build: "self-contained",
   release,
   artDirection: health.artDirection,
-  visualStack: "pure-v3"
+  visualStack: "pure-v3",
+  staticDirectory: {
+    instructors: staticInstructorCount,
+    venues: staticVenueCount
+  }
 }));
