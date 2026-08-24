@@ -95,7 +95,7 @@ if (JSON.stringify(instructorNames) !== JSON.stringify(expectedPeople)) {
 for (const name of expectedPeople) {
   if (!teamScript.includes(`"${name}"`)) throw new Error(`Trainer roster metadata missing: ${name}`);
 }
-for (const marker of ["rosterPhotoRegistry", "trainerProfileMeta", "hasPortrait", "data.portrait", "roster-card", "trainerRoster"]) {
+for (const marker of ["rosterPhotoRegistry", "trainerProfileMeta", "hasPortrait", "dataset.portrait", "roster-card", "trainerRoster"]) {
   if (!teamScript.includes(marker)) throw new Error(`Missing trainer-roster behavior: ${marker}`);
 }
 if (!teamScript.includes('photo?.kind === "person"') || !teamScript.includes("photo.person === instructor.name")) {
