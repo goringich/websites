@@ -13,9 +13,15 @@ on:
     paths:
       - "kyokushin-nn/**"
       - ".github/workflows/kyokushin-nn-ci.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
+
+env:
+  VERCEL_ORG_ID: team_ApLUE5gYEWDgrUDjadM1ubCL
+  VERCEL_PROJECT_ID: prj_Kmp6lK4VQp63N1fQnZL9KTv76mSI
+  KYOKUSHIN_PRODUCTION_URL: https://kyokushin-nn.vercel.app/
 
 jobs:
   verify:
@@ -30,13 +36,70 @@ jobs:
         with:
           node-version: 24
 
-      - name: Verify site
+      - name: Verify source and release artifact
         run: npm --prefix kyokushin-nn run check
 
-      - name: Publish production bundle
+      - name: Publish verified production bundle
         uses: actions/upload-artifact@v4
         with:
           name: kyokushin-nn-production
           path: kyokushin-nn/dist/index.html
           if-no-files-found: error
           retention-days: 14
+
+  deploy-production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/project/kyokushin-nn'
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout exact verified commit
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Require Vercel deployment credential
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::VERCEL_TOKEN is not configured. Production cannot be proven from source and must not be reported healthy."
+            exit 1
+          fi
+
+      - name: Verify exact source before production build
+        run: npm --prefix kyokushin-nn run check
+
+      - name: Pull Vercel production configuration
+        working-directory: kyokushin-nn
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx --yes vercel@59.3.0 pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build Vercel output
+        working-directory: kyokushin-nn
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx --yes vercel@59.3.0 build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy verified build to production
+        working-directory: kyokushin-nn
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx --yes vercel@59.3.0 deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+
+      - name: Prove public production
+        working-directory: kyokushin-nn
+        run: |
+          for attempt in 1 2 3; do
+            if npm run smoke:production; then
+              exit 0
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              sleep 5
+            fi
+          done
+          exit 1

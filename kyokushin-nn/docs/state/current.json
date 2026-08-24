@@ -1,0 +1,36 @@
+{
+  "schema_version": "2026-08-24.kyokushin-current.v1",
+  "project": "kyokushin-nn",
+  "updated_at": "2026-08-24T13:50:00Z",
+  "mission": "Convert recruitment interest into a direct, trustworthy choice of hall and instructor for Shinkyokushinkai karate in Nizhny Novgorod and Dzerzhinsk.",
+  "source_state": {
+    "branch": "project/kyokushin-nn",
+    "production_build": "self-contained dist/index.html",
+    "expected_halls": 18,
+    "expected_instructors": 11,
+    "expected_gallery_photos": 8,
+    "expected_photo_reports": 4
+  },
+  "runtime_state": {
+    "production_url": "https://kyokushin-nn.vercel.app/",
+    "status": "incident",
+    "observed_failure": "The public deployment serves a browser-side p0.bin..p4.bin bootstrap and can show 'Не удалось загрузить сайт' instead of the recruitment UI.",
+    "root_cause_class": "deployment_artifact_mismatch",
+    "source_build_known_good": true,
+    "production_matches_source_build": false,
+    "last_evidence": "Vercel returned HTTP 200 for a loader HTML rather than the repository self-contained production HTML."
+  },
+  "active_slice": {
+    "outcome": "Replace the fragile binary bootstrap delivery path with the repository self-contained build and make future deployment drift fail closed.",
+    "acceptance": [
+      "npm run check passes",
+      "npm run verify:release passes",
+      "public production HTML contains the self-contained build marker and real recruitment UI markers",
+      "public production HTML contains no p*.bin bootstrap or DecompressionStream loader",
+      "npm run smoke:production passes"
+    ]
+  },
+  "unknowns": [
+    "Whether the GitHub repository currently has a usable VERCEL_TOKEN Actions secret for unattended production deployment."
+  ]
+}
