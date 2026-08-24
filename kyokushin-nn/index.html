@@ -13,9 +13,47 @@
   <meta property="og:url" content="https://kyokushin-nn.vercel.app/">
   <link rel="canonical" href="https://kyokushin-nn.vercel.app/">
   <title>СинКёкусинкай каратэ — набор с 5 лет | Нижегородская федерация</title>
+  <style id="critical-style">
+    html { background: #f4f0e8; }
+    body { margin: 0; background: #f4f0e8; color: #161614; font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .topbar { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 10px max(20px, calc((100vw - 1180px) / 2)); background: #161614; color: #fff; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+    .brand-logo { width: 44px; height: 44px; border-radius: 50%; background: #fff; object-fit: contain; }
+    .brand-copy { display: grid; }
+    .brand-copy strong { font-size: 13px; }
+    .brand-copy small { opacity: .62; font-size: 11px; }
+    .hero { min-height: 420px; padding: 72px max(20px, calc((100vw - 1180px) / 2)); background: #161614; color: #fff; }
+    .hero h1 { margin: 0; font-size: clamp(54px, 8vw, 96px); line-height: .92; letter-spacing: -.055em; }
+    .hero h1 span { color: #d52b1e; }
+  </style>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="cards.css">
   <link rel="stylesheet" href="media-viewer.css">
+  <script>
+    (() => {
+      const assetCommit = "d168d942e06b7f36f9794303f9ad099234a8b650";
+      const rawBase = `https://raw.githubusercontent.com/goringich/websites/${assetCommit}/kyokushin-nn/`;
+      const cssFiles = ["styles.css", "cards.css", "media-viewer.css"];
+
+      window.__KYOKUSHIN_ASSET_FALLBACK__ = { assetCommit, rawBase };
+
+      Promise.all(cssFiles.map(async (file) => {
+        const response = await fetch(`${rawBase}${file}`, { cache: "force-cache" });
+        if (!response.ok) throw new Error(`${file}: ${response.status}`);
+        return response.text();
+      }))
+        .then((parts) => {
+          const style = document.createElement("style");
+          style.dataset.assetFallback = "github-raw";
+          style.textContent = parts.join("\n");
+          document.head.append(style);
+          document.documentElement.dataset.cssReady = "true";
+        })
+        .catch((error) => {
+          console.error("Kyokushin CSS fallback failed", error);
+        });
+    })();
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -214,5 +252,29 @@
   <script src="script.js" defer></script>
   <script src="trainer-photos.js" defer></script>
   <script src="photo.js" defer></script>
+  <script>
+    window.addEventListener("load", () => {
+      window.setTimeout(async () => {
+        const fallback = window.__KYOKUSHIN_ASSET_FALLBACK__;
+        if (!fallback) return;
+
+        const runRawScript = async (file) => {
+          const response = await fetch(`${fallback.rawBase}${file}`, { cache: "force-cache" });
+          if (!response.ok) throw new Error(`${file}: ${response.status}`);
+          const source = await response.text();
+          (0, eval)(`${source}\n//# sourceURL=${fallback.rawBase}${file}`);
+        };
+
+        try {
+          if (!window.KYOKUSHIN_MEDIA) await runRawScript("media.js");
+          if (!document.querySelector("#instructorList .instructor-card")) await runRawScript("script.js");
+          if (document.querySelector("#instructorList .instructor-card:not([data-photo-ready])")) await runRawScript("trainer-photos.js");
+          if (!document.querySelector("#photoMosaic > *")) await runRawScript("photo.js");
+        } catch (error) {
+          console.error("Kyokushin JS fallback failed", error);
+        }
+      }, 350);
+    });
+  </script>
 </body>
 </html>
