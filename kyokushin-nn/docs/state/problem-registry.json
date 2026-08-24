@@ -1,5 +1,5 @@
 {
-  "schema_version": "2026-08-24.kyokushin-problems.v2",
+  "schema_version": "2026-08-24.kyokushin-problems.v3",
   "project": "kyokushin-nn",
   "rules": {
     "evidence_required": true,
@@ -23,25 +23,39 @@
     {
       "id": "deployment-not-source-linked",
       "severity": "high",
-      "status": "active",
+      "status": "active_root_cause_proven",
       "class": "delivery_control_gap",
-      "symptom": "A merged, green source change does not yet prove unattended publication of that exact commit to the public Vercel domain.",
-      "root_cause": "The current Vercel project is not Git-linked, and unattended GitHub Actions deployment requires a usable VERCEL_TOKEN secret.",
+      "symptom": "Merged, green source changes do not publish the exact verified commit to the public Vercel domain.",
+      "root_cause": "GitHub Actions does not have VERCEL_TOKEN. PR #27 added a bounded diagnostic and CI run 32744059135 printed VERCEL_TOKEN_PRESENT=false without exposing any secret value. The Vercel project is also not Git-linked, so the existing Actions deployment lane is the intended publication path.",
       "source_affected": false,
       "runtime_affected": false,
-      "mitigation": "Source CI fails closed for production deployment without credentials; authenticated Vercel OAuth can recover production directly; release-aware smoke prevents stale production from being reported as current.",
-      "completion_gate": "A push to project/kyokushin-nn completes verify -> Vercel production deploy -> exact-release public smoke without manual intervention."
+      "issue": 26,
+      "mitigation": "Source/release CI continues to fail closed for production deployment without credentials; release-aware smoke prevents stale production from being reported as current. Do not replace this with a binary/bootstrap or manual unverified deploy path.",
+      "completion_gate": "Restore a bounded VERCEL_TOKEN, then a push to project/kyokushin-nn completes verify -> exact-SHA Vercel production deploy -> exact-release public smoke without exposing the credential."
     },
     {
       "id": "browser-qa-environment",
       "severity": "medium",
       "status": "active",
       "class": "qa_environment_gap",
-      "symptom": "Headless Chromium screenshot QA hangs in the current container.",
-      "root_cause": "Current evidence points to the execution container's D-Bus/zygote environment rather than a website runtime defect.",
+      "symptom": "Headless Chromium screenshot QA hangs in the current container, preventing trustworthy desktop/mobile perceptual acceptance.",
+      "root_cause": "Repeated tests, including trivial pages and the exact CI artifact, point to the execution container's D-Bus/zygote environment rather than a website runtime defect. WeasyPrint is insufficient because it does not faithfully support the site's modern browser CSS/runtime behavior.",
       "source_affected": false,
       "runtime_affected": false,
-      "completion_gate": "Run responsive visual/runtime QA on a normal browser-capable runner against an exact release and preserve the resulting evidence."
+      "completion_gate": "Run responsive visual/runtime QA on a normal browser-capable runner against an exact release and preserve representative desktop/mobile evidence."
+    },
+    {
+      "id": "javascript-only-recruitment-directory",
+      "severity": "high",
+      "status": "resolved_in_source_not_yet_public",
+      "class": "progressive_enhancement_gap",
+      "symptom": "If script.js failed or JavaScript was disabled, the shipped HTML contained an empty #instructorList, hiding the practical 18-hall directory, schedules and direct phone/map actions.",
+      "root_cause": "Recruitment cards were rendered only on the client even though the same canonical instructor data is available at build time.",
+      "resolution": "PR #29 makes build-static.mjs prerender the complete 11-instructor / 18-venue directory from the canonical instructors array. JavaScript progressively replaces the fallback when available; health/release/live guards require staticDirectory=true.",
+      "verification": "GitHub Actions run 32745390974: build staticDirectory=18/11 PASS; release-contract staticDirectory=true PASS; verify-static-directory confirmed 11 instructors / 18 venues before JavaScript enhancement.",
+      "source_affected": false,
+      "runtime_affected": true,
+      "completion_gate": "Deploy merge b76254091934e3a4d3406f1348692988c5ce9aca or a later verified descendant and pass exact public production smoke."
     }
   ]
 }
