@@ -1,10 +1,11 @@
 import { readFile } from "node:fs/promises";
 import vm from "node:vm";
 
-const [html, styles, cards, script, media, photoScript, trainerPhotoScript] = await Promise.all([
+const [html, styles, cards, mediaStyles, script, media, photoScript, trainerPhotoScript] = await Promise.all([
   readFile(new URL("../index.html", import.meta.url), "utf8"),
   readFile(new URL("../styles.css", import.meta.url), "utf8"),
   readFile(new URL("../cards.css", import.meta.url), "utf8"),
+  readFile(new URL("../media-viewer.css", import.meta.url), "utf8"),
   readFile(new URL("../script.js", import.meta.url), "utf8"),
   readFile(new URL("../media.js", import.meta.url), "utf8"),
   readFile(new URL("../photo.js", import.meta.url), "utf8"),
@@ -13,9 +14,10 @@ const [html, styles, cards, script, media, photoScript, trainerPhotoScript] = aw
 
 const requiredHtml = [
   "id=\"groups\"", "id=\"searchInput\"", "id=\"cityFilters\"", "id=\"dayFilters\"",
-  "id=\"photoMosaic\"", "id=\"photoCollections\"", "brand-logo",
-  "wkosydney.com.au/assets/images/logo.jpg", "styles.css", "cards.css", "media.js",
-  "script.js", "trainer-photos.js", "photo.js", "site-nav", "hero-visual", "hero-proof"
+  "id=\"photoMosaic\"", "id=\"photoCollections\"", "id=\"photoLightbox\"", "brand-logo",
+  "wkosydney.com.au/assets/images/logo.jpg", "styles.css", "cards.css", "media-viewer.css", "media.js",
+  "script.js", "trainer-photos.js", "photo.js", "site-nav", "hero-visual", "hero-proof",
+  "rel=\"canonical\"", "og:title", "lightbox-prev", "lightbox-next", "lightbox-source"
 ];
 for (const marker of requiredHtml) {
   if (!html.includes(marker)) throw new Error(`Missing HTML marker: ${marker}`);
@@ -29,6 +31,12 @@ for (const cssMarker of [".site-nav {", ".hero-visual {", ".hero-proof {", "@med
 for (const cssMarker of [".photo-story-link", ".instructor-card", ".instructor-panel", ".instructor-photo-frame", ".venue-list:has", "@media (max-width: 620px)"]) {
   if (!cards.includes(cssMarker)) throw new Error(`Missing component layout rule: ${cssMarker}`);
 }
+for (const cssMarker of [
+  ".archive-cover-card", ".archive-card-cover", ".archive-card-provider", ".archive-card-cta",
+  ".lightbox {", ".lightbox-image", ".lightbox-nav", "body.is-lightbox-open"
+]) {
+  if (!mediaStyles.includes(cssMarker)) throw new Error(`Missing media UX rule: ${cssMarker}`);
+}
 if (styles.includes("margin: -28px") || styles.includes("margin: -22px") || cards.includes("margin: -28px")) {
   throw new Error("Trainer layout must not rely on negative-margin photo hacks");
 }
@@ -38,8 +46,8 @@ if (html.includes(">極<") || html.includes("Shinkyokushin.png")) {
 for (const slop of ["Проверяем источник", "Если источник не подтверждает", "без случайных картинок"]) {
   if (html.includes(slop)) throw new Error(`Public gallery copy must stay clean: ${slop}`);
 }
-if (!photoScript.includes("card.remove()")) {
-  throw new Error("Broken external gallery images must disappear instead of rendering a dead tile");
+for (const marker of ["showModal()", "moveLightbox", "archive-card-cover", "Открыть альбом", "card.remove()"] ) {
+  if (!photoScript.includes(marker)) throw new Error(`Missing premium media behavior: ${marker}`);
 }
 if (photoScript.includes("is-image-error") || photoScript.includes("Фото недоступно")) {
   throw new Error("Visible broken-image placeholders are forbidden in the gallery renderer");
@@ -60,7 +68,7 @@ if (JSON.stringify(instructorNames) !== JSON.stringify(expectedPeople)) {
   throw new Error(`Instructor allowlist changed: ${instructorNames.join(", ")}`);
 }
 
-const publicSource = `${html}\n${styles}\n${cards}\n${script}\n${media}\n${photoScript}\n${trainerPhotoScript}`;
+const publicSource = `${html}\n${styles}\n${cards}\n${mediaStyles}\n${script}\n${media}\n${photoScript}\n${trainerPhotoScript}`;
 for (const forbidden of ["Горохов", "ИФК", "IFK"]) {
   if (publicSource.includes(forbidden)) throw new Error(`Forbidden unrelated identity/federation marker found: ${forbidden}`);
 }
@@ -121,11 +129,14 @@ if (!trainerPhotoScript.includes("is-placeholder") || trainerPhotoScript.include
 if (registry.photoCollections.length !== 4) throw new Error(`Expected exactly 4 federation photo reports, got ${registry.photoCollections.length}`);
 for (const item of registry.photoCollections) {
   const sourceHost = new URL(item.url).hostname;
+  const coverHost = new URL(item.cover).hostname;
   if (!allowedSourceHosts.has(sourceHost)) throw new Error(`Unapproved photo collection host: ${sourceHost}`);
   if (sourceHost === "masterskayakarate.ru") throw new Error("Masterskaya material belongs in the shared feed, not the report archive");
+  if (!item.provider || !item.cover || !item.coverAlt) throw new Error(`Album must have provider, cover and accessible alt: ${item.title}`);
+  if (!isVkImageHost(coverHost)) throw new Error(`Album cover must use federation/VK imagery: ${item.title}`);
 }
 
 console.log(
-  `verify: premium responsive UI PASS — 18 venues, 11 instructors, 8 real gallery photos, ` +
-  `1 shared Masterskaya story, ${personPhotoCount} source-bound trainer portrait(s), 4 reports`
+  `verify: premium media UX PASS — 18 venues, 11 instructors, 8 real gallery photos, ` +
+  `1 shared Masterskaya story, ${personPhotoCount} source-bound trainer portrait(s), 4 visual album covers, lightbox enabled`
 );
