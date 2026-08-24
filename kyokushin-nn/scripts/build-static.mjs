@@ -7,6 +7,9 @@ const dataSourceUrl = new URL("script.js", root);
 const outputDir = new URL("dist/", root);
 const outputUrl = new URL("index.html", outputDir);
 const healthUrl = new URL("health.json", outputDir);
+const robotsUrl = new URL("robots.txt", outputDir);
+const sitemapUrl = new URL("sitemap.xml", outputDir);
+const canonicalUrl = "https://kyokushin-nn.vercel.app/";
 const releaseId = (process.env.KYOKUSHIN_RELEASE_ID || "local-source").trim();
 
 if (!releaseId || releaseId.length > 160) {
@@ -18,6 +21,8 @@ const htmlEscape = (value) => String(value)
   .replace(/"/g, "&quot;")
   .replace(/</g, "&lt;")
   .replace(/>/g, "&gt;");
+
+const jsonLdStringify = (value) => JSON.stringify(value, null, 2).replace(/</g, "\\u003c");
 
 const cssFiles = [
   "styles.css",
@@ -75,6 +80,53 @@ const mapHref = (venue) => {
   return `https://yandex.ru/maps/?text=${encodeURIComponent(query)}`;
 };
 
+const locationRegistry = new Map();
+for (const instructor of instructors) {
+  for (const venue of instructor.venues) {
+    const key = [venue.city, venue.name, venue.address].join("\u0000");
+    const current = locationRegistry.get(key) ?? {
+      city: venue.city,
+      name: venue.name,
+      address: venue.address,
+      phones: new Set()
+    };
+    current.phones.add(instructor.phone);
+    locationRegistry.set(key, current);
+  }
+}
+
+const structuredLocations = [...locationRegistry.values()].map((location, index) => ({
+  "@type": "Place",
+  "@id": `${canonicalUrl}#training-place-${index + 1}`,
+  name: location.name,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: location.address,
+    addressLocality: location.city,
+    addressCountry: "RU"
+  },
+  telephone: [...location.phones],
+  hasMap: mapHref(location)
+}));
+
+if (structuredLocations.length < 1 || structuredLocations.length > venueCount) {
+  throw new Error(`Structured location invariant failed: ${structuredLocations.length} unique places from ${venueCount} venue records`);
+}
+
+const federationSchema = {
+  "@context": "https://schema.org",
+  "@type": "SportsOrganization",
+  "@id": `${canonicalUrl}#federation`,
+  name: "Нижегородская федерация СинКёкусинкай каратэ",
+  sport: "Karate",
+  url: canonicalUrl,
+  areaServed: [
+    { "@type": "City", name: "Нижний Новгород" },
+    { "@type": "City", name: "Дзержинск" }
+  ],
+  location: structuredLocations
+};
+
 const renderStaticSchedule = (venue) => {
   if (!venue.schedule.length) {
     return '<div class="schedule"><p class="schedule-unknown">Расписание уточняйте у инструктора</p></div>';
@@ -130,6 +182,15 @@ if (!html.includes(emptyDirectory)) {
 html = html.replace(
   emptyDirectory,
   `<div class="instructor-list" id="instructorList" data-static-directory="true">\n${staticDirectory}\n</div>`
+);
+
+const organizationSchemaPattern = /<script type="application\/ld\+json">\s*\{[\s\S]*?"@type": "SportsOrganization"[\s\S]*?<\/script>/;
+if (!organizationSchemaPattern.test(html)) {
+  throw new Error("Source HTML is missing the SportsOrganization structured-data block");
+}
+html = html.replace(
+  organizationSchemaPattern,
+  `<script type="application/ld+json" id="federation-schema">\n${jsonLdStringify(federationSchema)}\n  </script>`
 );
 
 const oldNoscript = '<noscript><p class="noscript-note">Для фильтров секций и просмотра фотографий нужен JavaScript. Телефоны и расписание доступны после его включения.</p></noscript>';
@@ -202,6 +263,7 @@ for (const marker of forbiddenLegacyRuntimeMarkers) {
 }
 
 for (const marker of [
+  'id="federation-schema"',
   'data-static-directory="true"',
   'data-bundle="finder.js"',
   'data-bundle="experience-v3.css"',
@@ -211,9 +273,26 @@ for (const marker of [
   'data-art-direction="dojo-editorial-v3"'
 ]) {
   if (!html.includes(marker)) {
-    throw new Error(`Production visual/runtime layer is missing from self-contained build: ${marker}`);
+    throw new Error(`Production visual/runtime/discovery layer is missing from self-contained build: ${marker}`);
   }
 }
+
+const robots = [
+  "User-agent: *",
+  "Allow: /",
+  `Sitemap: ${canonicalUrl}sitemap.xml`,
+  ""
+].join("\n");
+
+const sitemap = [
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+  "  <url>",
+  `    <loc>${canonicalUrl}</loc>`,
+  "  </url>",
+  "</urlset>",
+  ""
+].join("\n");
 
 const health = {
   project: "kyokushin-nn",
@@ -221,11 +300,20 @@ const health = {
   build: "self-contained",
   release: releaseId,
   artDirection: "dojo-editorial-v3",
-  staticDirectory: true
+  staticDirectory: true,
+  discovery: {
+    structuredLocations: structuredLocations.length,
+    robots: true,
+    sitemap: true
+  }
 };
 
 await mkdir(outputDir, { recursive: true });
-await writeFile(outputUrl, html, "utf8");
-await writeFile(healthUrl, `${JSON.stringify(health)}\n`, "utf8");
+await Promise.all([
+  writeFile(outputUrl, html, "utf8"),
+  writeFile(healthUrl, `${JSON.stringify(health)}\n`, "utf8"),
+  writeFile(robotsUrl, robots, "utf8"),
+  writeFile(sitemapUrl, sitemap, "utf8")
+]);
 
-console.log(`build: wrote source-converged pure-v3 dist/index.html (${Buffer.byteLength(html)} bytes), release=${releaseId}, artDirection=dojo-editorial-v3, staticDirectory=18/11`);
+console.log(`build: wrote source-converged pure-v3 dist/index.html (${Buffer.byteLength(html)} bytes), release=${releaseId}, artDirection=dojo-editorial-v3, staticDirectory=18/11, structuredLocations=${structuredLocations.length}`);

@@ -1,5 +1,6 @@
 const target = process.argv[2] || process.env.KYOKUSHIN_PRODUCTION_URL || "https://kyokushin-nn.vercel.app/";
 const expectedRelease = process.env.KYOKUSHIN_EXPECTED_RELEASE?.trim() || "";
+const canonicalUrl = "https://kyokushin-nn.vercel.app/";
 
 const response = await fetch(target, {
   redirect: "follow",
@@ -48,6 +49,7 @@ const required = [
   '<meta name="x-kyokushin-art-direction" content="dojo-editorial-v3">',
   'data-art-direction="dojo-editorial-v3"',
   'data-static-directory="true"',
+  'id="federation-schema"',
   'data-bundle="experience-v3.css"',
   'data-bundle="art-direction-v3.css"',
   'data-bundle="experience-v3.js"',
@@ -95,16 +97,38 @@ if (staticInstructorCount !== 11 || staticVenueCount !== 18) {
   throw new Error(`Production static directory is incomplete: ${staticInstructorCount} instructors / ${staticVenueCount} venues`);
 }
 
+const schemaMatch = html.match(/<script type="application\/ld\+json" id="federation-schema">\s*([\s\S]*?)\s*<\/script>/);
+if (!schemaMatch) {
+  throw new Error("Production is missing federation structured data");
+}
+const federationSchema = JSON.parse(schemaMatch[1]);
+if (
+  federationSchema["@type"] !== "SportsOrganization"
+  || federationSchema["@id"] !== `${canonicalUrl}#federation`
+  || federationSchema.url !== canonicalUrl
+  || !Array.isArray(federationSchema.location)
+  || federationSchema.location.length < 1
+) {
+  throw new Error("Production federation structured data is incomplete or on the wrong canonical identity");
+}
+
 const healthUrl = new URL("/health.json", response.url);
-const healthResponse = await fetch(healthUrl, {
-  redirect: "follow",
-  headers: {
-    accept: "application/json"
-  }
-});
+const robotsUrl = new URL("/robots.txt", response.url);
+const sitemapUrl = new URL("/sitemap.xml", response.url);
+const [healthResponse, robotsResponse, sitemapResponse] = await Promise.all([
+  fetch(healthUrl, { redirect: "follow", headers: { accept: "application/json" } }),
+  fetch(robotsUrl, { redirect: "follow", headers: { accept: "text/plain" } }),
+  fetch(sitemapUrl, { redirect: "follow", headers: { accept: "application/xml,text/xml;q=0.9,*/*;q=0.8" } })
+]);
 
 if (!healthResponse.ok) {
   throw new Error(`Production health endpoint returned HTTP ${healthResponse.status}: ${healthUrl}`);
+}
+if (!robotsResponse.ok) {
+  throw new Error(`Production robots.txt returned HTTP ${robotsResponse.status}: ${robotsUrl}`);
+}
+if (!sitemapResponse.ok) {
+  throw new Error(`Production sitemap.xml returned HTTP ${sitemapResponse.status}: ${sitemapUrl}`);
 }
 
 const healthCacheControl = healthResponse.headers.get("cache-control") ?? "";
@@ -112,7 +136,11 @@ if (!healthCacheControl.toLowerCase().includes("no-store")) {
   throw new Error(`Production health endpoint must be no-store, got: ${healthCacheControl || "missing"}`);
 }
 
-const health = await healthResponse.json();
+const [health, robots, sitemap] = await Promise.all([
+  healthResponse.json(),
+  robotsResponse.text(),
+  sitemapResponse.text()
+]);
 if (
   health.project !== "kyokushin-nn"
   || health.status !== "ok"
@@ -120,8 +148,18 @@ if (
   || health.release !== release
   || health.artDirection !== "dojo-editorial-v3"
   || health.staticDirectory !== true
+  || health.discovery?.structuredLocations !== federationSchema.location.length
+  || health.discovery?.robots !== true
+  || health.discovery?.sitemap !== true
 ) {
-  throw new Error(`Production health manifest does not match HTML release/art direction/static directory: ${JSON.stringify(health)}`);
+  throw new Error(`Production health manifest does not match HTML release/runtime/discovery state: ${JSON.stringify(health)}`);
+}
+
+if (!robots.includes("User-agent: *") || !robots.includes("Allow: /") || !robots.includes(`Sitemap: ${canonicalUrl}sitemap.xml`)) {
+  throw new Error("Production robots.txt does not expose the canonical discovery contract");
+}
+if (!sitemap.includes(`<loc>${canonicalUrl}</loc>`) || (sitemap.match(/<url>/g) || []).length !== 1) {
+  throw new Error("Production sitemap.xml does not expose exactly the canonical single-page URL");
 }
 
 if (expectedRelease && release !== expectedRelease) {
@@ -138,6 +176,11 @@ console.log(JSON.stringify({
   visualStack: "pure-v3",
   runtimeHeaders: "verified",
   healthCache: "no-store",
+  discovery: {
+    structuredLocations: federationSchema.location.length,
+    robots: true,
+    sitemap: true
+  },
   staticDirectory: {
     instructors: staticInstructorCount,
     venues: staticVenueCount

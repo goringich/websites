@@ -2,9 +2,13 @@ import { readFile } from "node:fs/promises";
 
 const htmlTarget = new URL("../dist/index.html", import.meta.url);
 const healthTarget = new URL("../dist/health.json", import.meta.url);
-const [html, healthRaw] = await Promise.all([
+const robotsTarget = new URL("../dist/robots.txt", import.meta.url);
+const sitemapTarget = new URL("../dist/sitemap.xml", import.meta.url);
+const [html, healthRaw, robots, sitemap] = await Promise.all([
   readFile(htmlTarget, "utf8"),
-  readFile(healthTarget, "utf8")
+  readFile(healthTarget, "utf8"),
+  readFile(robotsTarget, "utf8"),
+  readFile(sitemapTarget, "utf8")
 ]);
 const health = JSON.parse(healthRaw);
 
@@ -17,6 +21,7 @@ const required = [
   '<meta name="x-kyokushin-art-direction" content="dojo-editorial-v3">',
   'data-art-direction="dojo-editorial-v3"',
   'data-static-directory="true"',
+  'id="federation-schema"',
   'id="groups"',
   'id="trainerRoster"',
   'id="photoMosaic"',
@@ -71,8 +76,19 @@ if (
   || health.release !== release
   || health.artDirection !== "dojo-editorial-v3"
   || health.staticDirectory !== true
+  || !Number.isInteger(health.discovery?.structuredLocations)
+  || health.discovery.structuredLocations < 1
+  || health.discovery.robots !== true
+  || health.discovery.sitemap !== true
 ) {
-  throw new Error(`Health manifest does not match HTML release identity/art direction/static directory: ${JSON.stringify(health)}`);
+  throw new Error(`Health manifest does not match HTML release/runtime/discovery identity: ${JSON.stringify(health)}`);
+}
+
+if (!robots.includes("User-agent: *") || !robots.includes("Allow: /") || !robots.includes("Sitemap: https://kyokushin-nn.vercel.app/sitemap.xml")) {
+  throw new Error("robots.txt does not expose the canonical crawl/sitemap contract");
+}
+if (!sitemap.includes("<loc>https://kyokushin-nn.vercel.app/</loc>") || (sitemap.match(/<url>/g) || []).length !== 1) {
+  throw new Error("sitemap.xml must expose exactly the canonical single-page URL");
 }
 
 const expectedRelease = process.env.KYOKUSHIN_RELEASE_ID?.trim();
@@ -84,4 +100,4 @@ if (Buffer.byteLength(html) < 100_000) {
   throw new Error(`Self-contained release is unexpectedly small: ${Buffer.byteLength(html)} bytes`);
 }
 
-console.log(`release-contract: PASS — pure-v3 release=${release}, artDirection=${health.artDirection}, staticDirectory=${health.staticDirectory}, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
+console.log(`release-contract: PASS — pure-v3 release=${release}, artDirection=${health.artDirection}, staticDirectory=${health.staticDirectory}, structuredLocations=${health.discovery.structuredLocations}, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
