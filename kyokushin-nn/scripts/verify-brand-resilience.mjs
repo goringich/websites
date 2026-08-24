@@ -1,9 +1,10 @@
 import { readFile } from "node:fs/promises";
 
-const [html, experienceStyles, artStyles] = await Promise.all([
+const [html, experienceStyles, artStyles, motionSource] = await Promise.all([
   readFile(new URL("../index.html", import.meta.url), "utf8"),
   readFile(new URL("../experience-v3.css", import.meta.url), "utf8"),
-  readFile(new URL("../art-direction-v3.css", import.meta.url), "utf8")
+  readFile(new URL("../art-direction-v3.css", import.meta.url), "utf8"),
+  readFile(new URL("../motion-v3.js", import.meta.url), "utf8")
 ]);
 const logoUrl = "https://wkosydney.com.au/assets/images/logo.jpg";
 const fallbackMarker = "radial-gradient(circle at center, #ef2d1d 0 32%, #fff 33% 100%)";
@@ -52,4 +53,33 @@ if (htmlLogoOccurrences !== 1 || experienceLogoOccurrences !== 1) {
   throw new Error(`Brand URL references must stay controlled at one critical + one final-cascade declaration, got html=${htmlLogoOccurrences}, experience=${experienceLogoOccurrences}`);
 }
 
-console.log("verify-brand-resilience: PASS — external Shinkyokushinkai mark has critical + final-cascade CSS fallbacks and cannot render as a broken <img>");
+for (const marker of [
+  'body[data-art-direction="dojo-editorial-v3"] .hero-visual img',
+  "opacity: 0",
+  ".hero-visual img.is-hero-media-ready",
+  "opacity: 1"
+]) {
+  if (!experienceStyles.includes(marker)) {
+    throw new Error(`Hero-media resilience CSS contract is missing: ${marker}`);
+  }
+}
+
+for (const marker of [
+  'document.querySelector(".hero-visual img")',
+  "v3HeroMedia.complete",
+  "v3HeroMedia.naturalWidth > 0",
+  'addEventListener("load", markV3HeroMediaReady',
+  'addEventListener("error", markV3HeroMediaUnavailable',
+  'classList.add("is-hero-media-ready")',
+  "v3HeroMedia.hidden = true"
+]) {
+  if (!motionSource.includes(marker)) {
+    throw new Error(`Hero-media resilience runtime contract is missing: ${marker}`);
+  }
+}
+
+if (!html.includes('<div class="hero-visual">') || !html.includes('alt="Тренировка Нижегородской федерации СинКёкусинкай"')) {
+  throw new Error("Hero-media resilience must preserve the real federation photo and its truthful accessible description");
+}
+
+console.log("verify-brand-resilience: PASS — logo and hero-photo external dependencies fail into intentional first-screen states without broken-image UI");
