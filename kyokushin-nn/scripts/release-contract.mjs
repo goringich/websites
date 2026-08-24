@@ -26,6 +26,10 @@ const required = [
   'background-image: url("https://wkosydney.com.au/assets/images/logo.jpg"), radial-gradient(',
   'radial-gradient(circle at center, #ef2d1d 0 32%, #fff 33% 100%)',
   'background-size: contain, cover',
+  '.hero-visual img.is-hero-media-ready',
+  'v3HeroMedia.naturalWidth > 0',
+  'addEventListener("error", markV3HeroMediaUnavailable',
+  'v3HeroMedia.hidden = true',
   'id="groups"',
   'id="trainerRoster"',
   'id="photoMosaic"',
@@ -106,4 +110,4 @@ if (Buffer.byteLength(html) < 100_000) {
   throw new Error(`Self-contained release is unexpectedly small: ${Buffer.byteLength(html)} bytes`);
 }
 
-console.log(`release-contract: PASS — pure-v3 release=${release}, artDirection=${health.artDirection}, staticDirectory=${health.staticDirectory}, structuredLocations=${health.discovery.structuredLocations}, resilientBrand=${health.brandResilience}, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
+console.log(`release-contract: PASS — pure-v3 release=${release}, artDirection=${health.artDirection}, staticDirectory=${health.staticDirectory}, structuredLocations=${health.discovery.structuredLocations}, resilientBrand=${health.brandResilience}, resilientHeroMedia=true, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
