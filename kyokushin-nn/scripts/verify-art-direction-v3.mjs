@@ -46,7 +46,7 @@ for (const marker of [
   "prefers-reduced-motion",
   "--v3-scroll",
   "--v3-pointer-x",
-  "data.v3Reveal",
+  "dataset.v3Reveal",
   "is-v3-visible",
   "KYOKUSHIN_ART_DIRECTION_V3_READY"
 ]) {
