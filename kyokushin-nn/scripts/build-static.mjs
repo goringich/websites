@@ -4,6 +4,18 @@ const root = new URL("../", import.meta.url);
 const sourceUrl = new URL("index.html", root);
 const outputDir = new URL("dist/", root);
 const outputUrl = new URL("index.html", outputDir);
+const healthUrl = new URL("health.json", outputDir);
+const releaseId = (process.env.KYOKUSHIN_RELEASE_ID || "local-source").trim();
+
+if (!releaseId || releaseId.length > 160) {
+  throw new Error("KYOKUSHIN_RELEASE_ID must be a non-empty value up to 160 characters");
+}
+
+const htmlEscape = (value) => value
+  .replace(/&/g, "&amp;")
+  .replace(/\"/g, "&quot;")
+  .replace(/</g, "&lt;")
+  .replace(/>/g, "&gt;");
 
 const cssFiles = [
   "styles.css",
@@ -57,7 +69,7 @@ for (const file of jsFiles) {
 
 html = html.replace(
   "<meta name=\"color-scheme\" content=\"light\">",
-  "<meta name=\"color-scheme\" content=\"light\">\n  <meta name=\"x-kyokushin-build\" content=\"self-contained\">"
+  `<meta name="color-scheme" content="light">\n  <meta name="x-kyokushin-build" content="self-contained">\n  <meta name="x-kyokushin-release" content="${htmlEscape(releaseId)}">`
 );
 
 for (const file of [...cssFiles, ...jsFiles]) {
@@ -74,7 +86,15 @@ if (!html.includes('data-bundle="experience.css"') || !html.includes('data-bundl
   throw new Error("Premium interaction layer is missing from self-contained build");
 }
 
+const health = {
+  project: "kyokushin-nn",
+  status: "ok",
+  build: "self-contained",
+  release: releaseId
+};
+
 await mkdir(outputDir, { recursive: true });
 await writeFile(outputUrl, html, "utf8");
+await writeFile(healthUrl, `${JSON.stringify(health)}\n`, "utf8");
 
-console.log(`build: wrote self-contained dist/index.html (${Buffer.byteLength(html)} bytes)`);
+console.log(`build: wrote self-contained dist/index.html (${Buffer.byteLength(html)} bytes), release=${releaseId}`);

@@ -1,0 +1,43 @@
+{
+  "schema_version": "2026-08-24.delivery-increments.v1",
+  "project": "kyokushin-nn",
+  "increments": [
+    {
+      "id": "recruitment-site-v2",
+      "status": "production_usable",
+      "outcome": "A visitor can understand the karate recruitment offer, browse the team, find one of 18 halls, inspect the schedule and contact the correct instructor directly.",
+      "acceptance": [
+        "18 halls and 11 instructors pass deterministic guards",
+        "search and city/day filters work from one page",
+        "trainer selection can be shared through URL state",
+        "personal photos are source-bound or replaced by neutral fallbacks",
+        "production serves direct self-contained HTML"
+      ],
+      "evidence": [
+        "scripts/verify.mjs",
+        "scripts/verify-finder-state.mjs",
+        "scripts/release-contract.mjs",
+        "Vercel deployment dpl_2k1x8VbTGQtisfTptmeUzfafJane"
+      ]
+    },
+    {
+      "id": "release-intelligence-v1",
+      "status": "in_progress",
+      "outcome": "Source, artifact and public production can be tied to one exact release identity so stale or drifted production fails closed.",
+      "acceptance": [
+        "HTML contains x-kyokushin-release",
+        "/health.json contains the same release",
+        "release contract validates both",
+        "live smoke rejects a mismatched expected release",
+        "CI preserves the complete dist artifact",
+        "public production is verified after deployment"
+      ],
+      "evidence": [
+        "scripts/build-static.mjs",
+        "scripts/release-contract.mjs",
+        "scripts/production-smoke.mjs",
+        ".github/workflows/kyokushin-nn-ci.yml"
+      ]
+    }
+  ]
+}

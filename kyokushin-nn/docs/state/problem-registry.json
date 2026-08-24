@@ -1,30 +1,47 @@
 {
-  "schema_version": "2026-08-24.kyokushin-problems.v1",
+  "schema_version": "2026-08-24.kyokushin-problems.v2",
   "project": "kyokushin-nn",
+  "rules": {
+    "evidence_required": true,
+    "unknown_root_cause_must_remain_unknown": true,
+    "closed_requires_verification": true,
+    "private_or_secret_evidence_forbidden": true
+  },
   "problems": [
     {
       "id": "production-binary-bootstrap",
       "severity": "critical",
-      "status": "active",
+      "status": "resolved",
       "class": "deployment_artifact_mismatch",
-      "symptom": "Users can receive 'Не удалось загрузить сайт' before the real page is rendered.",
-      "root_cause": "Production currently serves a small browser bootstrap that fetches p0.bin..p4.bin and reconstructs/decompresses the real HTML client-side instead of serving the verified self-contained dist/index.html directly.",
+      "symptom": "Users could receive 'Не удалось загрузить сайт' before the real page rendered.",
+      "root_cause": "Production served a browser bootstrap that fetched p0.bin..p4.bin and reconstructed/decompressed the real HTML client-side instead of serving the verified self-contained page directly.",
+      "resolution": "Production deployment dpl_2k1x8VbTGQtisfTptmeUzfafJane builds and serves the project as direct self-contained HTML. Release/live guards forbid the old loader markers.",
+      "verification": "Vercel build log: 115467-byte direct self-contained PASS; public kyokushin-nn.vercel.app returned HTTP 200 with x-kyokushin-build=self-contained and real UI markers.",
       "source_affected": false,
-      "runtime_affected": true,
-      "fix_strategy": "Deploy the repository-generated self-contained artifact directly and add release/live smoke gates that reject binary/bootstrap delivery.",
-      "completion_gate": "The public production URL directly contains the self-contained build marker and required recruitment UI markers, contains no binary bootstrap markers, and passes scripts/production-smoke.mjs."
+      "runtime_affected": false
     },
     {
       "id": "deployment-not-source-linked",
       "severity": "high",
       "status": "active",
       "class": "delivery_control_gap",
-      "symptom": "A merged, green source change does not guarantee the public Vercel domain is running that build.",
-      "root_cause": "The current Vercel project is not Git-linked, so source CI and public production are separate authorities.",
+      "symptom": "A merged, green source change does not yet prove unattended publication of that exact commit to the public Vercel domain.",
+      "root_cause": "The current Vercel project is not Git-linked, and unattended GitHub Actions deployment requires a usable VERCEL_TOKEN secret.",
       "source_affected": false,
-      "runtime_affected": true,
-      "fix_strategy": "Make the GitHub release workflow the deterministic deployment owner when credentials are available, then require a live production smoke after deployment.",
-      "completion_gate": "A push to project/kyokushin-nn can deploy the verified build without manual repackaging and the same workflow proves the public URL."
+      "runtime_affected": false,
+      "mitigation": "Source CI fails closed for production deployment without credentials; authenticated Vercel OAuth can recover production directly; release-aware smoke prevents stale production from being reported as current.",
+      "completion_gate": "A push to project/kyokushin-nn completes verify -> Vercel production deploy -> exact-release public smoke without manual intervention."
+    },
+    {
+      "id": "browser-qa-environment",
+      "severity": "medium",
+      "status": "active",
+      "class": "qa_environment_gap",
+      "symptom": "Headless Chromium screenshot QA hangs in the current container.",
+      "root_cause": "Current evidence points to the execution container's D-Bus/zygote environment rather than a website runtime defect.",
+      "source_affected": false,
+      "runtime_affected": false,
+      "completion_gate": "Run responsive visual/runtime QA on a normal browser-capable runner against an exact release and preserve the resulting evidence."
     }
   ]
 }
