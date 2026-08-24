@@ -25,6 +25,10 @@ const cssFiles = [
   "experience.css"
 ];
 
+const productionOnlyCssFiles = [
+  "art-direction-v3.css"
+];
+
 const jsFiles = [
   "media.js",
   "script.js",
@@ -33,6 +37,10 @@ const jsFiles = [
   "finder.js",
   "experience.js",
   "photo.js"
+];
+
+const productionOnlyJsFiles = [
+  "motion-v3.js"
 ];
 
 const removeScriptContaining = (html, marker) => {
@@ -57,6 +65,14 @@ for (const file of cssFiles) {
   html = html.replace(link, `<style data-bundle="${file}">\n${source}\n</style>`);
 }
 
+for (const file of productionOnlyCssFiles) {
+  const source = await readFile(new URL(file, root), "utf8");
+  html = html.replace(
+    "</head>",
+    `<style data-bundle="${file}">\n${source}\n</style>\n</head>`
+  );
+}
+
 html = removeScriptContaining(html, "window.__KYOKUSHIN_ASSET_FALLBACK__");
 html = removeScriptContaining(html, "Kyokushin JS fallback failed");
 
@@ -67,9 +83,22 @@ for (const file of jsFiles) {
   html = html.replace(scriptTag, `<script data-bundle="${file}">\n${source}\n</script>`);
 }
 
+for (const file of productionOnlyJsFiles) {
+  const source = await readFile(new URL(file, root), "utf8");
+  html = html.replace(
+    "</body>",
+    `<script data-bundle="${file}">\n${source}\n</script>\n</body>`
+  );
+}
+
+html = html.replace(
+  "<body>",
+  '<body data-art-direction="dojo-editorial-v3">'
+);
+
 html = html.replace(
   "<meta name=\"color-scheme\" content=\"light\">",
-  `<meta name="color-scheme" content="light">\n  <meta name="x-kyokushin-build" content="self-contained">\n  <meta name="x-kyokushin-release" content="${htmlEscape(releaseId)}">`
+  `<meta name="color-scheme" content="light">\n  <meta name="x-kyokushin-build" content="self-contained">\n  <meta name="x-kyokushin-release" content="${htmlEscape(releaseId)}">\n  <meta name="x-kyokushin-art-direction" content="dojo-editorial-v3">`
 );
 
 for (const file of [...cssFiles, ...jsFiles]) {
@@ -82,19 +111,28 @@ if (html.includes("__KYOKUSHIN_ASSET_FALLBACK__") || html.includes("Kyokushin JS
   throw new Error("Runtime fallback loader leaked into self-contained build");
 }
 
-if (!html.includes('data-bundle="experience.css"') || !html.includes('data-bundle="finder.js"')) {
-  throw new Error("Premium interaction layer is missing from self-contained build");
+for (const marker of [
+  'data-bundle="experience.css"',
+  'data-bundle="finder.js"',
+  'data-bundle="art-direction-v3.css"',
+  'data-bundle="motion-v3.js"',
+  'data-art-direction="dojo-editorial-v3"'
+]) {
+  if (!html.includes(marker)) {
+    throw new Error(`Production visual layer is missing from self-contained build: ${marker}`);
+  }
 }
 
 const health = {
   project: "kyokushin-nn",
   status: "ok",
   build: "self-contained",
-  release: releaseId
+  release: releaseId,
+  artDirection: "dojo-editorial-v3"
 };
 
 await mkdir(outputDir, { recursive: true });
 await writeFile(outputUrl, html, "utf8");
 await writeFile(healthUrl, `${JSON.stringify(health)}\n`, "utf8");
 
-console.log(`build: wrote self-contained dist/index.html (${Buffer.byteLength(html)} bytes), release=${releaseId}`);
+console.log(`build: wrote self-contained dist/index.html (${Buffer.byteLength(html)} bytes), release=${releaseId}, artDirection=dojo-editorial-v3`);
