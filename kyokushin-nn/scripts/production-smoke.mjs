@@ -24,6 +24,11 @@ const release = releaseMatch?.[1] ?? "";
 const required = [
   '<meta name="x-kyokushin-build" content="self-contained">',
   '<meta name="x-kyokushin-release" content="',
+  '<meta name="x-kyokushin-art-direction" content="dojo-editorial-v3">',
+  'data-art-direction="dojo-editorial-v3"',
+  'data-bundle="art-direction-v3.css"',
+  'data-bundle="motion-v3.js"',
+  'KYOKUSHIN_ART_DIRECTION_V3_READY',
   'id="groups"',
   'id="trainerRoster"',
   'id="photoMosaic"',
@@ -42,7 +47,7 @@ const forbidden = [
 
 for (const marker of required) {
   if (!html.includes(marker)) {
-    throw new Error(`Production is not the verified self-contained release; missing: ${marker}`);
+    throw new Error(`Production is not the verified V3 self-contained release; missing: ${marker}`);
   }
 }
 
@@ -74,8 +79,9 @@ if (
   || health.status !== "ok"
   || health.build !== "self-contained"
   || health.release !== release
+  || health.artDirection !== "dojo-editorial-v3"
 ) {
-  throw new Error(`Production health manifest does not match HTML release: ${JSON.stringify(health)}`);
+  throw new Error(`Production health manifest does not match HTML release/art direction: ${JSON.stringify(health)}`);
 }
 
 if (expectedRelease && release !== expectedRelease) {
@@ -87,5 +93,6 @@ console.log(JSON.stringify({
   target: response.url,
   bytes: Buffer.byteLength(html),
   build: "self-contained",
-  release
+  release,
+  artDirection: health.artDirection
 }));
