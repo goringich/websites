@@ -1,16 +1,16 @@
 {
   "name": "kyokushin-nn",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "private": true,
   "type": "module",
   "description": "Recruitment microsite for Nizhny Novgorod Shinkyokushinkai karate federation",
   "scripts": {
     "start": "node server.mjs",
     "build": "node scripts/build-static.mjs",
-    "verify:art-direction": "node scripts/verify-art-direction-v3.mjs",
+    "verify:art-direction": "node scripts/verify-art-direction-v3.mjs && node scripts/verify-editorial-refinement.mjs",
     "verify:release": "npm run build && node scripts/release-contract.mjs",
     "smoke:production": "node scripts/production-smoke.mjs",
-    "check": "node --check script.js && node --check media.js && node --check trainer-photos.js && node --check team.js && node --check finder.js && node --check experience-v3.js && node --check photo.js && node --check motion-v3.js && node --check server.mjs && node --check scripts/build-static.mjs && node --check scripts/verify-art-direction-v3.mjs && node --check scripts/release-contract.mjs && node --check scripts/production-smoke.mjs && node scripts/verify-finder-state.mjs && node scripts/verify-art-direction-v3.mjs && node scripts/verify.mjs && npm run build && node scripts/release-contract.mjs"
+    "check": "node --check script.js && node --check media.js && node --check trainer-photos.js && node --check team.js && node --check finder.js && node --check experience-v3.js && node --check photo.js && node --check motion-v3.js && node --check server.mjs && node --check scripts/build-static.mjs && node --check scripts/verify-art-direction-v3.mjs && node --check scripts/verify-editorial-refinement.mjs && node --check scripts/release-contract.mjs && node --check scripts/production-smoke.mjs && node scripts/verify-finder-state.mjs && node scripts/verify-art-direction-v3.mjs && node scripts/verify-editorial-refinement.mjs && node scripts/verify.mjs && npm run build && node scripts/release-contract.mjs"
   },
   "engines": {
     "node": ">=20"

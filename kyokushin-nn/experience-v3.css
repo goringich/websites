@@ -17,8 +17,76 @@
   pointer-events: none;
 }
 
-.site-nav a {
+body[data-art-direction="dojo-editorial-v3"] .site-nav a {
   position: relative;
+  font-weight: 700;
+}
+
+body[data-art-direction="dojo-editorial-v3"] .topbar-link,
+body[data-art-direction="dojo-editorial-v3"] .kicker,
+body[data-art-direction="dojo-editorial-v3"] .eyebrow {
+  font-weight: 800;
+}
+
+body[data-art-direction="dojo-editorial-v3"] .hero h1 span,
+body[data-art-direction="dojo-editorial-v3"] .hero-proof strong,
+body[data-art-direction="dojo-editorial-v3"] .section-heading h2,
+body[data-art-direction="dojo-editorial-v3"] .team-heading h2,
+body[data-art-direction="dojo-editorial-v3"] .team-heading h2 em,
+body[data-art-direction="dojo-editorial-v3"] .archive-head h3,
+body[data-art-direction="dojo-editorial-v3"] .roster-body h3,
+body[data-art-direction="dojo-editorial-v3"] .roster-card[data-portrait="verified"] .roster-body h3,
+body[data-art-direction="dojo-editorial-v3"] .search-field input,
+body[data-art-direction="dojo-editorial-v3"] .steps span,
+body[data-art-direction="dojo-editorial-v3"] .final-cta h2,
+body[data-art-direction="dojo-editorial-v3"] .final-cta h2 span {
+  font-weight: 600;
+}
+
+body[data-art-direction="dojo-editorial-v3"] .hero-lead {
+  font-weight: 500;
+}
+
+body[data-art-direction="dojo-editorial-v3"] .roster-initials,
+body[data-art-direction="dojo-editorial-v3"] .chip {
+  font-weight: 700;
+}
+
+/* One dominant first-screen action. The team link stays available, but reads as editorial navigation instead of a second CTA. */
+body[data-art-direction="dojo-editorial-v3"] .hero-actions {
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+body[data-art-direction="dojo-editorial-v3"] .hero-actions .button-ghost {
+  min-height: auto;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .38);
+  background: transparent;
+  padding: 8px 0 5px;
+  color: rgba(255, 255, 255, .68);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+body[data-art-direction="dojo-editorial-v3"] .hero-actions .button-ghost:hover,
+body[data-art-direction="dojo-editorial-v3"] .hero-actions .button-ghost:focus-visible {
+  border-color: #fff;
+  background: transparent;
+  color: #fff;
+  transform: translateX(3px);
+}
+
+/* The hero already carries the key proof. Avoid repeating a second component strip before the story begins. */
+body[data-art-direction="dojo-editorial-v3"] .signal-strip {
+  display: none;
+}
+
+/* The first content chapter should feel like an intentional cut from poster to documentary photography. */
+body[data-art-direction="dojo-editorial-v3"] .photo-story {
+  border-top: 6px solid var(--v3-red, #ef2d1d);
 }
 
 .roster-card:focus-within {
@@ -36,5 +104,20 @@
 @media (max-width: 620px) {
   .topbar::after {
     height: 1px;
+  }
+
+  body[data-art-direction="dojo-editorial-v3"] .hero-actions {
+    gap: 10px;
+  }
+
+  body[data-art-direction="dojo-editorial-v3"] .hero-actions .button-ghost {
+    width: fit-content;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .38);
+    padding: 10px 0 5px;
+  }
+
+  body[data-art-direction="dojo-editorial-v3"] .photo-story {
+    border-top-width: 4px;
   }
 }
