@@ -4,7 +4,7 @@ const rosterPhotoRegistry = window.KYOKUSHIN_MEDIA?.trainerPhotos ?? {};
 
 const trainerProfileMeta = {
   "Сергей Жуков": {
-    role: "Инструктор · руководство федерации",
+    role: "Инструктор",
     note: "Нижний Новгород"
   },
   "Андрей Троцко": {
@@ -12,8 +12,8 @@ const trainerProfileMeta = {
     note: "Нижний Новгород"
   },
   "Владимир Жуков": {
-    role: "Инструктор · мастер спорта России",
-    note: "FULL CONTACT · 2 дан"
+    role: "Инструктор · спортсмен",
+    note: "СПЦ «Фулл Контакт»"
   },
   "Дарья Осинина": {
     role: "Инструктор",
@@ -41,7 +41,7 @@ const trainerProfileMeta = {
   },
   "Георгий Пигиданов": {
     role: "Инструктор · мастер спорта России",
-    note: "FULL CONTACT"
+    note: "СПЦ «Фулл Контакт»"
   },
   "Кирилл Антоневич": {
     role: "Инструктор",
@@ -146,11 +146,14 @@ const makeRosterCard = (instructor, index) => {
   call.className = "roster-call";
   call.href = phoneLink(instructor.phone);
   call.textContent = instructor.phone;
+  call.setAttribute("aria-label", `Позвонить тренеру ${instructor.name}`);
 
   const halls = document.createElement("a");
   halls.className = "roster-halls";
   halls.href = "#groups";
-  halls.textContent = "Секции ↘";
+  halls.dataset.trainerFilter = instructor.name;
+  halls.textContent = "Показать секции ↘";
+  halls.setAttribute("aria-label", `Показать секции тренера ${instructor.name}`);
 
   actions.append(call, halls);
   body.append(role, title, note, facts, actions);
