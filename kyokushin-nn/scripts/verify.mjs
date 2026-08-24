@@ -15,7 +15,7 @@ const requiredHtml = [
   "id=\"groups\"", "id=\"searchInput\"", "id=\"cityFilters\"", "id=\"dayFilters\"",
   "id=\"photoMosaic\"", "id=\"photoCollections\"", "brand-logo",
   "wkosydney.com.au/assets/images/logo.jpg", "styles.css", "cards.css", "media.js",
-  "script.js", "trainer-photos.js", "photo.js"
+  "script.js", "trainer-photos.js", "photo.js", "site-nav", "hero-visual", "hero-proof"
 ];
 for (const marker of requiredHtml) {
   if (!html.includes(marker)) throw new Error(`Missing HTML marker: ${marker}`);
@@ -23,7 +23,10 @@ for (const marker of requiredHtml) {
 for (const legacyCss of ["photo.css", "clean.css"]) {
   if (html.includes(legacyCss)) throw new Error(`Legacy conflicting stylesheet must not be linked: ${legacyCss}`);
 }
-for (const cssMarker of [".photo-story-link", ".instructor-card", ".instructor-panel", ".instructor-photo-frame", "@media (max-width: 720px)"]) {
+for (const cssMarker of [".site-nav {", ".hero-visual {", ".hero-proof {", "@media (max-width: 620px)"]) {
+  if (!styles.includes(cssMarker)) throw new Error(`Missing premium layout rule: ${cssMarker}`);
+}
+for (const cssMarker of [".photo-story-link", ".instructor-card", ".instructor-panel", ".instructor-photo-frame", ".venue-list:has", "@media (max-width: 620px)"]) {
   if (!cards.includes(cssMarker)) throw new Error(`Missing component layout rule: ${cssMarker}`);
 }
 if (styles.includes("margin: -28px") || styles.includes("margin: -22px") || cards.includes("margin: -28px")) {
@@ -123,6 +126,6 @@ for (const item of registry.photoCollections) {
 }
 
 console.log(
-  `verify: gallery reliability PASS — 18 venues, 11 instructors, 8 real gallery photos, no visible dead-image tiles, ` +
+  `verify: premium responsive UI PASS — 18 venues, 11 instructors, 8 real gallery photos, ` +
   `1 shared Masterskaya story, ${personPhotoCount} source-bound trainer portrait(s), 4 reports`
 );
