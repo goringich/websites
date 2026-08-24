@@ -17,6 +17,27 @@ if (!contentType.includes("text/html")) {
   throw new Error(`Production returned unexpected content-type: ${contentType || "missing"}`);
 }
 
+const expectedHeaders = new Map([
+  ["x-content-type-options", "nosniff"],
+  ["x-frame-options", "DENY"],
+  ["referrer-policy", "strict-origin-when-cross-origin"],
+  ["permissions-policy", "camera=(), microphone=(), geolocation=()"]
+]);
+
+for (const [key, expected] of expectedHeaders) {
+  const actual = response.headers.get(key) ?? "";
+  if (actual !== expected) {
+    throw new Error(`Production runtime header mismatch: ${key}=${actual || "missing"}`);
+  }
+}
+
+const csp = response.headers.get("content-security-policy") ?? "";
+for (const directive of ["base-uri 'self'", "object-src 'none'", "frame-ancestors 'none'", "upgrade-insecure-requests"]) {
+  if (!csp.includes(directive)) {
+    throw new Error(`Production CSP is missing required baseline directive: ${directive}`);
+  }
+}
+
 const html = await response.text();
 const releaseMatch = html.match(/<meta name="x-kyokushin-release" content="([^"]+)">/);
 const release = releaseMatch?.[1] ?? "";
@@ -86,6 +107,11 @@ if (!healthResponse.ok) {
   throw new Error(`Production health endpoint returned HTTP ${healthResponse.status}: ${healthUrl}`);
 }
 
+const healthCacheControl = healthResponse.headers.get("cache-control") ?? "";
+if (!healthCacheControl.toLowerCase().includes("no-store")) {
+  throw new Error(`Production health endpoint must be no-store, got: ${healthCacheControl || "missing"}`);
+}
+
 const health = await healthResponse.json();
 if (
   health.project !== "kyokushin-nn"
@@ -110,6 +136,8 @@ console.log(JSON.stringify({
   release,
   artDirection: health.artDirection,
   visualStack: "pure-v3",
+  runtimeHeaders: "verified",
+  healthCache: "no-store",
   staticDirectory: {
     instructors: staticInstructorCount,
     venues: staticVenueCount

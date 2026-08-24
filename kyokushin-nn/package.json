@@ -1,6 +1,6 @@
 {
   "name": "kyokushin-nn",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "private": true,
   "type": "module",
   "description": "Recruitment microsite for Nizhny Novgorod Shinkyokushinkai karate federation",
@@ -8,9 +8,10 @@
     "start": "node server.mjs",
     "build": "node scripts/build-static.mjs",
     "verify:art-direction": "node scripts/verify-art-direction-v3.mjs && node scripts/verify-editorial-refinement.mjs",
-    "verify:release": "npm run build && node scripts/release-contract.mjs && node scripts/verify-static-directory.mjs",
+    "verify:runtime": "node scripts/verify-runtime-headers.mjs",
+    "verify:release": "npm run build && node scripts/release-contract.mjs && node scripts/verify-static-directory.mjs && node scripts/verify-runtime-headers.mjs",
     "smoke:production": "node scripts/production-smoke.mjs",
-    "check": "node --check script.js && node --check media.js && node --check trainer-photos.js && node --check team.js && node --check finder.js && node --check experience-v3.js && node --check photo.js && node --check motion-v3.js && node --check server.mjs && node --check scripts/build-static.mjs && node --check scripts/verify-art-direction-v3.mjs && node --check scripts/verify-editorial-refinement.mjs && node --check scripts/verify-static-directory.mjs && node --check scripts/release-contract.mjs && node --check scripts/production-smoke.mjs && node scripts/verify-finder-state.mjs && node scripts/verify-art-direction-v3.mjs && node scripts/verify-editorial-refinement.mjs && node scripts/verify.mjs && npm run build && node scripts/release-contract.mjs && node scripts/verify-static-directory.mjs"
+    "check": "node --check script.js && node --check media.js && node --check trainer-photos.js && node --check team.js && node --check finder.js && node --check experience-v3.js && node --check photo.js && node --check motion-v3.js && node --check server.mjs && node --check scripts/build-static.mjs && node --check scripts/verify-art-direction-v3.mjs && node --check scripts/verify-editorial-refinement.mjs && node --check scripts/verify-static-directory.mjs && node --check scripts/verify-runtime-headers.mjs && node --check scripts/release-contract.mjs && node --check scripts/production-smoke.mjs && node scripts/verify-finder-state.mjs && node scripts/verify-art-direction-v3.mjs && node scripts/verify-editorial-refinement.mjs && node scripts/verify-runtime-headers.mjs && node scripts/verify.mjs && npm run build && node scripts/release-contract.mjs && node scripts/verify-static-directory.mjs"
   },
   "engines": {
     "node": ">=20"
