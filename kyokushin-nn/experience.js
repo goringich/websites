@@ -13,7 +13,8 @@ const revealTargets = [
 
 const revealNodes = [...document.querySelectorAll(revealTargets.join(","))];
 revealNodes.forEach((node, index) => {
-  node.dataset.reveal = "";
+  const data = node.dataset;
+  data.reveal = "";
   node.style.setProperty("--reveal-order", String(index % 6));
 });
 
