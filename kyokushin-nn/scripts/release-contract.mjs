@@ -24,8 +24,11 @@ const required = [
   'data-bundle="script.js"',
   'data-bundle="finder.js"',
   'data-bundle="photo.js"',
+  'data-bundle="experience-v3.css"',
   'data-bundle="art-direction-v3.css"',
+  'data-bundle="experience-v3.js"',
   'data-bundle="motion-v3.js"',
+  'KYOKUSHIN_EXPERIENCE_V3_READY',
   'KYOKUSHIN_ART_DIRECTION_V3_READY'
 ];
 
@@ -38,7 +41,10 @@ const forbidden = [
   "DecompressionStream",
   "Не удалось загрузить сайт",
   "__KYOKUSHIN_ASSET_FALLBACK__",
-  "Kyokushin JS fallback failed"
+  "Kyokushin JS fallback failed",
+  'data-bundle="art-direction-v2.css"',
+  'data-bundle="experience.css"',
+  'data-bundle="experience.js"'
 ];
 
 for (const marker of required) {
@@ -49,7 +55,7 @@ for (const marker of required) {
 
 for (const marker of forbidden) {
   if (html.includes(marker)) {
-    throw new Error(`Release contract contains forbidden delivery marker: ${marker}`);
+    throw new Error(`Release contract contains forbidden delivery/visual marker: ${marker}`);
   }
 }
 
@@ -76,4 +82,4 @@ if (Buffer.byteLength(html) < 100_000) {
   throw new Error(`Self-contained release is unexpectedly small: ${Buffer.byteLength(html)} bytes`);
 }
 
-console.log(`release-contract: PASS — release=${release}, artDirection=${health.artDirection}, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
+console.log(`release-contract: PASS — pure-v3 release=${release}, artDirection=${health.artDirection}, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);

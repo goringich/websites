@@ -26,8 +26,11 @@ const required = [
   '<meta name="x-kyokushin-release" content="',
   '<meta name="x-kyokushin-art-direction" content="dojo-editorial-v3">',
   'data-art-direction="dojo-editorial-v3"',
+  'data-bundle="experience-v3.css"',
   'data-bundle="art-direction-v3.css"',
+  'data-bundle="experience-v3.js"',
   'data-bundle="motion-v3.js"',
+  'KYOKUSHIN_EXPERIENCE_V3_READY',
   'KYOKUSHIN_ART_DIRECTION_V3_READY',
   'id="groups"',
   'id="trainerRoster"',
@@ -42,18 +45,21 @@ const forbidden = [
   "p3.bin",
   "p4.bin",
   "DecompressionStream",
-  "Не удалось загрузить сайт"
+  "Не удалось загрузить сайт",
+  'data-bundle="art-direction-v2.css"',
+  'data-bundle="experience.css"',
+  'data-bundle="experience.js"'
 ];
 
 for (const marker of required) {
   if (!html.includes(marker)) {
-    throw new Error(`Production is not the verified V3 self-contained release; missing: ${marker}`);
+    throw new Error(`Production is not the verified pure-V3 self-contained release; missing: ${marker}`);
   }
 }
 
 for (const marker of forbidden) {
   if (html.includes(marker)) {
-    throw new Error(`Production uses forbidden fragile delivery path: ${marker}`);
+    throw new Error(`Production contains forbidden delivery/visual marker: ${marker}`);
   }
 }
 
@@ -94,5 +100,6 @@ console.log(JSON.stringify({
   bytes: Buffer.byteLength(html),
   build: "self-contained",
   release,
-  artDirection: health.artDirection
+  artDirection: health.artDirection,
+  visualStack: "pure-v3"
 }));
