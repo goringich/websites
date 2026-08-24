@@ -1,12 +1,13 @@
 {
-  "schema_version": "2026-08-24.kyokushin-current.v7",
+  "schema_version": "2026-08-24.kyokushin-current.v8",
   "project": "kyokushin-nn",
-  "updated_at": "2026-08-24T18:14:00Z",
+  "updated_at": "2026-08-24T20:31:00Z",
   "mission": "Convert recruitment interest into a direct, trustworthy choice of hall and instructor for Shinkyokushinkai karate in Nizhny Novgorod and Dzerzhinsk.",
   "source_state": {
     "branch": "project/kyokushin-nn",
-    "current_verified_commit": "e26e1633c1dbf207f935e9c6ae1f142a4ac9207f",
-    "package_version": "3.5.0",
+    "current_verified_commit": "c4edeab5a47666061ef4081fb29e4a43972a6648",
+    "current_design_commit": "d03c292314123765cf961c109fd8e8a13009b16a",
+    "package_version": "3.6.0",
     "initial_v3_commit": "94ad1b62f84e53e0a2e74399940a8b3d237ac907",
     "pure_v3_stack_commit": "52c92802888018e9b0ee396add0ba4d0a902e6c0",
     "editorial_refinement_commit": "067a4d8d2018f2bba2edb8247a0cd166c15e4ad5",
@@ -16,6 +17,8 @@
     "node24_actions_commit": "780fec11b7e7f3b73ea2f62ddde51eb6339cd565",
     "source_build_truth_commit": "9b5627ed6e124e377dae21056ba7e3414a9a0258",
     "first_screen_resilience_commit": "e26e1633c1dbf207f935e9c6ae1f142a4ac9207f",
+    "trainer_roster_composition_commit": "d03c292314123765cf961c109fd8e8a13009b16a",
+    "manual_exact_deploy_commit": "c4edeab5a47666061ef4081fb29e4a43972a6648",
     "production_build": "self-contained dist/index.html + health.json + robots.txt + sitemap.xml",
     "visual_stack": "pure-v3",
     "art_direction": "dojo-editorial-v3",
@@ -23,6 +26,7 @@
     "design_audit": "docs/design/audit-2026-08-24.md",
     "experience_layer": "experience-v3.css + experience-v3.js",
     "motion_layer": "motion-v3.js",
+    "trainer_portrait_policy": "2 verified portraits remain photo-led; unverified trainers are typography-led dojo posters and never receive invented portraits",
     "static_directory": true,
     "runtime_security_headers": true,
     "discovery_contract": true,
@@ -47,24 +51,27 @@
   },
   "verification_state": {
     "source_ci": "pass",
-    "latest_feature_ci_run": 32760816754,
+    "latest_feature_ci_run": 32773661308,
+    "latest_operations_ci_run": 32774068128,
     "runtime_headers_ci_run": 32752199637,
     "discovery_ci_run": 32752809901,
     "editorial_refinement_ci_run": 32744807657,
     "structural_art_direction_gate": "pass",
     "editorial_refinement_gate": "pass",
+    "trainer_roster_composition_gate": "pass_pending_typography_led_verified_photo_led_mobile_compact",
     "pure_v3_release_gate": "pass",
     "static_directory_gate": "pass_11_instructors_18_venues_before_javascript",
     "runtime_headers_gate": "pass",
     "discovery_gate": "pass_18_section_records_to_17_unique_places_with_canonical_robots_and_sitemap",
     "first_screen_resilience_gate": "pass_logo_and_hero_photo_fail_without_broken_image_ui",
     "rejected_visual_dependency_gate": "pass",
+    "manual_exact_deploy_gate": "pass_explicit_boolean_project_branch_only_verify_first",
     "github_actions_runtime": "native_node24_checkout_v7_setup_node_v7_upload_artifact_v6",
     "deployment_credential_observation": "VERCEL_TOKEN_PRESENT=false",
     "deployment_credential_evidence_run": 32744059135,
-    "latest_credential_observation_run": 32760816754,
+    "latest_credential_observation_run": 32774068128,
     "perceptual_review": "blocked",
-    "perceptual_blocker": "The available execution browser cannot provide representative desktop/mobile rendered captures; Chromium hangs at the execution-container D-Bus/zygote layer even for trivial pages. Source/CI evidence must not be promoted to perceptual acceptance.",
+    "perceptual_blocker": "No trustworthy rendered desktop/mobile capture exists for the current pure-V3 V3.6 source. The available Vercel preview is exact old source 94ad1b62... and still contains mixed V2/V3 dependencies; the execution browser cannot provide a representative current render.",
     "owner_acceptance": "pending"
   },
   "preview_state": {
@@ -74,7 +81,7 @@
     "art_direction": "dojo-editorial-v3",
     "visual_stack": "mixed_v2_v3_pre_pure_stack",
     "review_authority": "not_current",
-    "reason": "This protected preview predates the pure-V3 cleanup, refinement, static directory, runtime-header contract, discovery artifacts, source/build convergence and first-screen external-asset resilience."
+    "reason": "This preview predates pure-V3 cleanup, V3.5 runtime/release hardening and the V3.6 trainer-roster composition, so it is not perceptual evidence for current source."
   },
   "runtime_state": {
     "production_url": "https://kyokushin-nn.vercel.app/",
@@ -84,17 +91,20 @@
     "build": "self-contained",
     "art_direction": "v2_recovery_release",
     "production_matches_current_verified_source": false,
-    "deployment_blocker": "GitHub Actions secret VERCEL_TOKEN is absent. Multiple PR-visible bounded diagnostics print VERCEL_TOKEN_PRESENT=false; the exact-SHA production job therefore cannot authenticate to Vercel.",
+    "deployment_blocker": "GitHub Actions secret VERCEL_TOKEN is absent. The exact-SHA production job therefore cannot authenticate to Vercel. No repository Deploy Hook or connector mutation surface exists that can safely replace this owner credential action.",
     "blocker_issue": 26,
-    "last_evidence": "PR #38 CI run 32760816754 passed pure-V3, 18/11 static-directory, runtime-header, release, discovery and first-screen external-asset resilience gates. The same run observed VERCEL_TOKEN_PRESENT=false, so V3.5 is not yet proven on the public domain."
+    "recovery_after_secret": "gh workflow run \"Kyokushin NN CI\" --repo goringich/websites --ref project/kyokushin-nn -f deploy_production=true",
+    "last_evidence": "PR #40 CI run 32773661308 passed the complete V3.6 source/release suite and published the verified bundle. PR #41 CI run 32774068128 passed the same suite and proved manual production dispatch remains opt-in and skipped on PR. VERCEL_TOKEN is still absent, so V3.6 is not yet proven on the public domain."
   },
   "active_slice": {
-    "outcome": "Restore the bounded Vercel deployment credential, deploy the exact verified V3.5-or-later source release, prove the public runtime/discovery/resilience contract, then perform real desktop/mobile perceptual review before owner acceptance.",
+    "outcome": "Restore the bounded Vercel deployment credential, explicitly dispatch the exact current project branch release, prove the public runtime contract, then perform real desktop/mobile perceptual review before owner acceptance.",
     "acceptance": [
       "restore a bounded GitHub Actions VERCEL_TOKEN without exposing its value",
-      "push pipeline verifies and deploys e26e1633c1dbf207f935e9c6ae1f142a4ac9207f or a later verified descendant",
+      "explicitly dispatch project/kyokushin-nn with deploy_production=true",
+      "pipeline verifies and deploys c4edeab5a47666061ef4081fb29e4a43972a6648 or a later verified descendant",
       "public HTML and /health.json expose the exact same release identity",
       "public art direction is dojo-editorial-v3 with the pure-v3 visual stack",
+      "public trainer roster preserves verified photo-led cards and typography-led identity-safe pending cards",
       "public health reports staticDirectory=true and HTML carries 11 instructors / 18 venues before JavaScript enhancement",
       "public runtime emits the verified security/referrer/permissions header contract and health.json is no-store",
       "public HTML exposes source-derived SportsOrganization structured data with the canonical unique Place count",
@@ -103,16 +113,16 @@
       "public hero photo stays hidden until a successful real-image load and fails back to the intentional carbon field without broken-image UI",
       "public artifact contains no rejected V2 visual bundles or binary/bootstrap loader",
       "exact rendered desktop first screen is inspected",
-      "exact rendered desktop high-density section is inspected",
+      "exact rendered desktop trainer/directory density is inspected",
       "exact rendered mobile first screen is inspected",
-      "exact rendered mobile directory/trainer section is inspected",
+      "exact rendered mobile trainer/directory section is inspected",
       "motion and reduced-motion behavior are reviewed",
       "visible defects discovered in perceptual review are fixed",
       "owner review candidate is explicitly distinguished from owner acceptance"
     ]
   },
   "known_blockers": [
-    "Missing GitHub Actions VERCEL_TOKEN blocks unattended exact-SHA Vercel production deployment.",
-    "Current execution browser environment blocks trustworthy rendered perceptual QA."
+    "Missing GitHub Actions VERCEL_TOKEN blocks exact-SHA Vercel production deployment.",
+    "No current pure-V3 V3.6 rendered preview/live deployment exists for trustworthy perceptual QA."
   ]
 }
