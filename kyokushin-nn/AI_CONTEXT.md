@@ -28,22 +28,23 @@ Expand to the rest of the project only when the evidence requires it.
 - `finder.js` — shareable search/filter state.
 - `photo.js` — gallery, albums and lightbox behavior.
 - `styles.css`, `cards.css`, `media-viewer.css` — retained functional/base component layers used by the current build.
-- `experience-v3.css`, `experience-v3.js` — current navigation/progress/focus experience state for V3 without the rejected generic reveal system.
+- `experience-v3.css`, `experience-v3.js` — current navigation/progress/focus experience state for V3 plus final-cascade first-screen resilience behavior.
 - `art-direction-v3.css` — current owner-requested visual skeleton: Dojo Editorial / Competition Poster.
-- `motion-v3.js` — current motion grammar for entry, scroll, interaction and state-change behavior.
+- `motion-v3.js` — current motion grammar plus hero-photo load/error handling that prevents failed external media from becoming broken-image UI.
 - `docs/design/art-direction-v3.json` — current art-direction contract and explicit negative references.
 - `docs/design/audit-2026-08-24.md` — current design audit and rejected visual patterns.
 - `scripts/verify-art-direction-v3.mjs` — structural V3 regression gate; it is not perceptual proof.
 - `scripts/verify-editorial-refinement.mjs` — current typography/hierarchy/cascade regression gate.
 - `scripts/verify-static-directory.mjs` — verifies the prerendered 11-instructor / 18-venue fallback against canonical recruitment data.
 - `scripts/verify-runtime-headers.mjs` — verifies the Vercel response-security and health-cache contract without weakening current media/font dependencies.
+- `scripts/verify-brand-resilience.mjs` — verifies failure-safe first-screen external dependencies: official brand mark fallback plus hero-photo hidden-until-loaded / fail-hidden behavior.
 - `scripts/verify-discovery.mjs` — verifies source-derived structured locations, `robots.txt`, `sitemap.xml` and discovery state against canonical recruitment data.
 - `scripts/build-static.mjs` — canonical pure-V3 self-contained production build. It emits `dist/index.html`, `dist/health.json`, `dist/robots.txt` and `dist/sitemap.xml`; the HTML also carries the prerendered recruitment directory and source-derived federation/location JSON-LD.
-- `scripts/release-contract.mjs` — artifact-level release/runtime/discovery gate, including rejection of leaked V2 visual bundles.
-- `scripts/production-smoke.mjs` — public exact-release/art-direction/pure-V3/static-directory/runtime-header/discovery gate.
+- `scripts/release-contract.mjs` — artifact-level release/runtime/discovery/first-screen-resilience gate, including rejection of leaked V2 visual bundles.
+- `scripts/production-smoke.mjs` — public exact-release/art-direction/pure-V3/static-directory/runtime-header/discovery/first-screen-resilience gate.
 - `scripts/verify.mjs` — broad current-V3 product/data/media/trust regression gate.
 - `vercel.json` — production build/output plus response-header/cache contract.
-- `.github/workflows/kyokushin-nn-ci.yml` — release verification and exact-SHA deployment pipeline.
+- `.github/workflows/kyokushin-nn-ci.yml` — release verification and exact-SHA deployment pipeline using native Node 24 GitHub Actions releases.
 
 The rejected `art-direction-v2.css`, `experience.css` and `experience.js` source files have been physically removed after the broad verifier migrated to V3. Their names remain only in negative-reference/build/release guards where useful so accidental reintroduction fails closed.
 
@@ -57,7 +58,7 @@ The current direction is `Dojo Editorial / Competition Poster`. Do not regress t
 
 A major redesign after explicit rejection must also retire the rejected visual family from active production dependencies. A new art-direction stylesheet layered over rejected V2 CSS/JS is not sufficient. The current project physically removes the rejected V2 visual source files, and build/release/live gates must fail if those legacy dependencies return.
 
-For major public-web design work, use the system-level `visual-outcome-convergence` result authority plus the public-web `web-art-direction-expert` specialist when that skill is operationally available. If the system skill is only source-prepared/not runtime-adopted, follow the project-local v3 contract directly rather than pretending the central skill is active.
+For major public-web design work, use the system-level `visual-outcome-convergence` result authority plus the public-web `web-art-direction-expert` specialist when that skill is operationally available. The public-web specialist is source-merged into the AI-OS, but project work must still distinguish source capability from runtime-installed/observed adoption. If runtime adoption is not proven, follow this project-local V3 contract directly rather than pretending the central skill executed.
 
 A source/CSS/CI pass is not visual acceptance. Design status must distinguish:
 
@@ -78,6 +79,9 @@ A source/CSS/CI pass is not visual acceptance. Design status must distinguish:
 - Structured discovery data must be derived from canonical recruitment data. The 18 section records currently deduplicate to 17 physical `Place` identities by exact city/name/address; do not change that count manually.
 - `robots.txt` and `sitemap.xml` must point only to the canonical `https://kyokushin-nn.vercel.app/` surface unless the canonical production URL explicitly changes.
 - Production must apply the verified nosniff/anti-framing/referrer/permissions baseline, and `/health.json` must be `no-store` so stale cache cannot prove a new release.
+- Critical external first-screen assets may not fail into browser broken-image UI. Keep the current official logo source and real federation hero photo truthful when available, but preserve deterministic neutral fallback behavior when either third-party host fails.
+- A fallback for a failed logo/photo may not invent a lookalike brand mark, fake athlete or synthetic federation event.
+- The hero photo must remain visually hidden until successful real-image load evidence; pre-JS failure and later `error` must leave the intentional carbon hero field, readable copy and CTA intact.
 - Never deploy a browser-side binary/bootstrap loader, `p*.bin` payload reconstruction, runtime gzip assembly or similar client-side packaging.
 - Do not make GitHub Raw/CDN fallback loaders part of the production success path.
 - A Vercel deployment being `READY` is not sufficient evidence. The public production URL must pass the production smoke contract for the expected release.
@@ -93,7 +97,7 @@ For a bug or regression:
 
 For visual redesign work:
 
-`owner intent/rejection -> exact artifact audit -> active visual dependency audit -> art-direction contract -> implemented candidate -> built-artifact dependency check -> rendered desktop/mobile review -> visible-fix loop -> owner review candidate -> owner acceptance`
+`owner intent/rejection -> exact artifact audit -> active visual dependency audit -> critical external-asset audit -> art-direction contract -> implemented candidate -> built-artifact dependency/failure-state check -> rendered desktop/mobile review -> visible-fix loop -> owner review candidate -> owner acceptance`
 
 For release/deployment work:
 
@@ -107,6 +111,7 @@ Do not add a third preparatory implementation pass without new decisive runtime/
 npm run check
 npm run verify:art-direction
 npm run verify:runtime
+npm run verify:brand
 npm run verify:discovery
 KYOKUSHIN_RELEASE_ID=<release> npm run verify:release
 KYOKUSHIN_EXPECTED_RELEASE=<release> npm run smoke:production
@@ -114,9 +119,11 @@ KYOKUSHIN_EXPECTED_RELEASE=<release> npm run smoke:production
 
 `verify:art-direction` proves only structural design/motion/dependency invariants. It cannot prove that the page looks good.
 
+`verify:brand` proves deterministic first-screen failure behavior for the remote brand mark and hero photo; it intentionally does not depend on third-party hosts being online during CI.
+
 `verify:discovery` rebuilds the artifact and proves that structured locations, robots, sitemap and health discovery state remain source-derived.
 
-`smoke:production` is a live check against `https://kyokushin-nn.vercel.app/` and fails closed when production is stale, on the wrong art direction, contains rejected V2 visual bundles, lacks the static recruitment directory, lacks the response-security/no-store contract, loses JSON-LD/robots/sitemap discovery surfaces, is bootstrapped through binary chunks, has a missing/mismatching `/health.json`, or is unavailable.
+`smoke:production` is a live check against `https://kyokushin-nn.vercel.app/` and fails closed when production is stale, on the wrong art direction, contains rejected V2 visual bundles, lacks the static recruitment directory, lacks the response-security/no-store contract, loses JSON-LD/robots/sitemap discovery surfaces, loses first-screen failure-safe media behavior, is bootstrapped through binary chunks, has a missing/mismatching `/health.json`, or is unavailable.
 
 ## Definition of done
 
@@ -124,4 +131,4 @@ A source change is not automatically a design-complete or production-complete ch
 
 For visual work, `done` requires the exact rendered artifact to pass representative desktop/mobile perceptual review and reach the requested owner-review/acceptance state. When rendering is blocked, report `perceptual_qa_blocked` rather than claiming visual completion.
 
-For production work, the public domain must return the real pure-V3 self-contained site directly; HTML and `/health.json` must agree on the exact expected release and art direction; the static 11/18 directory, runtime headers/no-store health and discovery surfaces must be present; rejected V2 visual bundles must be absent; and the live smoke must pass. CI success alone is not a substitute.
+For production work, the public domain must return the real pure-V3 self-contained site directly; HTML and `/health.json` must agree on the exact expected release and art direction; the static 11/18 directory, runtime headers/no-store health, discovery surfaces and first-screen failure-safe media behavior must be present; rejected V2 visual bundles must be absent; and the live smoke must pass. CI success alone is not a substitute.
