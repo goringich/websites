@@ -1,12 +1,13 @@
 {
   "name": "kyokushin-nn",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "type": "module",
   "description": "Recruitment microsite for Nizhny Novgorod Shinkyokushinkai karate federation",
   "scripts": {
     "start": "node server.mjs",
-    "check": "node --check script.js && node --check media.js && node --check trainer-photos.js && node --check team.js && node --check photo.js && node --check server.mjs && node scripts/verify.mjs"
+    "build": "node scripts/build-static.mjs",
+    "check": "node --check script.js && node --check media.js && node --check trainer-photos.js && node --check team.js && node --check finder.js && node --check experience.js && node --check photo.js && node --check server.mjs && node --check scripts/build-static.mjs && node scripts/verify.mjs && npm run build"
   },
   "engines": {
     "node": ">=20"
