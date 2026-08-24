@@ -14,6 +14,12 @@ on:
       - "kyokushin-nn/**"
       - ".github/workflows/kyokushin-nn-ci.yml"
   workflow_dispatch:
+    inputs:
+      deploy_production:
+        description: "Deploy the exact selected project/kyokushin-nn revision to production after verification"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -60,7 +66,9 @@ jobs:
           retention-days: 14
 
   deploy-production:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/project/kyokushin-nn'
+    if: >-
+      (github.event_name == 'push' && github.ref == 'refs/heads/project/kyokushin-nn') ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/project/kyokushin-nn' && inputs.deploy_production)
     needs: verify
     runs-on: ubuntu-latest
     timeout-minutes: 8
