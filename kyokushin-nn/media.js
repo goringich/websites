@@ -72,6 +72,26 @@ const verifiedMedia = [
     title: "Клуб рядом",
     alt: "Материал действующего клуба «Мастерская карате» в Нижнем Новгороде",
     people: []
+  },
+  {
+    id: "masterskaya-gallery-3",
+    kind: "club",
+    image: "https://static.tildacdn.com/tild6638-3461-4431-b063-336138376236/_.png",
+    sourceUrl: "https://masterskayakarate.ru/",
+    sourceLabel: "Мастерская карате · галерея",
+    title: "Тренировочный день",
+    alt: "Общая фотография из галереи клуба «Мастерская карате»",
+    people: []
+  },
+  {
+    id: "masterskaya-gallery-4",
+    kind: "club",
+    image: "https://static.tildacdn.com/tild6361-3663-4064-a531-313031616532/photo.png",
+    sourceUrl: "https://masterskayakarate.ru/",
+    sourceLabel: "Мастерская карате · галерея",
+    title: "Клубная атмосфера",
+    alt: "Общая фотография из галереи клуба «Мастерская карате»",
+    people: []
   }
 ];
 
@@ -99,12 +119,6 @@ const photoCollections = [
     meta: "16 ноября 2025 · фотоотчёт",
     url: "https://vk.com/album10551693_311746056",
     source: "Нижегородская федерация СинКёкусинкай"
-  },
-  {
-    title: "Мастерская карате",
-    meta: "Тренировки · проекты · турниры · клубная жизнь",
-    url: "https://masterskayakarate.ru/#gallery",
-    source: "Клуб Кирилла Антоневича"
   }
 ];
 
