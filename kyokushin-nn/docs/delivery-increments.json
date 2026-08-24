@@ -1,5 +1,5 @@
 {
-  "schema_version": "2026-08-24.delivery-increments.v5",
+  "schema_version": "2026-08-24.delivery-increments.v6",
   "project": "kyokushin-nn",
   "increments": [
     {
@@ -49,7 +49,7 @@
       "outcome": "Replace the owner-rejected generic athletic landing-page skeleton with a distinctive Shinkyokushinkai editorial/poster experience while preserving practical recruitment functionality.",
       "initial_source_commit": "94ad1b62f84e53e0a2e74399940a8b3d237ac907",
       "pure_stack_commit": "52c92802888018e9b0ee396add0ba4d0a902e6c0",
-      "current_source_commit": "1a10048a6b516057205078862d041282cbc1ba85",
+      "current_source_commit": "e26e1633c1dbf207f935e9c6ae1f142a4ac9207f",
       "acceptance": [
         "explicit owner rejection is retained as a negative reference",
         "art direction changes composition rather than only tokens/effects",
@@ -78,7 +78,8 @@
         "scripts/verify-editorial-refinement.mjs",
         "PR #28 editorial refinement",
         "PR #31 current-V3 verifier",
-        "PR #32 physical V2 source retirement"
+        "PR #32 physical V2 source retirement",
+        "PR #38 first-screen resilience"
       ],
       "blocked_acceptance": [
         "current_v3_live_or_preview_deployment",
@@ -155,6 +156,46 @@
         "merge 1a10048a6b516057205078862d041282cbc1ba85"
       ],
       "blocked_acceptance": ["public_exact_release_deployment"]
+    },
+    {
+      "id": "first-screen-resilience-v1",
+      "status": "source_complete_runtime_not_yet_deployed",
+      "outcome": "Critical third-party first-screen media fail into intentional neutral design states instead of browser broken-image UI while retaining truthful real-media behavior when available.",
+      "source_commit": "e26e1633c1dbf207f935e9c6ae1f142a4ac9207f",
+      "acceptance": [
+        "official external Shinkyokushinkai mark remains the preferred source without using a failure-visible img element",
+        "brand mark has critical and final-cascade neutral fallback layers and preserves accessible naming",
+        "real federation hero photo remains the source of successful hero photography and retains existing motion",
+        "hero photo is visually hidden until successful load/naturalWidth evidence",
+        "pre-JS image failure and later error both fail into the neutral hero field without broken-image UI",
+        "no synthetic athlete/photo or invented logo identity is introduced",
+        "reduced-motion removes hero media reveal transition",
+        "source gate, built release contract and live smoke pin the failure behavior"
+      ],
+      "evidence": [
+        "experience-v3.css",
+        "motion-v3.js",
+        "scripts/verify-brand-resilience.mjs",
+        "scripts/release-contract.mjs",
+        "scripts/production-smoke.mjs",
+        "PR #38",
+        "GitHub Actions run 32760816754",
+        "merge e26e1633c1dbf207f935e9c6ae1f142a4ac9207f"
+      ],
+      "blocked_acceptance": ["public_exact_release_deployment"]
+    },
+    {
+      "id": "ci-runtime-node24-v1",
+      "status": "complete",
+      "outcome": "Kyokushin verification uses GitHub Actions releases that run natively on Node 24 instead of relying on forced execution of deprecated Node 20 action runtimes.",
+      "source_commit": "780fec11b7e7f3b73ea2f62ddde51eb6339cd565",
+      "evidence": [
+        "PR #36",
+        "GitHub Actions run 32753457564",
+        "actions/checkout@v7",
+        "actions/setup-node@v7",
+        "actions/upload-artifact@v6"
+      ]
     }
   ]
 }
