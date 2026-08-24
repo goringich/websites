@@ -12,107 +12,73 @@ const allowedPeople = [
   "Кирилл Антоневич"
 ];
 
+const federationSource = "https://shin-nnov.orgs.biz/";
+
 const verifiedMedia = [
   {
-    id: "training-1",
-    image: "https://static.tildacdn.com/tild3731-3236-4264-a165-653239663730/__.jpg",
-    sourceUrl: "https://masterskayakarate.ru/",
-    alt: "Тренировка по каратэ"
+    id: "federation-1",
+    image: "https://sun9-79.userapi.com/s/v1/ig2/sq5ZwNkzvkAvgC2XEa_GU_Af_ilyiA5Nvsunurfo_MPPUPZYp5yZcikMhDv5QWNBMdcUg35ytTiV5avADw2v569-.jpg?as=32x21%2C48x32%2C72x48%2C108x72%2C160x107%2C240x160%2C360x240%2C480x320%2C540x360%2C640x426%2C720x480%2C1080x720%2C1280x853&cs=510x340&from=bu&quality=95",
+    sourceUrl: federationSource,
+    alt: "Тренировка Нижегородской федерации СинКёкусинкай"
   },
   {
-    id: "training-2",
-    image: "https://static.tildacdn.com/tild6633-6639-4866-b935-663238346266/photo.png",
-    sourceUrl: "https://masterskayakarate.ru/",
-    alt: "Клубная жизнь каратэ"
+    id: "federation-2",
+    image: "https://sun9-36.userapi.com/s/v1/ig2/VBMgYg-pi84M-uFRbiAZTZ56duGaLkWz0aux0ufSrCPPZV1H9KBxqspF_lrzOXliqomSwF0Mr9GSf2k9omuDyYBK.jpg?as=32x21%2C48x32%2C72x48%2C108x72%2C160x107%2C240x160%2C360x240%2C480x320%2C540x360%2C640x426%2C720x480%2C1080x720%2C1280x853&cs=510x340&from=bu&quality=95",
+    sourceUrl: federationSource,
+    alt: "Спортсмены Нижегородской федерации СинКёкусинкай"
   },
   {
-    id: "training-3",
-    image: "https://static.tildacdn.com/tild3939-3362-4535-b162-343938356166/_.png",
-    sourceUrl: "https://masterskayakarate.ru/",
-    alt: "Тренировки и команда"
+    id: "federation-3",
+    image: "https://sun9-14.userapi.com/s/v1/ig2/Y5Xafy1863xbFqj60zvZEHiDB3-jiINrqP3AY-T_Xjcg3tkvZ2Ynv7FJZ0Oq-18dK5yoreXBlp7051-zntTszeTV.jpg?as=32x21%2C48x32%2C72x48%2C108x72%2C160x107%2C240x160%2C360x240%2C480x320%2C540x360%2C640x426%2C720x480%2C1080x720%2C1280x853&cs=510x340&from=bu&quality=95",
+    sourceUrl: federationSource,
+    alt: "Каратэ СинКёкусинкай в Нижнем Новгороде"
   },
   {
-    id: "training-4",
-    image: "https://static.tildacdn.com/tild6638-3461-4431-b063-336138376236/_.png",
-    sourceUrl: "https://masterskayakarate.ru/",
-    alt: "Тренировочный день"
+    id: "federation-4",
+    image: "https://sun9-36.userapi.com/s/v1/ig2/eqY-SWEjAk3nmWol2QUNnitn8lH9G2PA757ilFYHtonMsJjXI3euMkfv5ij2cSgbcjENo6VGo9f-ryC1eP1rvC1M.jpg?as=32x21%2C48x32%2C72x48%2C108x72%2C160x107%2C240x160%2C360x240%2C480x320%2C540x360%2C640x426%2C720x480%2C1080x720%2C1280x853&cs=510x340&from=bu&quality=95",
+    sourceUrl: federationSource,
+    alt: "Тренировочный процесс СинКёкусинкай"
   },
   {
-    id: "training-5",
-    image: "https://static.tildacdn.com/tild6361-3663-4064-a531-313031616532/photo.png",
-    sourceUrl: "https://masterskayakarate.ru/",
-    alt: "Клубная атмосфера"
+    id: "federation-5",
+    image: "https://sun9-58.userapi.com/s/v1/ig2/T3LTt0UUZrW7N7UnBTAIY8X__G7cCkDi15Al92szKbfl3K5OsBEBw4xrskFBRF2-WsOQ65TQRgmFbpKAzUTpwj4R.jpg?as=32x21%2C48x32%2C72x48%2C108x72%2C160x107%2C240x160%2C360x240%2C480x320%2C540x360%2C640x426%2C720x480%2C1080x720%2C1280x853&cs=510x340&from=bu&quality=95",
+    sourceUrl: federationSource,
+    alt: "Тренировка спортсменов федерации"
+  },
+  {
+    id: "federation-6",
+    image: "https://sun9-23.userapi.com/s/v1/ig2/7AnTr-5amcRvOw5BkDmW9BfAs4HwTfzB_WYbkXin_Or2PkYHhw-VwEDkTE9mXF2OIkExBEmCsu9twbKXbo-14mXJ.jpg?as=32x48%2C48x72%2C72x108%2C108x162%2C160x240%2C240x360%2C360x540%2C480x720%2C540x810%2C640x960%2C720x1080%2C853x1280&cs=510x765&from=bu&quality=95",
+    sourceUrl: federationSource,
+    alt: "Каратэ Нижегородской федерации"
+  },
+  {
+    id: "federation-7",
+    image: "https://sun9-5.userapi.com/s/v1/ig2/aZZRBZd8slSCaorqp-EglxfneC1MMh_pNR558FRhWa9GFZic--fOGzwq0UMoR0D-Luy8cTPbA2LjMXmHhnNtVLGB.jpg?as=32x48%2C48x72%2C72x108%2C108x162%2C160x240%2C240x360%2C360x540%2C480x720%2C540x810%2C640x960%2C720x1080%2C853x1280&cs=510x765&from=bu&quality=95",
+    sourceUrl: federationSource,
+    alt: "Спортсмен СинКёкусинкай"
+  },
+  {
+    id: "federation-8",
+    image: "https://sun9-52.userapi.com/s/v1/ig2/RvCcEfTxdZLkufsej14kx6-W1d4KSvbqBjuEewMOVnijRY0-ga5zEIFnN0wxMFbo5sXRB52ldm7kaQuRTHbFwRMH.jpg?as=32x21%2C48x32%2C72x48%2C108x72%2C160x107%2C240x160%2C360x240%2C480x320%2C540x360%2C640x426%2C720x480%2C1080x720%2C1280x853&cs=510x340&from=bu&quality=95",
+    sourceUrl: federationSource,
+    alt: "Команда Нижегородской федерации СинКёкусинкай"
+  },
+  {
+    id: "masterskaya-2026",
+    kind: "story",
+    sourceUrl: "https://masterskayakarate.ru/tpost/czhy6ukv31-zhara-2026-kak-eto-bilo",
+    title: "Фото и видео · лето 2026",
+    meta: "Материалы тренировочного проекта"
   }
 ];
 
 const trainerPhotos = {
-  "Сергей Жуков": {
-    kind: "club",
-    image: verifiedMedia[0].image,
-    sourceUrl: verifiedMedia[0].sourceUrl,
-    position: "50% 38%"
-  },
-  "Андрей Троцко": {
-    kind: "club",
-    image: verifiedMedia[1].image,
-    sourceUrl: verifiedMedia[1].sourceUrl,
-    position: "50% 42%"
-  },
-  "Владимир Жуков": {
-    kind: "club",
-    image: verifiedMedia[2].image,
-    sourceUrl: verifiedMedia[2].sourceUrl,
-    position: "50% 36%"
-  },
-  "Дарья Осинина": {
-    kind: "club",
-    image: verifiedMedia[3].image,
-    sourceUrl: verifiedMedia[3].sourceUrl,
-    position: "50% 40%"
-  },
-  "Юлия Фролова": {
-    kind: "club",
-    image: verifiedMedia[4].image,
-    sourceUrl: verifiedMedia[4].sourceUrl,
-    position: "50% 38%"
-  },
-  "Иван Гаврилин": {
-    kind: "club",
-    image: verifiedMedia[0].image,
-    sourceUrl: verifiedMedia[0].sourceUrl,
-    position: "64% 40%"
-  },
-  "Сергей Глухов": {
-    kind: "club",
-    image: verifiedMedia[1].image,
-    sourceUrl: verifiedMedia[1].sourceUrl,
-    position: "38% 42%"
-  },
-  "Сергей Захаров": {
-    kind: "club",
-    image: verifiedMedia[2].image,
-    sourceUrl: verifiedMedia[2].sourceUrl,
-    position: "62% 38%"
-  },
-  "Андрей Коннов": {
-    kind: "club",
-    image: verifiedMedia[3].image,
-    sourceUrl: verifiedMedia[3].sourceUrl,
-    position: "40% 38%"
-  },
   "Георгий Пигиданов": {
     kind: "person",
     person: "Георгий Пигиданов",
     image: "https://sun9-54.userapi.com/s/v1/ig2/WUuluYR3wScSgcKv4oCm9jAmB-zvo_4dyFVFIljMw2UJTyrZHVhb0EWfnr3Sxt8TGXwNwaxUR_a_A_Xrc6p3fL8o.jpg?as=32x43%2C48x64%2C72x97%2C108x145%2C160x215%2C240x322%2C360x484%2C480x645%2C540x725%2C640x860%2C720x967%2C953x1280&cs=240x0&from=bu&quality=95",
     sourceUrl: "https://shin-nnov.orgs.biz/",
     position: "50% 30%"
-  },
-  "Кирилл Антоневич": {
-    kind: "person",
-    person: "Кирилл Антоневич",
-    image: "https://static.tildacdn.com/tild3832-3432-4365-a436-313238623462/____.svg",
-    sourceUrl: "https://masterskayakarate.ru/",
-    position: "50% 35%"
   }
 };
 
