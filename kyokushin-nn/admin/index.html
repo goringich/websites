@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="color-scheme" content="dark">
+  <title>Kyokushin CMS</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header class="admin-topbar">
+    <div>
+      <span class="admin-kicker">CONTENT CONTROL</span>
+      <h1>Kyokushin CMS</h1>
+    </div>
+    <nav>
+      <a href="/" target="_blank" rel="noopener">Открыть сайт ↗</a>
+      <button id="reloadButton" type="button">Перезагрузить</button>
+      <button id="validateButton" type="button">Проверить</button>
+      <button id="publishButton" class="primary" type="button">Опубликовать</button>
+    </nav>
+  </header>
+
+  <main class="admin-shell">
+    <aside class="admin-sidebar">
+      <div class="status-card">
+        <span>Статус</span>
+        <strong id="statusText">Загрузка…</strong>
+        <small id="statusDetail">content/site.json</small>
+      </div>
+
+      <label class="token-field">
+        <span>GitHub token</span>
+        <input id="tokenInput" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…">
+        <small>Токен хранится только в памяти этой вкладки и нигде не сохраняется.</small>
+      </label>
+
+      <div class="admin-policy">
+        <strong>Контентное правило</strong>
+        <p>Сайт — федерация + лагерь на Керженце. Ссылка на проект Кирилла допустима только один раз, внутри его карточки.</p>
+      </div>
+    </aside>
+
+    <section class="admin-content">
+      <section class="panel" aria-labelledby="heroHeading">
+        <div class="panel-head">
+          <div><span>01</span><h2 id="heroHeading">Главный экран</h2></div>
+          <p>Главный визуал, текст и источник лагеря.</p>
+        </div>
+        <div id="heroEditor" class="form-grid"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="galleryHeading">
+        <div class="panel-head">
+          <div><span>02</span><h2 id="galleryHeading">Керженец · медиа</h2></div>
+          <button id="addGalleryButton" type="button">+ Добавить</button>
+        </div>
+        <div id="galleryEditor" class="repeater"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="reportsHeading">
+        <div class="panel-head">
+          <div><span>03</span><h2 id="reportsHeading">Фотоотчёты</h2></div>
+          <button id="addReportButton" type="button">+ Добавить</button>
+        </div>
+        <div id="reportsEditor" class="repeater"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="trainersHeading">
+        <div class="panel-head">
+          <div><span>04</span><h2 id="trainersHeading">Тренеры и секции</h2></div>
+          <p>Телефон, подпись, фото и расписание.</p>
+        </div>
+        <div id="trainersEditor" class="trainer-list"></div>
+      </section>
+
+      <section class="panel raw-panel" aria-labelledby="rawHeading">
+        <div class="panel-head">
+          <div><span>05</span><h2 id="rawHeading">JSON</h2></div>
+          <button id="applyRawButton" type="button">Применить JSON</button>
+        </div>
+        <textarea id="rawEditor" spellcheck="false" aria-label="JSON контента"></textarea>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="resultDialog">
+    <button id="dialogClose" class="dialog-close" type="button">×</button>
+    <h2 id="dialogTitle">Результат</h2>
+    <pre id="dialogBody"></pre>
+  </dialog>
+
+  <script src="admin.js" defer></script>
+</body>
+</html>
