@@ -32,3 +32,11 @@ jobs:
 
       - name: Verify site
         run: npm --prefix kyokushin-nn run check
+
+      - name: Publish production bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: kyokushin-nn-production
+          path: kyokushin-nn/dist/index.html
+          if-no-files-found: error
+          retention-days: 14
