@@ -19,6 +19,73 @@
 
 .site-nav a {
   position: relative;
+  font-weight: 700;
+}
+
+.topbar-link,
+.kicker,
+.eyebrow {
+  font-weight: 800;
+}
+
+.hero h1 span,
+.hero-proof strong,
+.section-heading h2,
+.team-heading h2,
+.team-heading h2 em,
+.archive-head h3,
+.roster-body h3,
+.roster-card[data-portrait="verified"] .roster-body h3,
+.search-field input,
+.final-cta h2,
+.final-cta h2 span {
+  font-weight: 600;
+}
+
+.hero-lead {
+  font-weight: 500;
+}
+
+.roster-initials,
+.chip {
+  font-weight: 700;
+}
+
+/* One dominant first-screen action. The team link stays available, but reads as editorial navigation instead of a second CTA. */
+.hero-actions {
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.hero-actions .button-ghost {
+  min-height: auto;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .38);
+  background: transparent;
+  padding: 8px 0 5px;
+  color: rgba(255, 255, 255, .68);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+.hero-actions .button-ghost:hover,
+.hero-actions .button-ghost:focus-visible {
+  border-color: #fff;
+  background: transparent;
+  color: #fff;
+  transform: translateX(3px);
+}
+
+/* The hero already carries the key proof. Avoid repeating a second component strip before the story begins. */
+.signal-strip {
+  display: none;
+}
+
+/* The first content chapter should feel like an intentional cut from poster to documentary photography. */
+.photo-story {
+  border-top: 6px solid var(--v3-red, #ef2d1d);
 }
 
 .roster-card:focus-within {
@@ -36,5 +103,20 @@
 @media (max-width: 620px) {
   .topbar::after {
     height: 1px;
+  }
+
+  .hero-actions {
+    gap: 10px;
+  }
+
+  .hero-actions .button-ghost {
+    width: fit-content;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .38);
+    padding: 10px 0 5px;
+  }
+
+  .photo-story {
+    border-top-width: 4px;
   }
 }
