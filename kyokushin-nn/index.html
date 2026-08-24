@@ -28,7 +28,7 @@
     body { margin: 0; background: #f1ede3; color: #0b0b0a; font-family: Manrope, "Segoe UI", Arial, sans-serif; }
     .topbar { min-height: 76px; display: grid; grid-template-columns: minmax(230px, 1fr) auto minmax(230px, 1fr); align-items: center; gap: 28px; padding: 0 max(22px, calc((100vw - 1380px) / 2)); background: #0b0b0a; color: #fff; }
     .brand { display: inline-flex; align-items: center; gap: 12px; color: inherit; text-decoration: none; }
-    .brand-logo { width: 42px; height: 42px; border-radius: 50%; background: #fff; object-fit: contain; }
+    .brand-logo { display: block; flex: 0 0 42px; width: 42px; height: 42px; border-radius: 50%; background-color: #fff; background-image: url("https://wkosydney.com.au/assets/images/logo.jpg"), radial-gradient(circle at center, #ef2d1d 0 32%, #fff 33% 100%); background-position: center; background-repeat: no-repeat; background-size: contain, cover; }
     .brand-copy { display: grid; }
     .brand-copy strong { font-family: Unbounded, "Arial Black", Arial, sans-serif; font-size: 10px; }
     .brand-copy small { opacity: .62; font-size: 9px; }
@@ -63,7 +63,7 @@
 
   <header class="topbar">
     <a class="brand" href="#top" aria-label="На главную">
-      <img class="brand-logo" src="https://wkosydney.com.au/assets/images/logo.jpg" alt="Shinkyokushinkai" width="44" height="44" loading="eager">
+      <span class="brand-logo" role="img" aria-label="Shinkyokushinkai"></span>
       <span class="brand-copy">
         <strong>СинКёкусинкай</strong>
         <small>Нижегородская федерация</small>
