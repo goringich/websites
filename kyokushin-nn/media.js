@@ -93,21 +93,33 @@ const photoCollections = [
   {
     title: "Кю-тест федерации",
     meta: "29 декабря 2024 · Ольга Осинина",
+    provider: "Яндекс Диск",
+    cover: "https://sun9-36.userapi.com/s/v1/ig2/brw1eJzc2Do-ZwBV0hQsh1o8UN_v18Si3-m1ZwePZnkGkj84PUdR4mPYqIC2AQL_EOczqLwCNy6VfhPIW5ysexCf.jpg?as=32x21%2C48x32%2C72x48%2C108x72%2C160x107%2C240x160%2C360x240%2C480x320%2C540x360%2C640x427%2C720x480%2C1080x720%2C1280x853%2C1440x960%2C2500x1667&cs=200x133&from=bu&quality=95",
+    coverAlt: "Кю-тест Нижегородской федерации СинКёкусинкай",
     url: "https://disk.yandex.ru/d/ofHWan78kjOw0g"
   },
   {
     title: "Сборы по базовой технике",
     meta: "7 декабря 2024 · Ольга Осинина",
+    provider: "Яндекс Диск",
+    cover: "https://sun9-62.userapi.com/s/v1/ig2/aPpH7wetO9uWCbrzS7kfjavhGMFkgYit3wEM3MZbruZP1wEsIjcwzUnj5LucQYYmmoZivfcJHD10wLkJDMDGcNtV.jpg?as=32x21%2C48x32%2C72x48%2C108x72%2C160x107%2C240x160%2C360x240%2C480x320%2C540x360%2C640x426%2C720x480%2C1080x720%2C1280x853%2C1440x960%2C2560x1706&cs=200x133&from=bu&quality=95",
+    coverAlt: "Учебно-тренировочные сборы по базовой технике",
     url: "https://disk.yandex.ru/d/3CG2VKD0irTKBw"
   },
   {
     title: "Сборы по кумитэ",
     meta: "10 ноября 2024 · Ольга Осинина",
+    provider: "Яндекс Диск",
+    cover: verifiedMedia[3].image,
+    coverAlt: "Тренировочный процесс СинКёкусинкай",
     url: "https://disk.yandex.ru/d/C7mUQHK866gmPQ"
   },
   {
     title: "Областные соревнования",
     meta: "16 ноября 2025",
+    provider: "VK",
+    cover: verifiedMedia[7].image,
+    coverAlt: "Команда Нижегородской федерации СинКёкусинкай",
     url: "https://vk.com/album10551693_311746056"
   }
 ];
