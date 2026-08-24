@@ -79,12 +79,13 @@ if (
   || health.release !== release
   || health.artDirection !== "dojo-editorial-v3"
   || health.staticDirectory !== true
+  || health.brandResilience !== true
   || !Number.isInteger(health.discovery?.structuredLocations)
   || health.discovery.structuredLocations < 1
   || health.discovery.robots !== true
   || health.discovery.sitemap !== true
 ) {
-  throw new Error(`Health manifest does not match HTML release/runtime/discovery identity: ${JSON.stringify(health)}`);
+  throw new Error(`Health manifest does not match HTML release/runtime/discovery/brand identity: ${JSON.stringify(health)}`);
 }
 
 if (!robots.includes("User-agent: *") || !robots.includes("Allow: /") || !robots.includes("Sitemap: https://kyokushin-nn.vercel.app/sitemap.xml")) {
@@ -103,4 +104,4 @@ if (Buffer.byteLength(html) < 100_000) {
   throw new Error(`Self-contained release is unexpectedly small: ${Buffer.byteLength(html)} bytes`);
 }
 
-console.log(`release-contract: PASS — pure-v3 release=${release}, artDirection=${health.artDirection}, staticDirectory=${health.staticDirectory}, structuredLocations=${health.discovery.structuredLocations}, resilientBrand=true, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
+console.log(`release-contract: PASS — pure-v3 release=${release}, artDirection=${health.artDirection}, staticDirectory=${health.staticDirectory}, structuredLocations=${health.discovery.structuredLocations}, resilientBrand=${health.brandResilience}, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
