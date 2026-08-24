@@ -4,7 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#d52b1e">
-  <meta name="description" content="Набор в группы начальной подготовки СинКёкусинкай каратэ от 5 лет. Залы в Нижнем Новгороде и Дзержинске, расписание и прямые контакты инструкторов.">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Набор в группы начальной подготовки СинКёкусинкай каратэ от 5 лет. 18 залов в Нижнем Новгороде и Дзержинске, расписание, фотографии и прямые контакты инструкторов.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:title" content="СинКёкусинкай каратэ — набор с 5 лет">
+  <meta property="og:description" content="18 залов, 11 инструкторов, актуальное расписание и прямые контакты Нижегородской федерации.">
+  <meta property="og:url" content="https://kyokushin-nn.vercel.app/">
+  <link rel="canonical" href="https://kyokushin-nn.vercel.app/">
   <title>СинКёкусинкай каратэ — набор с 5 лет | Нижегородская федерация</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="cards.css">
@@ -14,6 +21,7 @@
     "@type": "SportsOrganization",
     "name": "Нижегородская федерация СинКёкусинкай каратэ",
     "sport": "Karate",
+    "url": "https://kyokushin-nn.vercel.app/",
     "areaServed": [
       {"@type": "City", "name": "Нижний Новгород"},
       {"@type": "City", "name": "Дзержинск"}
@@ -85,7 +93,7 @@
           <p class="kicker">Фотографии</p>
           <h2 id="photos-title">Живое каратэ,<br>не рекламные макеты.</h2>
         </div>
-        <p>Тренировки, команда и события федерации — в одной общей ленте.</p>
+        <p>Тренировки, команда и события федерации — в одной общей ленте. Нажмите на фото, чтобы посмотреть его крупно.</p>
       </div>
 
       <div class="photo-mosaic" id="photoMosaic"></div>
@@ -95,7 +103,7 @@
           <p class="kicker">Фотоотчёты</p>
           <h3>Полные альбомы</h3>
         </div>
-        <p>Большие подборки с аттестаций, сборов и соревнований.</p>
+        <p>Аттестации, сборы и соревнования — теперь с живыми обложками, чтобы сразу понимать, что внутри.</p>
       </div>
       <div class="archive-grid" id="photoCollections"></div>
     </section>
@@ -185,6 +193,21 @@
   </footer>
 
   <a class="mobile-cta" href="#groups">Найти зал <span aria-hidden="true">↓</span></a>
+
+  <dialog class="lightbox" id="photoLightbox" aria-label="Просмотр фотографий">
+    <button class="lightbox-close" type="button" aria-label="Закрыть">×</button>
+    <button class="lightbox-nav lightbox-prev" type="button" aria-label="Предыдущая фотография">←</button>
+    <figure class="lightbox-figure">
+      <img class="lightbox-image" src="" alt="">
+      <figcaption class="lightbox-meta">
+        <span class="lightbox-counter"></span>
+        <a class="lightbox-source" href="#" target="_blank" rel="noopener noreferrer">Источник ↗</a>
+      </figcaption>
+    </figure>
+    <button class="lightbox-nav lightbox-next" type="button" aria-label="Следующая фотография">→</button>
+  </dialog>
+
+  <noscript><p class="noscript-note">Для фильтров секций и просмотра фотографий нужен JavaScript. Телефоны и расписание доступны после его включения.</p></noscript>
 
   <script src="media.js" defer></script>
   <script src="script.js" defer></script>
