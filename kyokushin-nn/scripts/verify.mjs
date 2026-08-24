@@ -78,7 +78,7 @@ for (const cssMarker of [
   if (!mediaStyles.includes(cssMarker)) throw new Error(`Missing media UX rule: ${cssMarker}`);
 }
 for (const cssMarker of [
-  "--v3-red", "--v3-display", ".team-section {", ".trainer-roster {", ".roster-card {", ".roster-media {",
+  "--v3-red", "--v3-display", ".team-section {", ".trainer-roster {", ".roster-card,", ".roster-media {",
   '.roster-card[data-portrait="verified"]', ".hero::before {", ".photo-mosaic {", ".filters {", ".steps {", ".final-cta {",
   "[data-v3-reveal", "prefers-reduced-motion", "@media (max-width: 1120px)", "@media (max-width: 820px)", "@media (max-width: 620px)"
 ]) {
