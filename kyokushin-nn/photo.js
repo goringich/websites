@@ -6,19 +6,18 @@ const photoRegistry = window.KYOKUSHIN_MEDIA ?? {
 const photoMosaic = document.querySelector("#photoMosaic");
 const photoCollectionsNode = document.querySelector("#photoCollections");
 
-const externalLink = (className, href, text) => {
+const externalLink = (className, href) => {
   const link = document.createElement("a");
   link.className = className;
   link.href = href;
-  link.textContent = text;
   link.target = "_blank";
   link.rel = "noopener noreferrer";
   return link;
 };
 
 const createPhotoCard = (item) => {
-  const card = document.createElement("figure");
-  card.className = "photo-card";
+  const card = externalLink("photo-card", item.sourceUrl);
+  card.setAttribute("aria-label", "Открыть фотографию");
 
   const image = document.createElement("img");
   image.src = item.image;
@@ -27,23 +26,12 @@ const createPhotoCard = (item) => {
   image.decoding = "async";
   image.addEventListener("error", () => card.classList.add("is-image-error"), { once: true });
 
-  const caption = document.createElement("figcaption");
-  const copy = document.createElement("div");
-  const title = document.createElement("strong");
-  title.textContent = item.title;
-  const source = document.createElement("div");
-  source.className = "photo-source";
-  source.textContent = item.sourceLabel;
-  copy.append(title, source);
-
-  const sourceLink = externalLink("photo-source-link", item.sourceUrl, "Источник ↗");
-  caption.append(copy, sourceLink);
-  card.append(image, caption);
+  card.append(image);
   return card;
 };
 
 const createArchiveCard = (item, index) => {
-  const card = externalLink("archive-card", item.url, "");
+  const card = externalLink("archive-card", item.url);
 
   const number = document.createElement("span");
   number.className = "archive-card-index";
@@ -56,15 +44,11 @@ const createArchiveCard = (item, index) => {
   meta.textContent = item.meta;
   body.append(title, meta);
 
-  const footer = document.createElement("div");
-  footer.className = "archive-card-footer";
-  const source = document.createElement("span");
-  source.textContent = item.source;
   const arrow = document.createElement("span");
+  arrow.className = "archive-card-arrow";
   arrow.textContent = "↗";
-  footer.append(source, arrow);
 
-  card.append(number, body, footer);
+  card.append(number, body, arrow);
   return card;
 };
 
@@ -73,7 +57,5 @@ if (photoMosaic) {
 }
 
 if (photoCollectionsNode) {
-  photoCollectionsNode.replaceChildren(
-    ...photoRegistry.photoCollections.map(createArchiveCard)
-  );
+  photoCollectionsNode.replaceChildren(...photoRegistry.photoCollections.map(createArchiveCard));
 }

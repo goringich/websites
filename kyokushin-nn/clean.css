@@ -1,0 +1,137 @@
+.brand-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #fff;
+  object-fit: cover;
+}
+
+.photo-heading {
+  grid-template-columns: 1fr;
+}
+
+.photo-heading-copy,
+.verified-note {
+  display: none;
+}
+
+.photo-card::after,
+.photo-card figcaption {
+  display: none;
+}
+
+.photo-card {
+  cursor: default;
+}
+
+.photo-card img {
+  filter: none;
+}
+
+.photo-card:nth-child(1) {
+  grid-column: span 7;
+  grid-row: span 4;
+}
+
+.photo-card:nth-child(2) {
+  grid-column: span 5;
+  grid-row: span 2;
+}
+
+.photo-card:nth-child(3) {
+  grid-column: span 5;
+  grid-row: span 2;
+}
+
+.photo-card:nth-child(4),
+.photo-card:nth-child(5) {
+  grid-column: span 6;
+  grid-row: span 3;
+}
+
+.archive-head {
+  grid-template-columns: 1fr;
+}
+
+.archive-head > p {
+  display: none;
+}
+
+.instructor-panel {
+  overflow: hidden;
+}
+
+.instructor-photo-frame {
+  position: relative;
+  height: 190px;
+  margin: -28px -28px 25px;
+  overflow: hidden;
+  background: #20201d;
+}
+
+.instructor-photo-frame::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 56%;
+  background: linear-gradient(to bottom, transparent, rgba(17, 17, 15, .82));
+  content: "";
+  pointer-events: none;
+}
+
+.instructor-photo-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.instructor-photo-fallback {
+  position: absolute;
+  inset: 0;
+  display: none;
+  place-items: center;
+  color: rgba(255, 255, 255, .35);
+  font-size: 44px;
+  font-weight: 900;
+  letter-spacing: -.08em;
+}
+
+.instructor-photo-frame.is-error .instructor-photo-image {
+  display: none;
+}
+
+.instructor-photo-frame.is-error .instructor-photo-fallback {
+  display: grid;
+}
+
+.instructor-panel .instructor-index {
+  margin-bottom: 18px;
+}
+
+@media (max-width: 980px) {
+  .photo-card:nth-child(n) {
+    grid-column: span 6;
+    grid-row: span 3;
+  }
+
+  .photo-card:nth-child(1) {
+    grid-column: span 12;
+    grid-row: span 4;
+  }
+
+  .instructor-photo-frame {
+    height: 210px;
+  }
+}
+
+@media (max-width: 720px) {
+  .photo-card:nth-child(n) {
+    flex: 0 0 min(84vw, 410px);
+    min-height: 420px;
+  }
+
+  .instructor-photo-frame {
+    height: 230px;
+    margin: -22px -22px 22px;
+  }
+}
