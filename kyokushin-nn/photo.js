@@ -16,6 +16,28 @@ const externalLink = (className, href) => {
 };
 
 const createPhotoCard = (item) => {
+  if (item.kind === "story") {
+    const card = externalLink("photo-card photo-story-link", item.sourceUrl);
+
+    const kicker = document.createElement("span");
+    kicker.className = "photo-story-kicker";
+    kicker.textContent = "Фото и видео";
+
+    const title = document.createElement("strong");
+    title.textContent = item.title;
+
+    const meta = document.createElement("span");
+    meta.className = "photo-story-meta";
+    meta.textContent = item.meta;
+
+    const arrow = document.createElement("span");
+    arrow.className = "photo-story-arrow";
+    arrow.textContent = "↗";
+
+    card.append(kicker, title, meta, arrow);
+    return card;
+  }
+
   const card = externalLink("photo-card", item.sourceUrl);
   card.setAttribute("aria-label", "Открыть фотографию");
 
