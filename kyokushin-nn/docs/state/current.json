@@ -1,7 +1,7 @@
 {
-  "schema_version": "2026-08-24.kyokushin-current.v1",
+  "schema_version": "2026-08-24.kyokushin-current.v2",
   "project": "kyokushin-nn",
-  "updated_at": "2026-08-24T13:50:00Z",
+  "updated_at": "2026-08-24T14:07:30Z",
   "mission": "Convert recruitment interest into a direct, trustworthy choice of hall and instructor for Shinkyokushinkai karate in Nizhny Novgorod and Dzerzhinsk.",
   "source_state": {
     "branch": "project/kyokushin-nn",
@@ -9,28 +9,32 @@
     "expected_halls": 18,
     "expected_instructors": 11,
     "expected_gallery_photos": 8,
-    "expected_photo_reports": 4
+    "expected_photo_reports": 4,
+    "ai_context": "AI_CONTEXT.md",
+    "agent_contract": "AGENTS.md",
+    "project_model": "docs/state/project-model.json"
   },
   "runtime_state": {
     "production_url": "https://kyokushin-nn.vercel.app/",
-    "status": "incident",
-    "observed_failure": "The public deployment serves a browser-side p0.bin..p4.bin bootstrap and can show 'Не удалось загрузить сайт' instead of the recruitment UI.",
-    "root_cause_class": "deployment_artifact_mismatch",
-    "source_build_known_good": true,
-    "production_matches_source_build": false,
-    "last_evidence": "Vercel returned HTTP 200 for a loader HTML rather than the repository self-contained production HTML."
+    "status": "recovered",
+    "deployment_id": "dpl_2k1x8VbTGQtisfTptmeUzfafJane",
+    "source_commit_used_by_recovery_build": "a3eb4e812b5bb9cc3f8fd69755bda742c3af8751",
+    "build": "self-contained",
+    "production_matches_recovered_source": true,
+    "last_evidence": "Vercel build log reported a 115467-byte direct self-contained build and the public domain returned HTTP 200 with x-kyokushin-build=self-contained and the real recruitment UI instead of p0.bin..p4.bin."
   },
   "active_slice": {
-    "outcome": "Replace the fragile binary bootstrap delivery path with the repository self-contained build and make future deployment drift fail closed.",
+    "outcome": "Add exact release identity so a healthy but stale production deployment cannot be mistaken for the current Git commit.",
     "acceptance": [
-      "npm run check passes",
-      "npm run verify:release passes",
-      "public production HTML contains the self-contained build marker and real recruitment UI markers",
-      "public production HTML contains no p*.bin bootstrap or DecompressionStream loader",
-      "npm run smoke:production passes"
+      "dist/index.html contains x-kyokushin-release",
+      "dist/health.json contains the same release identity",
+      "release-contract checks HTML and health identity agreement",
+      "production-smoke can reject a release that differs from KYOKUSHIN_EXPECTED_RELEASE",
+      "CI production artifact contains the whole dist directory"
     ]
   },
   "unknowns": [
-    "Whether the GitHub repository currently has a usable VERCEL_TOKEN Actions secret for unattended production deployment."
+    "Whether the GitHub repository currently has a usable VERCEL_TOKEN Actions secret for unattended production deployment.",
+    "Pixel-level browser QA remains unproven in the current execution container because its Chromium D-Bus/zygote environment hangs."
   ]
 }
