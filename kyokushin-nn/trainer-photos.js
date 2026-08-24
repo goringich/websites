@@ -1,27 +1,23 @@
-const trainerPhotoRegistry = window.KYOKUSHIN_MEDIA?.trainerPhotos ?? {};
 const instructorListNode = document.querySelector("#instructorList");
 
-const initialsFor = (name) => name
+const initialsFor = (name) => String(name)
   .split(/\s+/)
   .map((part) => part[0])
   .join("")
   .slice(0, 2);
 
+const trainerPhotoRegistry = () => window.KYOKUSHIN_MEDIA?.trainerPhotos ?? {};
+
 const decorateTrainerCards = () => {
-  if (!instructorListNode) {
-    return;
-  }
+  if (!instructorListNode) return;
 
   instructorListNode.querySelectorAll(".instructor-card:not([data-photo-ready])").forEach((card) => {
     const panel = card.querySelector(".instructor-panel");
     const title = panel?.querySelector("h3");
     const trainerName = title?.textContent.trim();
+    if (!panel || !title || !trainerName) return;
 
-    if (!panel || !title || !trainerName) {
-      return;
-    }
-
-    const photo = trainerPhotoRegistry[trainerName];
+    const photo = trainerPhotoRegistry()[trainerName];
     const frame = document.createElement("div");
     frame.className = "instructor-photo-frame";
 
@@ -32,7 +28,6 @@ const decorateTrainerCards = () => {
 
     if (photo?.kind === "person" && photo.person === trainerName) {
       frame.dataset.photoKind = "person";
-
       const image = document.createElement("img");
       image.className = "instructor-photo-image";
       image.src = photo.image;
@@ -58,4 +53,5 @@ if (instructorListNode) {
     childList: true,
     subtree: true
   });
+  window.addEventListener("kyokushin:directory-rendered", decorateTrainerCards);
 }
