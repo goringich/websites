@@ -60,4 +60,13 @@ if (vercelConfig.buildCommand !== "npm run build" || vercelConfig.outputDirector
   throw new Error("Runtime header work must not weaken the canonical Vercel build/output contract");
 }
 
-console.log("verify-runtime-headers: PASS — unambiguous anti-framing/nosniff/referrer/permissions baseline present and release health is no-store at browser/CDN layers");
+if (vercelConfig.cleanUrls === true) {
+  throw new Error("cleanUrls must stay disabled: Vercel CLI mapped index.html to /index while redirecting /index back to /, producing a production root 404");
+}
+
+const rewrites = vercelConfig.rewrites ?? [];
+if (rewrites.length !== 1 || rewrites[0]?.source !== "/" || rewrites[0]?.destination !== "/index.html") {
+  throw new Error("Production root must explicitly rewrite / to /index.html so the verified static entrypoint is routable");
+}
+
+console.log("verify-runtime-headers: PASS — security/cache baseline present and production root is explicitly bound to the verified static index");
