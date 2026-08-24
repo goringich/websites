@@ -24,6 +24,8 @@ const required = [
   'id="federation-schema"',
   '<span class="brand-logo" role="img" aria-label="Shinkyokushinkai"></span>',
   'background-image: url("https://wkosydney.com.au/assets/images/logo.jpg"), radial-gradient(',
+  'radial-gradient(circle at center, #ef2d1d 0 32%, #fff 33% 100%)',
+  'background-size: contain, cover',
   'id="groups"',
   'id="trainerRoster"',
   'id="photoMosaic"',
