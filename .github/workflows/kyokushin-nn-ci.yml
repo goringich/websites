@@ -37,6 +37,16 @@ jobs:
         with:
           node-version: 24
 
+      - name: Observe Vercel credential readiness
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -n "$VERCEL_TOKEN" ]; then
+            echo "VERCEL_TOKEN_PRESENT=true"
+          else
+            echo "VERCEL_TOKEN_PRESENT=false"
+          fi
+
       - name: Verify source and release artifact
         run: npm --prefix kyokushin-nn run check
 
