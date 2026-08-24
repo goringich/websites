@@ -1,8 +1,9 @@
 import { readFile } from "node:fs/promises";
 import vm from "node:vm";
 
-const [html, script, media, photoScript, trainerPhotoScript] = await Promise.all([
+const [html, styles, script, media, photoScript, trainerPhotoScript] = await Promise.all([
   readFile(new URL("../index.html", import.meta.url), "utf8"),
+  readFile(new URL("../styles.css", import.meta.url), "utf8"),
   readFile(new URL("../script.js", import.meta.url), "utf8"),
   readFile(new URL("../media.js", import.meta.url), "utf8"),
   readFile(new URL("../photo.js", import.meta.url), "utf8"),
@@ -18,8 +19,7 @@ const requiredHtml = [
   "id=\"photoCollections\"",
   "brand-logo",
   "wkosydney.com.au/assets/images/logo.jpg",
-  "photo.css",
-  "clean.css",
+  "styles.css",
   "media.js",
   "script.js",
   "trainer-photos.js",
@@ -30,6 +30,29 @@ for (const marker of requiredHtml) {
   if (!html.includes(marker)) {
     throw new Error(`Missing HTML marker: ${marker}`);
   }
+}
+
+for (const legacyCss of ["photo.css", "clean.css"]) {
+  if (html.includes(legacyCss)) {
+    throw new Error(`Legacy conflicting stylesheet must not be linked: ${legacyCss}`);
+  }
+}
+
+for (const cssMarker of [
+  ".hero {",
+  ".photo-mosaic {",
+  ".archive-grid {",
+  ".instructor-card {",
+  ".instructor-photo-frame {",
+  "@media (max-width: 720px)"
+]) {
+  if (!styles.includes(cssMarker)) {
+    throw new Error(`Missing unified layout rule: ${cssMarker}`);
+  }
+}
+
+if (styles.includes("margin: -28px") || styles.includes("margin: -22px")) {
+  throw new Error("Trainer layout must not rely on negative-margin photo hacks");
 }
 
 if (html.includes(">極<") || html.includes("Shinkyokushin.png")) {
@@ -78,7 +101,7 @@ if (JSON.stringify(instructorNames) !== JSON.stringify(expectedPeople)) {
   throw new Error(`Instructor allowlist changed: ${instructorNames.join(", ")}`);
 }
 
-const publicSource = `${html}\n${script}\n${media}\n${photoScript}\n${trainerPhotoScript}`;
+const publicSource = `${html}\n${styles}\n${script}\n${media}\n${photoScript}\n${trainerPhotoScript}`;
 for (const forbidden of ["Горохов", "ИФК", "IFK"]) {
   if (publicSource.includes(forbidden)) {
     throw new Error(`Forbidden unrelated identity/federation marker found: ${forbidden}`);
@@ -192,7 +215,6 @@ for (const item of registry.photoCollections) {
 }
 
 console.log(
-  `verify: 18 venues, 11 instructors, ${registry.verifiedMedia.length} clean gallery photos, ` +
-  `${trainerPhotoNames.length} trainer visuals (${personPhotoCount} source-bound person photos), ` +
-  `4 photo reports, identity-integrity guard PASS`
+  `verify: unified responsive layout, 18 venues, 11 instructors, ${registry.verifiedMedia.length} gallery photos, ` +
+  `${trainerPhotoNames.length} trainer visuals (${personPhotoCount} source-bound person photos), 4 photo reports PASS`
 );
