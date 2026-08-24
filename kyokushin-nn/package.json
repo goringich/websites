@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.mjs",
     "build": "node scripts/build-static.mjs",
-    "check": "node --check script.js && node --check media.js && node --check trainer-photos.js && node --check team.js && node --check finder.js && node --check experience.js && node --check photo.js && node --check server.mjs && node --check scripts/build-static.mjs && node scripts/verify.mjs && npm run build"
+    "check": "node --check script.js && node --check media.js && node --check trainer-photos.js && node --check team.js && node --check finder.js && node --check experience.js && node --check photo.js && node --check server.mjs && node --check scripts/build-static.mjs && node scripts/verify-finder-state.mjs && node scripts/verify.mjs && npm run build"
   },
   "engines": {
     "node": ">=20"
