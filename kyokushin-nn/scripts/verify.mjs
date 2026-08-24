@@ -15,6 +15,7 @@ const [
   teamScript,
   finderScript,
   experienceScript,
+  motionScript,
   buildScript,
   packageJson,
   vercelJson
@@ -23,31 +24,41 @@ const [
   readFile(new URL("../styles.css", import.meta.url), "utf8"),
   readFile(new URL("../cards.css", import.meta.url), "utf8"),
   readFile(new URL("../media-viewer.css", import.meta.url), "utf8"),
-  readFile(new URL("../art-direction-v2.css", import.meta.url), "utf8"),
-  readFile(new URL("../experience.css", import.meta.url), "utf8"),
+  readFile(new URL("../art-direction-v3.css", import.meta.url), "utf8"),
+  readFile(new URL("../experience-v3.css", import.meta.url), "utf8"),
   readFile(new URL("../script.js", import.meta.url), "utf8"),
   readFile(new URL("../media.js", import.meta.url), "utf8"),
   readFile(new URL("../photo.js", import.meta.url), "utf8"),
   readFile(new URL("../trainer-photos.js", import.meta.url), "utf8"),
   readFile(new URL("../team.js", import.meta.url), "utf8"),
   readFile(new URL("../finder.js", import.meta.url), "utf8"),
-  readFile(new URL("../experience.js", import.meta.url), "utf8"),
+  readFile(new URL("../experience-v3.js", import.meta.url), "utf8"),
+  readFile(new URL("../motion-v3.js", import.meta.url), "utf8"),
   readFile(new URL("build-static.mjs", import.meta.url), "utf8"),
   readFile(new URL("../package.json", import.meta.url), "utf8"),
   readFile(new URL("../vercel.json", import.meta.url), "utf8")
 ]);
 
 const requiredHtml = [
-  "id=\"groups\"", "id=\"searchInput\"", "id=\"cityFilters\"", "id=\"dayFilters\"",
-  "id=\"photoMosaic\"", "id=\"photoCollections\"", "id=\"photoLightbox\"", "id=\"team\"",
-  "id=\"trainerRoster\"", "brand-logo", "wkosydney.com.au/assets/images/logo.jpg",
-  "styles.css", "cards.css", "media-viewer.css", "art-direction-v2.css", "experience.css",
-  "media.js", "script.js", "trainer-photos.js", "team.js", "finder.js", "experience.js", "photo.js",
-  "site-nav", "hero-visual", "hero-proof", "href=\"#team\"", "rel=\"canonical\"", "og:title",
-  "og:image", "twitter:card", "lightbox-prev", "lightbox-next", "lightbox-source"
+  'id="groups"', 'id="searchInput"', 'id="cityFilters"', 'id="dayFilters"',
+  'id="photoMosaic"', 'id="photoCollections"', 'id="photoLightbox"', 'id="team"',
+  'id="trainerRoster"', 'brand-logo', 'wkosydney.com.au/assets/images/logo.jpg',
+  'styles.css', 'cards.css', 'media-viewer.css', 'experience-v3.css', 'art-direction-v3.css',
+  'media.js', 'script.js', 'trainer-photos.js', 'team.js', 'finder.js', 'experience-v3.js', 'motion-v3.js', 'photo.js',
+  'data-art-direction="dojo-editorial-v3"', 'x-kyokushin-art-direction',
+  'site-nav', 'hero-visual', 'hero-proof', 'href="#team"', 'rel="canonical"', 'og:title',
+  'og:image', 'twitter:card', 'lightbox-prev', 'lightbox-next', 'lightbox-source'
 ];
 for (const marker of requiredHtml) {
-  if (!html.includes(marker)) throw new Error(`Missing HTML marker: ${marker}`);
+  if (!html.includes(marker)) throw new Error(`Missing current HTML marker: ${marker}`);
+}
+
+for (const activeLegacy of [
+  '<link rel="stylesheet" href="art-direction-v2.css">',
+  '<link rel="stylesheet" href="experience.css">',
+  '<script src="experience.js"'
+]) {
+  if (html.includes(activeLegacy)) throw new Error(`Rejected V2 visual dependency must not be active: ${activeLegacy}`);
 }
 
 for (const legacyCss of ["photo.css", "clean.css"]) {
@@ -55,7 +66,7 @@ for (const legacyCss of ["photo.css", "clean.css"]) {
 }
 
 for (const cssMarker of [".site-nav {", ".hero-visual {", ".hero-proof {", "@media (max-width: 620px)"]) {
-  if (!styles.includes(cssMarker)) throw new Error(`Missing premium layout rule: ${cssMarker}`);
+  if (!styles.includes(cssMarker)) throw new Error(`Missing base layout rule: ${cssMarker}`);
 }
 for (const cssMarker of [".photo-story-link", ".instructor-card", ".instructor-panel", ".instructor-photo-frame", ".venue-list:has", "@media (max-width: 620px)"]) {
   if (!cards.includes(cssMarker)) throw new Error(`Missing component layout rule: ${cssMarker}`);
@@ -67,17 +78,23 @@ for (const cssMarker of [
   if (!mediaStyles.includes(cssMarker)) throw new Error(`Missing media UX rule: ${cssMarker}`);
 }
 for (const cssMarker of [
-  ".team-section {", ".trainer-roster {", ".roster-card {", ".roster-media {",
-  ".roster-card[data-portrait=\"verified\"]", ".hero::before {", ".final-cta {",
-  "@media (max-width: 1120px)", "@media (max-width: 820px)", "@media (max-width: 620px)"
+  "--v3-red", "--v3-display", ".team-section {", ".trainer-roster {", ".roster-card,", ".roster-media {",
+  '.roster-card[data-portrait="verified"]', ".hero::before {", ".photo-mosaic {", ".filters {", ".steps {", ".final-cta {",
+  "[data-v3-reveal", "prefers-reduced-motion", "@media (max-width: 1120px)", "@media (max-width: 820px)", "@media (max-width: 620px)"
 ]) {
-  if (!artStyles.includes(cssMarker)) throw new Error(`Missing art-direction rule: ${cssMarker}`);
+  if (!artStyles.includes(cssMarker)) throw new Error(`Missing current V3 art-direction rule: ${cssMarker}`);
 }
 for (const cssMarker of [
-  "--page-progress", ".topbar::after", ".site-nav a.is-current", ".roster-halls:hover",
-  "[data-reveal]", "@keyframes hero-enter", "prefers-reduced-motion"
+  "--page-progress", ".topbar::after", 'body[data-art-direction="dojo-editorial-v3"] .site-nav a',
+  'body[data-art-direction="dojo-editorial-v3"] .hero-actions .button-ghost',
+  'body[data-art-direction="dojo-editorial-v3"] .signal-strip',
+  'body[data-art-direction="dojo-editorial-v3"] .photo-story',
+  ".roster-card:focus-within", "scroll-margin-top"
 ]) {
-  if (!experienceStyles.includes(cssMarker)) throw new Error(`Missing interaction polish rule: ${cssMarker}`);
+  if (!experienceStyles.includes(cssMarker)) throw new Error(`Missing current V3 experience rule: ${cssMarker}`);
+}
+if (experienceStyles.includes("[data-reveal]") || experienceStyles.includes("@keyframes hero-enter")) {
+  throw new Error("Rejected generic V2 reveal grammar must not exist in the current experience layer");
 }
 
 if (styles.includes("margin: -28px") || styles.includes("margin: -22px") || cards.includes("margin: -28px")) {
@@ -137,16 +154,25 @@ if (!/"Георгий Пигиданов"[\s\S]{0,160}мастер спорта 
 }
 
 for (const marker of [
-  "data-trainer-filter", "searchParams.set(\"trainer\"", "scrollIntoView", "KYOKUSHIN_FINDER_READY",
+  "data-trainer-filter", 'searchParams.set("trainer"', "scrollIntoView", "KYOKUSHIN_FINDER_READY",
   "instructors.some"
 ]) {
   if (!finderScript.includes(marker)) throw new Error(`Missing smart trainer finder behavior: ${marker}`);
 }
 for (const marker of [
-  "IntersectionObserver", "data.reveal", "aria-current", "--page-progress", "requestAnimationFrame",
-  "KYOKUSHIN_EXPERIENCE_READY"
+  "IntersectionObserver", "aria-current", "--page-progress", "requestAnimationFrame",
+  "KYOKUSHIN_EXPERIENCE_V3_READY"
 ]) {
-  if (!experienceScript.includes(marker)) throw new Error(`Missing premium experience behavior: ${marker}`);
+  if (!experienceScript.includes(marker)) throw new Error(`Missing current V3 experience behavior: ${marker}`);
+}
+for (const marker of [
+  "requestAnimationFrame", "IntersectionObserver", "pointermove", "prefers-reduced-motion",
+  "--v3-scroll", "--v3-pointer-x", "dataset.v3Reveal", "is-v3-visible", "KYOKUSHIN_ART_DIRECTION_V3_READY"
+]) {
+  if (!motionScript.includes(marker)) throw new Error(`Missing current V3 motion behavior: ${marker}`);
+}
+if (experienceScript.includes("data.reveal") || experienceScript.includes("KYOKUSHIN_EXPERIENCE_READY")) {
+  throw new Error("Rejected V2 experience runtime markers must not return");
 }
 
 const packageConfig = JSON.parse(packageJson);
@@ -158,20 +184,20 @@ if (vercelConfig.buildCommand !== "npm run build" || vercelConfig.outputDirector
   throw new Error("Vercel must serve the generated self-contained dist directory");
 }
 for (const marker of [
-  "styles.css", "experience.css", "finder.js", "experience.js", "data-bundle", "dist/index.html",
-  "__KYOKUSHIN_ASSET_FALLBACK__"
+  '"styles.css"', '"experience-v3.css"', '"art-direction-v3.css"', '"finder.js"', '"experience-v3.js"', '"motion-v3.js"',
+  "data-bundle", "dist/index.html", "data-static-directory", "staticDirectory", "Rejected V2 visual dependency"
 ]) {
-  if (!buildScript.includes(marker)) throw new Error(`Self-contained build guard missing: ${marker}`);
+  if (!buildScript.includes(marker)) throw new Error(`Current self-contained build guard missing: ${marker}`);
 }
 
 const publicSource = [
   html, styles, cards, mediaStyles, artStyles, experienceStyles, script, media,
-  photoScript, trainerPhotoScript, teamScript, finderScript, experienceScript
+  photoScript, trainerPhotoScript, teamScript, finderScript, experienceScript, motionScript
 ].join("\n");
 for (const forbidden of ["Горохов", "ИФК", "IFK"]) {
   if (publicSource.includes(forbidden)) throw new Error(`Forbidden unrelated identity/federation marker found: ${forbidden}`);
 }
-for (const source of [script, media, photoScript, trainerPhotoScript, teamScript, finderScript, experienceScript]) {
+for (const source of [script, media, photoScript, trainerPhotoScript, teamScript, finderScript, experienceScript, motionScript]) {
   if (source.includes("innerHTML")) throw new Error("Unsafe innerHTML usage is not allowed");
 }
 for (const removedPromoAsset of [
@@ -236,7 +262,7 @@ for (const item of registry.photoCollections) {
 }
 
 console.log(
-  `verify: art direction v2 + smart finder + premium motion + self-contained production PASS — ` +
+  `verify: pure V3 + resilient recruitment directory + trusted media PASS — ` +
   `18 venues, 11 instructors, 8 real gallery photos, 1 shared Masterskaya story, ` +
   `${personPhotoCount} source-bound trainer portrait(s), 4 visual album covers, lightbox enabled`
 );
