@@ -6,7 +6,20 @@ if (vercelConfig.$schema !== "https://openapi.vercel.sh/vercel.json") {
   throw new Error("vercel.json must pin the official Vercel configuration schema");
 }
 
-const rules = new Map((vercelConfig.headers ?? []).map((rule) => [rule.source, rule.headers]));
+const headerRules = vercelConfig.headers ?? [];
+const sourceNames = headerRules.map((rule) => rule.source);
+if (new Set(sourceNames).size !== sourceNames.length) {
+  throw new Error("vercel.json must not define duplicate header sources with ambiguous precedence");
+}
+
+for (const rule of headerRules) {
+  const keys = (rule.headers ?? []).map(({ key }) => key.toLowerCase());
+  if (new Set(keys).size !== keys.length) {
+    throw new Error(`Header rule ${rule.source} contains duplicate header keys`);
+  }
+}
+
+const rules = new Map(headerRules.map((rule) => [rule.source, rule.headers]));
 const globalHeaders = new Map((rules.get("/(.*)") ?? []).map(({ key, value }) => [key, value]));
 const healthHeaders = new Map((rules.get("/health.json") ?? []).map(({ key, value }) => [key, value]));
 
@@ -30,6 +43,11 @@ for (const riskyDirective of ["default-src", "script-src", "style-src", "img-src
     throw new Error(`Baseline CSP must not accidentally constrain current external media/font/runtime dependencies: ${riskyDirective}`);
   }
 }
+for (const unsafeToken of ["'unsafe-inline'", "'unsafe-eval'"]) {
+  if (csp.includes(unsafeToken)) {
+    throw new Error(`Baseline CSP must not introduce an unsafe execution token: ${unsafeToken}`);
+  }
+}
 
 if (healthHeaders.get("Cache-Control") !== "no-store, max-age=0") {
   throw new Error("/health.json browser cache must be disabled so exact-release proof cannot use stale health data");
@@ -42,4 +60,4 @@ if (vercelConfig.buildCommand !== "npm run build" || vercelConfig.outputDirector
   throw new Error("Runtime header work must not weaken the canonical Vercel build/output contract");
 }
 
-console.log("verify-runtime-headers: PASS — anti-framing/nosniff/referrer/permissions baseline present and release health is no-store at browser/CDN layers");
+console.log("verify-runtime-headers: PASS — unambiguous anti-framing/nosniff/referrer/permissions baseline present and release health is no-store at browser/CDN layers");
