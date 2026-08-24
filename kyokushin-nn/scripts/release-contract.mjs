@@ -22,6 +22,8 @@ const required = [
   'data-art-direction="dojo-editorial-v3"',
   'data-static-directory="true"',
   'id="federation-schema"',
+  '<span class="brand-logo" role="img" aria-label="Shinkyokushinkai"></span>',
+  'background-image: url("https://wkosydney.com.au/assets/images/logo.jpg"), radial-gradient(',
   'id="groups"',
   'id="trainerRoster"',
   'id="photoMosaic"',
@@ -48,6 +50,7 @@ const forbidden = [
   "Не удалось загрузить сайт",
   "__KYOKUSHIN_ASSET_FALLBACK__",
   "Kyokushin JS fallback failed",
+  '<img class="brand-logo"',
   'data-bundle="art-direction-v2.css"',
   'data-bundle="experience.css"',
   'data-bundle="experience.js"'
@@ -100,4 +103,4 @@ if (Buffer.byteLength(html) < 100_000) {
   throw new Error(`Self-contained release is unexpectedly small: ${Buffer.byteLength(html)} bytes`);
 }
 
-console.log(`release-contract: PASS — pure-v3 release=${release}, artDirection=${health.artDirection}, staticDirectory=${health.staticDirectory}, structuredLocations=${health.discovery.structuredLocations}, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
+console.log(`release-contract: PASS — pure-v3 release=${release}, artDirection=${health.artDirection}, staticDirectory=${health.staticDirectory}, structuredLocations=${health.discovery.structuredLocations}, resilientBrand=true, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
