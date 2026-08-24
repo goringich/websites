@@ -60,10 +60,11 @@ if (motion.includes("innerHTML")) {
 }
 
 for (const antiPattern of [
-  "generic dark athletic landing-page skeleton",
-  "rounded/pill UI borrowed from SaaS patterns",
-  "generic fade-up reveal used as primary motion language",
-  "limited brand-specific visual grammar"
+  "generic athletic/agency landing-page pattern",
+  "classic 2-column text + framed photo composition",
+  "pill-ish navigation and button language",
+  "This makes the site feel assembled rather than art-directed",
+  "That is polish, not motion direction"
 ]) {
   if (!audit.includes(antiPattern)) {
     throw new Error(`Design audit lost rejected-pattern evidence: ${antiPattern}`);
