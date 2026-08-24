@@ -68,7 +68,7 @@ for (const instructor of instructors) {
   }
 }
 
-if (!html.includes("Адреса, расписание, телефоны и ссылки на карты ниже доступны без JavaScript.")) {
+if (!html.includes("Адреса, расписание, телефоны и ссылки на карты доступны без JavaScript.")) {
   throw new Error("Noscript copy must accurately describe the resilient static directory");
 }
 
