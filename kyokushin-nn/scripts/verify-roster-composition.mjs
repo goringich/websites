@@ -48,10 +48,21 @@ if (pendingMediaRule.includes("url(")) {
 for (const verifiedMarker of [
   '.roster-card[data-portrait="verified"] {',
   '.roster-card[data-portrait="verified"] .roster-media {',
-  '.roster-card[data-portrait="verified"] .roster-photo'
+  '.roster-photo {'
 ]) {
   if (!artDirection.includes(verifiedMarker)) {
     throw new Error(`Verified portrait treatment must remain photo-led: ${verifiedMarker}`);
+  }
+}
+
+for (const verifiedSourceMarker of [
+  'if (hasVerifiedPortrait) {',
+  'image.className = "roster-photo";',
+  'image.src = photo.image;',
+  'media.prepend(image);'
+]) {
+  if (!team.includes(verifiedSourceMarker)) {
+    throw new Error(`Verified portrait source path must remain image-backed: ${verifiedSourceMarker}`);
   }
 }
 
