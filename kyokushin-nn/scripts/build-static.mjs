@@ -299,6 +299,7 @@ const health = {
   release: releaseId,
   artDirection: "dojo-editorial-v3",
   staticDirectory: true,
+  brandResilience: true,
   discovery: {
     structuredLocations: structuredLocations.length,
     robots: true,
@@ -314,4 +315,4 @@ await Promise.all([
   writeFile(sitemapUrl, sitemap, "utf8")
 ]);
 
-console.log(`build: wrote source-converged pure-v3 dist/index.html (${Buffer.byteLength(html)} bytes), release=${releaseId}, artDirection=dojo-editorial-v3, staticDirectory=18/11, structuredLocations=${structuredLocations.length}`);
+console.log(`build: wrote source-converged pure-v3 dist/index.html (${Buffer.byteLength(html)} bytes), release=${releaseId}, artDirection=dojo-editorial-v3, staticDirectory=18/11, brandResilience=true, structuredLocations=${structuredLocations.length}`);

@@ -17,6 +17,27 @@
   pointer-events: none;
 }
 
+body[data-art-direction="dojo-editorial-v3"] .brand-logo {
+  background-color: #fff;
+  background-image:
+    url("https://wkosydney.com.au/assets/images/logo.jpg"),
+    radial-gradient(circle at center, #ef2d1d 0 32%, #fff 33% 100%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain, cover;
+}
+
+/* External hero photography is progressive enhancement. Until a real image has decoded successfully,
+ * the art-direction layer's neutral carbon background is the intentional first-screen fallback. */
+body[data-art-direction="dojo-editorial-v3"] .hero-visual img {
+  opacity: 0;
+  transition: opacity .24s ease, filter .45s ease;
+}
+
+body[data-art-direction="dojo-editorial-v3"] .hero-visual img.is-hero-media-ready {
+  opacity: 1;
+}
+
 body[data-art-direction="dojo-editorial-v3"] .site-nav a {
   position: relative;
   font-weight: 700;
@@ -119,5 +140,11 @@ body[data-art-direction="dojo-editorial-v3"] .photo-story {
 
   body[data-art-direction="dojo-editorial-v3"] .photo-story {
     border-top-width: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-art-direction="dojo-editorial-v3"] .hero-visual img {
+    transition: none;
   }
 }

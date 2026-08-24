@@ -1,6 +1,7 @@
 const v3Root = document.documentElement;
 const v3Hero = document.querySelector(".hero");
 const v3HeroVisual = document.querySelector(".hero-visual");
+const v3HeroMedia = document.querySelector(".hero-visual img");
 const v3InstructorList = document.querySelector("#instructorList");
 const v3CityFilters = document.querySelector("#cityFilters");
 const v3DayFilters = document.querySelector("#dayFilters");
@@ -40,6 +41,30 @@ const resetV3Pointer = () => {
   v3Root.style.setProperty("--v3-pointer-x", "0");
   v3Root.style.setProperty("--v3-pointer-y", "0");
 };
+
+const markV3HeroMediaReady = () => {
+  if (!v3HeroMedia || !v3HeroMedia.naturalWidth) return;
+  v3HeroMedia.classList.add("is-hero-media-ready");
+};
+
+const markV3HeroMediaUnavailable = () => {
+  if (!v3HeroMedia) return;
+  v3HeroMedia.classList.remove("is-hero-media-ready");
+  v3HeroMedia.hidden = true;
+};
+
+if (v3HeroMedia) {
+  if (v3HeroMedia.complete) {
+    if (v3HeroMedia.naturalWidth > 0) {
+      markV3HeroMediaReady();
+    } else {
+      markV3HeroMediaUnavailable();
+    }
+  } else {
+    v3HeroMedia.addEventListener("load", markV3HeroMediaReady, { once: true });
+    v3HeroMedia.addEventListener("error", markV3HeroMediaUnavailable, { once: true });
+  }
+}
 
 if (v3HeroVisual && v3FinePointer.matches && !v3ReducedMotion.matches) {
   v3HeroVisual.addEventListener("pointermove", (event) => {

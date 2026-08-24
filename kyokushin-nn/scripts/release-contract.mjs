@@ -22,6 +22,14 @@ const required = [
   'data-art-direction="dojo-editorial-v3"',
   'data-static-directory="true"',
   'id="federation-schema"',
+  '<span class="brand-logo" role="img" aria-label="Shinkyokushinkai"></span>',
+  'background-image: url("https://wkosydney.com.au/assets/images/logo.jpg"), radial-gradient(',
+  'radial-gradient(circle at center, #ef2d1d 0 32%, #fff 33% 100%)',
+  'background-size: contain, cover',
+  '.hero-visual img.is-hero-media-ready',
+  'v3HeroMedia.naturalWidth > 0',
+  'addEventListener("error", markV3HeroMediaUnavailable',
+  'v3HeroMedia.hidden = true',
   'id="groups"',
   'id="trainerRoster"',
   'id="photoMosaic"',
@@ -48,6 +56,7 @@ const forbidden = [
   "Не удалось загрузить сайт",
   "__KYOKUSHIN_ASSET_FALLBACK__",
   "Kyokushin JS fallback failed",
+  '<img class="brand-logo"',
   'data-bundle="art-direction-v2.css"',
   'data-bundle="experience.css"',
   'data-bundle="experience.js"'
@@ -76,12 +85,13 @@ if (
   || health.release !== release
   || health.artDirection !== "dojo-editorial-v3"
   || health.staticDirectory !== true
+  || health.brandResilience !== true
   || !Number.isInteger(health.discovery?.structuredLocations)
   || health.discovery.structuredLocations < 1
   || health.discovery.robots !== true
   || health.discovery.sitemap !== true
 ) {
-  throw new Error(`Health manifest does not match HTML release/runtime/discovery identity: ${JSON.stringify(health)}`);
+  throw new Error(`Health manifest does not match HTML release/runtime/discovery/brand identity: ${JSON.stringify(health)}`);
 }
 
 if (!robots.includes("User-agent: *") || !robots.includes("Allow: /") || !robots.includes("Sitemap: https://kyokushin-nn.vercel.app/sitemap.xml")) {
@@ -100,4 +110,4 @@ if (Buffer.byteLength(html) < 100_000) {
   throw new Error(`Self-contained release is unexpectedly small: ${Buffer.byteLength(html)} bytes`);
 }
 
-console.log(`release-contract: PASS — pure-v3 release=${release}, artDirection=${health.artDirection}, staticDirectory=${health.staticDirectory}, structuredLocations=${health.discovery.structuredLocations}, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
+console.log(`release-contract: PASS — pure-v3 release=${release}, artDirection=${health.artDirection}, staticDirectory=${health.staticDirectory}, structuredLocations=${health.discovery.structuredLocations}, resilientBrand=${health.brandResilience}, resilientHeroMedia=true, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
