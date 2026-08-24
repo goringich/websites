@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - project/kyokushin-nn
-    paths:
-      - "kyokushin-nn/**"
-      - ".github/workflows/kyokushin-nn-ci.yml"
+    paths-ignore:
+      - "kyokushin-nn/docs/**"
+      - "kyokushin-nn/AI_CONTEXT.md"
   pull_request:
     branches:
       - project/kyokushin-nn
