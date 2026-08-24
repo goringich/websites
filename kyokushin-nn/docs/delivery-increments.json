@@ -1,5 +1,5 @@
 {
-  "schema_version": "2026-08-24.delivery-increments.v2",
+  "schema_version": "2026-08-24.delivery-increments.v3",
   "project": "kyokushin-nn",
   "increments": [
     {
@@ -38,16 +38,18 @@
         "scripts/production-smoke.mjs",
         ".github/workflows/kyokushin-nn-ci.yml"
       ],
-      "blocker": "Current public production has not advanced to the latest source release after merge."
+      "blocker": "Current public production has not advanced to the pure-V3 source release after merge; usable VERCEL_TOKEN status cannot be observed with the current connector evidence."
     },
     {
       "id": "dojo-editorial-v3",
-      "status": "implemented_candidate",
+      "status": "implemented_candidate_pure_stack",
       "outcome": "Replace the owner-rejected generic athletic landing-page skeleton with a distinctive Shinkyokushinkai editorial/poster experience while preserving practical recruitment functionality.",
-      "source_commit": "94ad1b62f84e53e0a2e74399940a8b3d237ac907",
+      "initial_source_commit": "94ad1b62f84e53e0a2e74399940a8b3d237ac907",
+      "current_source_commit": "52c92802888018e9b0ee396add0ba4d0a902e6c0",
       "acceptance": [
         "explicit owner rejection is retained as a negative reference",
         "art direction changes composition rather than only tokens/effects",
+        "owner-rejected V2 art-direction and generic experience layers are not active production dependencies",
         "real federation photography carries the emotional narrative",
         "trainer roster has an intentional poster language for both verified-photo and identity-safe fallback states",
         "hall finder remains easy to use and becomes an editorial directory rather than a nested card stack",
@@ -63,14 +65,23 @@
         "docs/design/art-direction-v3.json",
         "docs/design/audit-2026-08-24.md",
         "art-direction-v3.css",
+        "experience-v3.css",
+        "experience-v3.js",
         "motion-v3.js",
         "scripts/verify-art-direction-v3.mjs",
-        "GitHub Actions run 32740680428"
+        "scripts/release-contract.mjs",
+        "scripts/production-smoke.mjs",
+        "GitHub Actions run 32742127088",
+        "PR #23 pure-V3 production stack",
+        "merge 52c92802888018e9b0ee396add0ba4d0a902e6c0"
+      ],
+      "superseded_evidence": [
+        "Vercel preview dpl_BtDGyYMMCBqBL77vTFVe8TKKN2Zb was built from initial V3 commit 94ad1b62f84e53e0a2e74399940a8b3d237ac907 before pure-stack cleanup and is not current perceptual acceptance evidence."
       ],
       "blocked_acceptance": [
+        "current_pure_v3_live_or_preview_deployment",
         "perceptual_review_pass",
-        "owner_acceptance",
-        "live_v3_deployment"
+        "owner_acceptance"
       ]
     }
   ]

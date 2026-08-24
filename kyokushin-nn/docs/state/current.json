@@ -1,16 +1,24 @@
 {
-  "schema_version": "2026-08-24.kyokushin-current.v3",
+  "schema_version": "2026-08-24.kyokushin-current.v4",
   "project": "kyokushin-nn",
-  "updated_at": "2026-08-24T14:46:00Z",
+  "updated_at": "2026-08-24T15:03:00Z",
   "mission": "Convert recruitment interest into a direct, trustworthy choice of hall and instructor for Shinkyokushinkai karate in Nizhny Novgorod and Dzerzhinsk.",
   "source_state": {
     "branch": "project/kyokushin-nn",
-    "head_after_art_direction_v3": "94ad1b62f84e53e0a2e74399940a8b3d237ac907",
+    "current_pure_v3_commit": "52c92802888018e9b0ee396add0ba4d0a902e6c0",
+    "initial_v3_commit": "94ad1b62f84e53e0a2e74399940a8b3d237ac907",
     "production_build": "self-contained dist/index.html",
+    "visual_stack": "pure-v3",
     "art_direction": "dojo-editorial-v3",
     "art_direction_contract": "docs/design/art-direction-v3.json",
     "design_audit": "docs/design/audit-2026-08-24.md",
+    "experience_layer": "experience-v3.css + experience-v3.js",
     "motion_layer": "motion-v3.js",
+    "rejected_production_layers": [
+      "art-direction-v2.css",
+      "experience.css",
+      "experience.js"
+    ],
     "expected_halls": 18,
     "expected_instructors": 11,
     "expected_gallery_photos": 8,
@@ -21,26 +29,39 @@
   },
   "verification_state": {
     "source_ci": "pass",
-    "source_ci_run": 32740680428,
+    "source_ci_run": 32742127088,
     "structural_art_direction_gate": "pass",
+    "pure_v3_release_gate": "pass",
+    "rejected_visual_dependency_gate": "pass",
     "perceptual_review": "blocked",
-    "perceptual_blocker": "Current execution browser refuses local/file navigation with ERR_BLOCKED_BY_ADMINISTRATOR; source/CI evidence must not be promoted to perceptual acceptance.",
+    "perceptual_blocker": "The available execution browser cannot provide representative desktop/mobile rendered captures; source/CI evidence must not be promoted to perceptual acceptance.",
     "owner_acceptance": "pending"
+  },
+  "preview_state": {
+    "deployment_id": "dpl_BtDGyYMMCBqBL77vTFVe8TKKN2Zb",
+    "source_commit": "94ad1b62f84e53e0a2e74399940a8b3d237ac907",
+    "state": "ready_but_superseded",
+    "art_direction": "dojo-editorial-v3",
+    "visual_stack": "mixed_v2_v3_pre_pure_stack",
+    "review_authority": "not_current",
+    "reason": "This protected preview was built before PR #23 removed the rejected V2 visual dependencies, so it cannot serve as the current owner-review artifact."
   },
   "runtime_state": {
     "production_url": "https://kyokushin-nn.vercel.app/",
-    "status": "healthy_but_stale_relative_to_v3_source",
+    "status": "healthy_but_stale_relative_to_pure_v3_source",
     "deployment_id": "dpl_2k1x8VbTGQtisfTptmeUzfafJane",
     "source_commit_used_by_recovery_build": "a3eb4e812b5bb9cc3f8fd69755bda742c3af8751",
     "build": "self-contained",
     "art_direction": "v2_recovery_release",
-    "production_matches_current_v3_source": false,
-    "last_evidence": "After art-direction v3 merged, Vercel deployment inventory still showed dpl_2k1x8VbTGQtisfTptmeUzfafJane as latest production; no new deployment was created automatically."
+    "production_matches_current_pure_v3_source": false,
+    "last_evidence": "Public production returned HTTP 200 but lacked x-kyokushin-release and x-kyokushin-art-direction and still contained the bundled V2 art-direction/experience layers. Vercel inventory showed no new production deployment after the pure-V3 merge."
   },
   "active_slice": {
-    "outcome": "Get the radically changed v3 visual skeleton onto a reviewable rendered surface, inspect representative desktop/mobile artifacts, fix visible issues, and only then request owner visual acceptance.",
+    "outcome": "Deploy the exact pure-V3 source to a current reviewable surface, inspect representative desktop/mobile rendered artifacts, fix visible issues, and only then request owner visual acceptance.",
     "acceptance": [
-      "production or protected preview serves dojo-editorial-v3",
+      "production or a new protected preview serves source commit 52c92802888018e9b0ee396add0ba4d0a902e6c0 or a later verified descendant",
+      "served artifact reports dojo-editorial-v3 and pure-v3 visual stack",
+      "served artifact does not include rejected V2 visual bundles",
       "exact rendered desktop first screen is inspected",
       "exact rendered desktop high-density section is inspected",
       "exact rendered mobile first screen is inspected",
@@ -51,7 +72,7 @@
     ]
   },
   "unknowns": [
-    "Whether the GitHub repository currently has a usable VERCEL_TOKEN Actions secret for unattended production deployment.",
-    "Whether the v3 rendered artifact will satisfy owner visual expectations; source checks cannot answer this."
+    "Whether the GitHub repository currently has a usable VERCEL_TOKEN Actions secret for unattended production deployment; the workflow requires it but current connector evidence cannot inspect the secret or push-run job.",
+    "Whether the pure-V3 rendered artifact will satisfy owner visual expectations; source checks cannot answer this."
   ]
 }
