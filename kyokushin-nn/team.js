@@ -63,15 +63,28 @@ const trainerAnchor = (name) => `trainer-${name
   .replace(/[^а-яa-z0-9]+/gi, "-")
   .replace(/^-|-$/g, "")}`;
 
+const hasPortrait = (instructor) => {
+  const photo = rosterPhotoRegistry[instructor.name];
+  return photo?.kind === "person" && photo.person === instructor.name;
+};
+
+const makeFact = (value, label) => {
+  const fact = document.createElement("span");
+  const number = document.createElement("strong");
+  number.textContent = String(value);
+  fact.append(number, document.createTextNode(label));
+  return fact;
+};
+
 const makeRosterCard = (instructor, index) => {
   const card = document.createElement("article");
   card.className = "roster-card";
   card.id = trainerAnchor(instructor.name);
 
   const photo = rosterPhotoRegistry[instructor.name];
-  const hasVerifiedPortrait = photo?.kind === "person" && photo.person === instructor.name;
+  const hasVerifiedPortrait = hasPortrait(instructor);
   card.dataset.portrait = hasVerifiedPortrait ? "verified" : "pending";
-  if (index < 2 && hasVerifiedPortrait) card.classList.add("roster-card-featured");
+  if (hasVerifiedPortrait) card.classList.add("roster-card-featured");
 
   const media = document.createElement("div");
   media.className = "roster-media";
@@ -86,7 +99,7 @@ const makeRosterCard = (instructor, index) => {
     image.className = "roster-photo";
     image.src = photo.image;
     image.alt = instructor.name;
-    image.loading = index < 4 ? "eager" : "lazy";
+    image.loading = index < 2 ? "eager" : "lazy";
     image.decoding = "async";
     image.style.objectPosition = photo.position ?? "50% 35%";
     image.addEventListener("error", () => card.dataset.portrait = "pending", { once: true });
@@ -120,14 +133,11 @@ const makeRosterCard = (instructor, index) => {
   const facts = document.createElement("div");
   facts.className = "roster-facts";
 
-  const venues = document.createElement("span");
-  venues.innerHTML = `<strong>${instructor.venues.length}</strong>${instructor.venues.length === 1 ? "зал" : instructor.venues.length < 5 ? "зала" : "залов"}`;
-
+  const venueCount = instructor.venues.length;
+  const venueLabel = venueCount === 1 ? "зал" : venueCount < 5 ? "зала" : "залов";
   const cityCount = new Set(instructor.venues.map((venue) => venue.city)).size;
-  const cities = document.createElement("span");
-  cities.innerHTML = `<strong>${cityCount}</strong>${cityCount === 1 ? "город" : "города"}`;
-
-  facts.append(venues, cities);
+  const cityLabel = cityCount === 1 ? "город" : "города";
+  facts.append(makeFact(venueCount, venueLabel), makeFact(cityCount, cityLabel));
 
   const actions = document.createElement("div");
   actions.className = "roster-actions";
@@ -149,5 +159,6 @@ const makeRosterCard = (instructor, index) => {
 };
 
 if (rosterNode && typeof instructors !== "undefined") {
-  rosterNode.replaceChildren(...instructors.map(makeRosterCard));
+  const rosterInstructors = [...instructors].sort((left, right) => Number(hasPortrait(right)) - Number(hasPortrait(left)));
+  rosterNode.replaceChildren(...rosterInstructors.map(makeRosterCard));
 }
