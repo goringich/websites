@@ -37,6 +37,7 @@
 .roster-body h3,
 .roster-card[data-portrait="verified"] .roster-body h3,
 .search-field input,
+.steps span,
 .final-cta h2,
 .final-cta h2 span {
   font-weight: 600;
