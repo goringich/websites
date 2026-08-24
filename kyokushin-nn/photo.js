@@ -46,7 +46,16 @@ const createPhotoCard = (item) => {
   image.alt = item.alt;
   image.loading = "lazy";
   image.decoding = "async";
-  image.addEventListener("error", () => card.classList.add("is-image-error"), { once: true });
+
+  // External VK CDN URLs can expire independently of the site. A dead image
+  // must never leave a visible broken placeholder in the production mosaic.
+  image.addEventListener("error", () => {
+    if (item.fallbackImage && image.src !== item.fallbackImage) {
+      image.src = item.fallbackImage;
+      return;
+    }
+    card.remove();
+  });
 
   card.append(image);
   return card;
