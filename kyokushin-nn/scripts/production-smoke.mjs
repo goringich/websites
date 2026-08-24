@@ -54,6 +54,10 @@ const required = [
   'background-image: url("https://wkosydney.com.au/assets/images/logo.jpg"), radial-gradient(',
   'radial-gradient(circle at center, #ef2d1d 0 32%, #fff 33% 100%)',
   'background-size: contain, cover',
+  '.hero-visual img.is-hero-media-ready',
+  'v3HeroMedia.naturalWidth > 0',
+  'addEventListener("error", markV3HeroMediaUnavailable',
+  'v3HeroMedia.hidden = true',
   'data-bundle="experience-v3.css"',
   'data-bundle="art-direction-v3.css"',
   'data-bundle="experience-v3.js"',
@@ -183,6 +187,7 @@ console.log(JSON.stringify({
   runtimeHeaders: "verified",
   healthCache: "no-store",
   resilientBrand: true,
+  resilientHeroMedia: true,
   discovery: {
     structuredLocations: federationSchema.location.length,
     robots: true,
