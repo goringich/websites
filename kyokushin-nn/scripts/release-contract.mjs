@@ -14,6 +14,8 @@ const release = releaseMatch?.[1] ?? "";
 const required = [
   '<meta name="x-kyokushin-build" content="self-contained">',
   '<meta name="x-kyokushin-release" content="',
+  '<meta name="x-kyokushin-art-direction" content="dojo-editorial-v3">',
+  'data-art-direction="dojo-editorial-v3"',
   'id="groups"',
   'id="trainerRoster"',
   'id="photoMosaic"',
@@ -21,7 +23,10 @@ const required = [
   'data-bundle="styles.css"',
   'data-bundle="script.js"',
   'data-bundle="finder.js"',
-  'data-bundle="photo.js"'
+  'data-bundle="photo.js"',
+  'data-bundle="art-direction-v3.css"',
+  'data-bundle="motion-v3.js"',
+  'KYOKUSHIN_ART_DIRECTION_V3_READY'
 ];
 
 const forbidden = [
@@ -57,8 +62,9 @@ if (
   || health.status !== "ok"
   || health.build !== "self-contained"
   || health.release !== release
+  || health.artDirection !== "dojo-editorial-v3"
 ) {
-  throw new Error(`Health manifest does not match HTML release identity: ${JSON.stringify(health)}`);
+  throw new Error(`Health manifest does not match HTML release identity/art direction: ${JSON.stringify(health)}`);
 }
 
 const expectedRelease = process.env.KYOKUSHIN_RELEASE_ID?.trim();
@@ -66,8 +72,8 @@ if (expectedRelease && health.release !== expectedRelease) {
   throw new Error(`Built release ${health.release} does not match expected ${expectedRelease}`);
 }
 
-if (Buffer.byteLength(html) < 80_000) {
+if (Buffer.byteLength(html) < 100_000) {
   throw new Error(`Self-contained release is unexpectedly small: ${Buffer.byteLength(html)} bytes`);
 }
 
-console.log(`release-contract: PASS — release=${release}, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
+console.log(`release-contract: PASS — release=${release}, artDirection=${health.artDirection}, direct self-contained HTML (${Buffer.byteLength(html)} bytes)`);
