@@ -1,0 +1,40 @@
+:root {
+  --page-progress: 0%;
+}
+
+.topbar::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--v3-red, #ef2d1d) 0 var(--page-progress),
+    transparent var(--page-progress) 100%
+  );
+  content: "";
+  pointer-events: none;
+}
+
+.site-nav a {
+  position: relative;
+}
+
+.roster-card:focus-within {
+  outline: 3px solid rgba(239, 45, 29, .3);
+  outline-offset: 3px;
+}
+
+#photos,
+#team,
+#groups,
+#how {
+  scroll-margin-top: 86px;
+}
+
+@media (max-width: 620px) {
+  .topbar::after {
+    height: 1px;
+  }
+}
