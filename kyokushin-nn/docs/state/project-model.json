@@ -1,0 +1,101 @@
+{
+  "schema_version": "2026-08-24.project-model.v1",
+  "project": "kyokushin-nn",
+  "classification": "project_local_site",
+  "central_ai_os_ownership": "not_declared",
+  "mission": "Help a parent or student choose a suitable Shinkyokushinkai hall and contact the correct instructor with trustworthy information and minimal friction.",
+  "north_star": "A visitor can go from landing on the site to a correct direct instructor contact for a suitable hall without needing another intermediary.",
+  "stakeholder_outcomes": [
+    "Visitors quickly understand the offer and age threshold.",
+    "Visitors can find halls by city, day, address, school or instructor.",
+    "Visitors can share a filtered hall/instructor URL and recover the same state later.",
+    "Federation information and trainer identity remain source-bound and conservative.",
+    "The maintainer can distinguish source health, release health and production health from machine-readable evidence."
+  ],
+  "target_capabilities": [
+    "18-hall recruitment catalogue with direct contacts",
+    "trainer roster with identity-safe portraits",
+    "shareable deterministic hall finder",
+    "real federation media and photo reports",
+    "responsive and keyboard-accessible interaction",
+    "self-contained production release",
+    "exact-release production drift detection",
+    "machine-readable project state and problem registry",
+    "bounded repository-agent entrypoint"
+  ],
+  "quality_attributes": [
+    "factual integrity",
+    "availability",
+    "mobile usability",
+    "accessibility",
+    "release determinism",
+    "production observability",
+    "low operational complexity",
+    "SEO-readable first response"
+  ],
+  "strengths": [
+    {
+      "claim": "Recruitment data and identity constraints are regression guarded.",
+      "evidence": "scripts/verify.mjs checks the 18 halls, 11 instructors, media provenance and trainer identity rules."
+    },
+    {
+      "claim": "The runtime can be shipped as one self-contained HTML artifact.",
+      "evidence": "scripts/build-static.mjs inlines the project CSS/JS and the release contract rejects local runtime dependencies and loader fallbacks."
+    },
+    {
+      "claim": "The public production failure mode that used p0.bin..p4.bin reconstruction has been removed.",
+      "evidence": "Vercel production deployment dpl_2k1x8VbTGQtisfTptmeUzfafJane built a 115467-byte direct self-contained HTML release and the public domain returned that HTML."
+    }
+  ],
+  "tradeoffs": [
+    {
+      "choice": "Keep a static zero-runtime-dependency application instead of introducing a framework/backend.",
+      "benefit": "Small attack surface, simple hosting, fast first response and deterministic artifact generation.",
+      "cost": "No server-owned form workflow, analytics pipeline or dynamic content management is provided by the application itself."
+    },
+    {
+      "choice": "Use conservative identity fallbacks when a trainer portrait is not source-bound.",
+      "benefit": "Avoids publishing a wrong person's image.",
+      "cost": "Some trainer cards remain less visually rich until a verified source is available."
+    }
+  ],
+  "accepted_debt": [
+    {
+      "id": "unattended-vercel-auth",
+      "debt": "The Vercel project is not Git-linked and unattended GitHub-to-Vercel deployment still depends on a repository VERCEL_TOKEN secret being available.",
+      "why_accepted_now": "Production can be recovered through authenticated Vercel OAuth while the source pipeline fails closed instead of silently serving a stale build.",
+      "exit_condition": "A push to project/kyokushin-nn completes verify -> Vercel production deploy -> exact-release public smoke without manual intervention."
+    },
+    {
+      "id": "browser-qa-environment",
+      "debt": "The current execution container cannot complete Chromium screenshot QA because Chromium hangs in its D-Bus/zygote environment.",
+      "why_accepted_now": "HTTP production evidence and deterministic source/release checks prove the delivery incident independently of that test environment.",
+      "exit_condition": "A normal browser-capable runner executes responsive visual/runtime QA against the exact production release."
+    }
+  ],
+  "next_demonstrable_increment": {
+    "outcome": "Make every production release attributable to one exact Git commit and prove that exact release on the public domain.",
+    "acceptance": [
+      "dist/index.html contains x-kyokushin-release",
+      "dist/health.json exposes the same release identity",
+      "release-contract verifies the identity pair",
+      "production-smoke rejects a stale release when KYOKUSHIN_EXPECTED_RELEASE is set",
+      "CI artifacts include both index.html and health.json"
+    ],
+    "evidence_required": [
+      "green PR verification",
+      "production deployment build log",
+      "public HTML release marker",
+      "public health.json release marker"
+    ]
+  },
+  "rules": {
+    "evidence_required": true,
+    "unknown_must_remain_unknown": true,
+    "strength_requires_evidence": true,
+    "tradeoff_requires_benefit_and_cost": true,
+    "debt_requires_exit_condition": true,
+    "demo_increment_requires_acceptance_and_evidence": true,
+    "private_or_secret_evidence_forbidden": true
+  }
+}
