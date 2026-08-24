@@ -22,6 +22,7 @@ env:
   VERCEL_ORG_ID: team_ApLUE5gYEWDgrUDjadM1ubCL
   VERCEL_PROJECT_ID: prj_Kmp6lK4VQp63N1fQnZL9KTv76mSI
   KYOKUSHIN_PRODUCTION_URL: https://kyokushin-nn.vercel.app/
+  KYOKUSHIN_RELEASE_ID: ${{ github.sha }}
 
 jobs:
   verify:
@@ -43,7 +44,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: kyokushin-nn-production
-          path: kyokushin-nn/dist/index.html
+          path: kyokushin-nn/dist/
           if-no-files-found: error
           retention-days: 14
 
@@ -83,6 +84,7 @@ jobs:
         working-directory: kyokushin-nn
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          KYOKUSHIN_RELEASE_ID: ${{ github.sha }}
         run: npx --yes vercel@59.3.0 build --prod --token="$VERCEL_TOKEN"
 
       - name: Deploy verified build to production
@@ -91,8 +93,10 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: npx --yes vercel@59.3.0 deploy --prebuilt --prod --token="$VERCEL_TOKEN"
 
-      - name: Prove public production
+      - name: Prove exact public production release
         working-directory: kyokushin-nn
+        env:
+          KYOKUSHIN_EXPECTED_RELEASE: ${{ github.sha }}
         run: |
           for attempt in 1 2 3; do
             if npm run smoke:production; then
