@@ -46,17 +46,74 @@ const verifiedMedia = [
 ];
 
 const trainerPhotos = {
-  "Сергей Жуков": { image: verifiedMedia[0].image, position: "50% 38%" },
-  "Андрей Троцко": { image: verifiedMedia[1].image, position: "50% 42%" },
-  "Владимир Жуков": { image: verifiedMedia[2].image, position: "50% 36%" },
-  "Дарья Осинина": { image: verifiedMedia[3].image, position: "50% 40%" },
-  "Юлия Фролова": { image: verifiedMedia[4].image, position: "50% 38%" },
-  "Иван Гаврилин": { image: verifiedMedia[0].image, position: "64% 40%" },
-  "Сергей Глухов": { image: verifiedMedia[1].image, position: "38% 42%" },
-  "Сергей Захаров": { image: verifiedMedia[2].image, position: "62% 38%" },
-  "Андрей Коннов": { image: verifiedMedia[3].image, position: "40% 38%" },
-  "Георгий Пигиданов": { image: verifiedMedia[4].image, position: "60% 40%" },
-  "Кирилл Антоневич": { image: verifiedMedia[0].image, position: "50% 34%" }
+  "Сергей Жуков": {
+    kind: "club",
+    image: verifiedMedia[0].image,
+    sourceUrl: verifiedMedia[0].sourceUrl,
+    position: "50% 38%"
+  },
+  "Андрей Троцко": {
+    kind: "club",
+    image: verifiedMedia[1].image,
+    sourceUrl: verifiedMedia[1].sourceUrl,
+    position: "50% 42%"
+  },
+  "Владимир Жуков": {
+    kind: "club",
+    image: verifiedMedia[2].image,
+    sourceUrl: verifiedMedia[2].sourceUrl,
+    position: "50% 36%"
+  },
+  "Дарья Осинина": {
+    kind: "club",
+    image: verifiedMedia[3].image,
+    sourceUrl: verifiedMedia[3].sourceUrl,
+    position: "50% 40%"
+  },
+  "Юлия Фролова": {
+    kind: "club",
+    image: verifiedMedia[4].image,
+    sourceUrl: verifiedMedia[4].sourceUrl,
+    position: "50% 38%"
+  },
+  "Иван Гаврилин": {
+    kind: "club",
+    image: verifiedMedia[0].image,
+    sourceUrl: verifiedMedia[0].sourceUrl,
+    position: "64% 40%"
+  },
+  "Сергей Глухов": {
+    kind: "club",
+    image: verifiedMedia[1].image,
+    sourceUrl: verifiedMedia[1].sourceUrl,
+    position: "38% 42%"
+  },
+  "Сергей Захаров": {
+    kind: "club",
+    image: verifiedMedia[2].image,
+    sourceUrl: verifiedMedia[2].sourceUrl,
+    position: "62% 38%"
+  },
+  "Андрей Коннов": {
+    kind: "club",
+    image: verifiedMedia[3].image,
+    sourceUrl: verifiedMedia[3].sourceUrl,
+    position: "40% 38%"
+  },
+  "Георгий Пигиданов": {
+    kind: "person",
+    person: "Георгий Пигиданов",
+    image: "https://sun9-54.userapi.com/s/v1/ig2/WUuluYR3wScSgcKv4oCm9jAmB-zvo_4dyFVFIljMw2UJTyrZHVhb0EWfnr3Sxt8TGXwNwaxUR_a_A_Xrc6p3fL8o.jpg?as=32x43%2C48x64%2C72x97%2C108x145%2C160x215%2C240x322%2C360x484%2C480x645%2C540x725%2C640x860%2C720x967%2C953x1280&cs=240x0&from=bu&quality=95",
+    sourceUrl: "https://shin-nnov.orgs.biz/",
+    position: "50% 30%"
+  },
+  "Кирилл Антоневич": {
+    kind: "person",
+    person: "Кирилл Антоневич",
+    image: "https://static.tildacdn.com/tild3832-3432-4365-a436-313238623462/____.svg",
+    sourceUrl: "https://masterskayakarate.ru/",
+    position: "50% 35%"
+  }
 };
 
 const photoCollections = [

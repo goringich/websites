@@ -114,16 +114,20 @@ if (registry.verifiedMedia.length < 5 || registry.verifiedMedia.length > 10) {
 
 const trainerPhotoNames = Object.keys(registry.trainerPhotos ?? {});
 if (JSON.stringify(trainerPhotoNames) !== JSON.stringify(expectedPeople)) {
-  throw new Error(`Every instructor must have a photo slot: ${trainerPhotoNames.join(", ")}`);
+  throw new Error(`Every instructor must have a visual photo slot: ${trainerPhotoNames.join(", ")}`);
 }
 
 if (registry.photoCollections.length !== 4) {
   throw new Error(`Expected exactly 4 federation photo reports, got ${registry.photoCollections.length}`);
 }
 
-const allowedImageHosts = new Set(["static.tildacdn.com"]);
+const allowedImageHosts = new Set([
+  "static.tildacdn.com",
+  "sun9-54.userapi.com"
+]);
 const allowedSourceHosts = new Set([
   "masterskayakarate.ru",
+  "shin-nnov.orgs.biz",
   "disk.yandex.ru",
   "vk.com"
 ]);
@@ -145,13 +149,36 @@ for (const item of registry.verifiedMedia) {
   }
 }
 
+let personPhotoCount = 0;
 for (const [name, item] of Object.entries(registry.trainerPhotos)) {
   if (!expectedPeople.includes(name)) {
     throw new Error(`Unknown trainer photo key: ${name}`);
   }
   if (!item.image || !allowedImageHosts.has(new URL(item.image).hostname)) {
-    throw new Error(`Trainer photo must use an approved real club image: ${name}`);
+    throw new Error(`Trainer visual must use an approved image host: ${name}`);
   }
+  if (!item.sourceUrl || !allowedSourceHosts.has(new URL(item.sourceUrl).hostname)) {
+    throw new Error(`Trainer visual must have a trusted source: ${name}`);
+  }
+  if (!["person", "club"].includes(item.kind)) {
+    throw new Error(`Trainer visual kind must be person or club: ${name}`);
+  }
+  if (item.kind === "person") {
+    personPhotoCount += 1;
+    if (item.person !== name) {
+      throw new Error(`Person photo identity must exactly match trainer key: ${name}`);
+    }
+  } else if (item.person) {
+    throw new Error(`Club photo must never claim a person identity: ${name}`);
+  }
+}
+
+if (personPhotoCount < 1) {
+  throw new Error("At least one source-bound trainer portrait is expected");
+}
+
+if (!trainerPhotoScript.includes("Фото секции")) {
+  throw new Error("Club imagery must be visibly labelled as section imagery");
 }
 
 for (const item of registry.photoCollections) {
@@ -166,5 +193,6 @@ for (const item of registry.photoCollections) {
 
 console.log(
   `verify: 18 venues, 11 instructors, ${registry.verifiedMedia.length} clean gallery photos, ` +
-  `${trainerPhotoNames.length} trainer photo slots, 4 photo reports, clean-copy guard PASS`
+  `${trainerPhotoNames.length} trainer visuals (${personPhotoCount} source-bound person photos), ` +
+  `4 photo reports, identity-integrity guard PASS`
 );
