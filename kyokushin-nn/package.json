@@ -6,7 +6,7 @@
   "description": "Recruitment microsite for Nizhny Novgorod Shinkyokushinkai karate federation",
   "scripts": {
     "start": "node server.mjs",
-    "check": "node --check script.js && node --check media.js && node --check trainer-photos.js && node --check photo.js && node --check server.mjs && node scripts/verify.mjs"
+    "check": "node --check script.js && node --check media.js && node --check trainer-photos.js && node --check team.js && node --check photo.js && node --check server.mjs && node scripts/verify.mjs"
   },
   "engines": {
     "node": ">=20"
