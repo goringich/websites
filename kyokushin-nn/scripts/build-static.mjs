@@ -193,12 +193,10 @@ html = html.replace(
   `<script type="application/ld+json" id="federation-schema">\n${jsonLdStringify(federationSchema)}\n  </script>`
 );
 
-const oldNoscript = '<noscript><p class="noscript-note">Для фильтров секций и просмотра фотографий нужен JavaScript. Телефоны и расписание доступны после его включения.</p></noscript>';
-const newNoscript = '<noscript><p class="noscript-note">Фильтры и просмотр фотографий требуют JavaScript. Адреса, расписание, телефоны и ссылки на карты ниже доступны без JavaScript.</p></noscript>';
-if (!html.includes(oldNoscript)) {
-  throw new Error("Source HTML noscript contract changed unexpectedly");
+const noscriptContract = '<noscript><p class="noscript-note">Фильтры и просмотр фотографий требуют JavaScript. Адреса, расписание, телефоны и ссылки на карты доступны без JavaScript.</p></noscript>';
+if (!html.includes(noscriptContract)) {
+  throw new Error("Source HTML must truthfully describe the no-JavaScript recruitment fallback");
 }
-html = html.replace(oldNoscript, newNoscript);
 
 for (const file of rejectedVisualFiles) {
   const activeCss = `<link rel="stylesheet" href="${file}">`;
