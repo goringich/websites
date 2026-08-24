@@ -75,3 +75,4 @@ window.addEventListener("scroll", () => {
 }, { passive: true });
 
 updatePageProgress();
+window.KYOKUSHIN_EXPERIENCE_READY = true;
