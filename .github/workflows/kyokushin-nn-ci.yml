@@ -20,7 +20,7 @@ permissions:
 
 env:
   VERCEL_ORG_ID: team_ApLUE5gYEWDgrUDjadM1ubCL
-  VERCEL_PROJECT_ID: prj_Kmp6lK4VQp63N1ubCL
+  VERCEL_PROJECT_ID: prj_Kmp6lK4VQp63N1fQnZL9KTv76mSI
   KYOKUSHIN_PRODUCTION_URL: https://kyokushin-nn.vercel.app/
   KYOKUSHIN_RELEASE_ID: ${{ github.sha }}
 
