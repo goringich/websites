@@ -17,6 +17,16 @@
   pointer-events: none;
 }
 
+body[data-art-direction="dojo-editorial-v3"] .brand-logo {
+  background-color: #fff;
+  background-image:
+    url("https://wkosydney.com.au/assets/images/logo.jpg"),
+    radial-gradient(circle at center, #ef2d1d 0 32%, #fff 33% 100%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain, cover;
+}
+
 body[data-art-direction="dojo-editorial-v3"] .site-nav a {
   position: relative;
   font-weight: 700;
