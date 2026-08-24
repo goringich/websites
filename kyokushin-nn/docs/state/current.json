@@ -1,18 +1,21 @@
 {
-  "schema_version": "2026-08-24.kyokushin-current.v6",
+  "schema_version": "2026-08-24.kyokushin-current.v7",
   "project": "kyokushin-nn",
-  "updated_at": "2026-08-24T16:48:00Z",
+  "updated_at": "2026-08-24T18:14:00Z",
   "mission": "Convert recruitment interest into a direct, trustworthy choice of hall and instructor for Shinkyokushinkai karate in Nizhny Novgorod and Dzerzhinsk.",
   "source_state": {
     "branch": "project/kyokushin-nn",
-    "current_verified_commit": "1a10048a6b516057205078862d041282cbc1ba85",
-    "package_version": "3.4.0",
+    "current_verified_commit": "e26e1633c1dbf207f935e9c6ae1f142a4ac9207f",
+    "package_version": "3.5.0",
     "initial_v3_commit": "94ad1b62f84e53e0a2e74399940a8b3d237ac907",
     "pure_v3_stack_commit": "52c92802888018e9b0ee396add0ba4d0a902e6c0",
     "editorial_refinement_commit": "067a4d8d2018f2bba2edb8247a0cd166c15e4ad5",
     "static_directory_commit": "b76254091934e3a4d3406f1348692988c5ce9aca",
     "runtime_headers_commit": "f1eae7a0994e0286f82a881c7ed42833742ed737",
     "discovery_contract_commit": "1a10048a6b516057205078862d041282cbc1ba85",
+    "node24_actions_commit": "780fec11b7e7f3b73ea2f62ddde51eb6339cd565",
+    "source_build_truth_commit": "9b5627ed6e124e377dae21056ba7e3414a9a0258",
+    "first_screen_resilience_commit": "e26e1633c1dbf207f935e9c6ae1f142a4ac9207f",
     "production_build": "self-contained dist/index.html + health.json + robots.txt + sitemap.xml",
     "visual_stack": "pure-v3",
     "art_direction": "dojo-editorial-v3",
@@ -24,6 +27,11 @@
     "runtime_security_headers": true,
     "discovery_contract": true,
     "structured_unique_places": 17,
+    "first_screen_external_asset_resilience": {
+      "brand_mark": true,
+      "hero_photo": true,
+      "failure_behavior": "intentional neutral visual state; no broken-image UI"
+    },
     "rejected_production_layers": [
       "art-direction-v2.css",
       "experience.css",
@@ -39,8 +47,9 @@
   },
   "verification_state": {
     "source_ci": "pass",
-    "latest_feature_ci_run": 32752809901,
+    "latest_feature_ci_run": 32760816754,
     "runtime_headers_ci_run": 32752199637,
+    "discovery_ci_run": 32752809901,
     "editorial_refinement_ci_run": 32744807657,
     "structural_art_direction_gate": "pass",
     "editorial_refinement_gate": "pass",
@@ -48,10 +57,12 @@
     "static_directory_gate": "pass_11_instructors_18_venues_before_javascript",
     "runtime_headers_gate": "pass",
     "discovery_gate": "pass_18_section_records_to_17_unique_places_with_canonical_robots_and_sitemap",
+    "first_screen_resilience_gate": "pass_logo_and_hero_photo_fail_without_broken_image_ui",
     "rejected_visual_dependency_gate": "pass",
+    "github_actions_runtime": "native_node24_checkout_v7_setup_node_v7_upload_artifact_v6",
     "deployment_credential_observation": "VERCEL_TOKEN_PRESENT=false",
     "deployment_credential_evidence_run": 32744059135,
-    "latest_credential_observation_run": 32752809901,
+    "latest_credential_observation_run": 32760816754,
     "perceptual_review": "blocked",
     "perceptual_blocker": "The available execution browser cannot provide representative desktop/mobile rendered captures; Chromium hangs at the execution-container D-Bus/zygote layer even for trivial pages. Source/CI evidence must not be promoted to perceptual acceptance.",
     "owner_acceptance": "pending"
@@ -63,7 +74,7 @@
     "art_direction": "dojo-editorial-v3",
     "visual_stack": "mixed_v2_v3_pre_pure_stack",
     "review_authority": "not_current",
-    "reason": "This protected preview predates the pure-V3 cleanup, refinement, static directory, runtime-header contract and source-derived discovery artifacts."
+    "reason": "This protected preview predates the pure-V3 cleanup, refinement, static directory, runtime-header contract, discovery artifacts, source/build convergence and first-screen external-asset resilience."
   },
   "runtime_state": {
     "production_url": "https://kyokushin-nn.vercel.app/",
@@ -75,19 +86,21 @@
     "production_matches_current_verified_source": false,
     "deployment_blocker": "GitHub Actions secret VERCEL_TOKEN is absent. Multiple PR-visible bounded diagnostics print VERCEL_TOKEN_PRESENT=false; the exact-SHA production job therefore cannot authenticate to Vercel.",
     "blocker_issue": 26,
-    "last_evidence": "PR #34 CI run 32752809901 passed pure-V3, 18/11 static-directory, runtime-header, release and discovery gates; build produced 17 unique structured Places plus robots.txt/sitemap.xml. The same run observed VERCEL_TOKEN_PRESENT=false, so none of V3.4 is yet proven on the public domain."
+    "last_evidence": "PR #38 CI run 32760816754 passed pure-V3, 18/11 static-directory, runtime-header, release, discovery and first-screen external-asset resilience gates. The same run observed VERCEL_TOKEN_PRESENT=false, so V3.5 is not yet proven on the public domain."
   },
   "active_slice": {
-    "outcome": "Restore the bounded Vercel deployment credential, deploy the exact verified V3.4-or-later source release, prove the public runtime/discovery contract, then perform real desktop/mobile perceptual review before owner acceptance.",
+    "outcome": "Restore the bounded Vercel deployment credential, deploy the exact verified V3.5-or-later source release, prove the public runtime/discovery/resilience contract, then perform real desktop/mobile perceptual review before owner acceptance.",
     "acceptance": [
       "restore a bounded GitHub Actions VERCEL_TOKEN without exposing its value",
-      "push pipeline verifies and deploys 1a10048a6b516057205078862d041282cbc1ba85 or a later verified descendant",
+      "push pipeline verifies and deploys e26e1633c1dbf207f935e9c6ae1f142a4ac9207f or a later verified descendant",
       "public HTML and /health.json expose the exact same release identity",
       "public art direction is dojo-editorial-v3 with the pure-v3 visual stack",
       "public health reports staticDirectory=true and HTML carries 11 instructors / 18 venues before JavaScript enhancement",
       "public runtime emits the verified security/referrer/permissions header contract and health.json is no-store",
       "public HTML exposes source-derived SportsOrganization structured data with the canonical unique Place count",
       "public robots.txt and sitemap.xml expose the canonical production URL",
+      "public first-screen brand mark fails to a neutral deterministic state without broken-image UI",
+      "public hero photo stays hidden until a successful real-image load and fails back to the intentional carbon field without broken-image UI",
       "public artifact contains no rejected V2 visual bundles or binary/bootstrap loader",
       "exact rendered desktop first screen is inspected",
       "exact rendered desktop high-density section is inspected",
