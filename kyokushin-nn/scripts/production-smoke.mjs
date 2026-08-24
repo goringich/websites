@@ -50,6 +50,8 @@ const required = [
   'data-art-direction="dojo-editorial-v3"',
   'data-static-directory="true"',
   'id="federation-schema"',
+  '<span class="brand-logo" role="img" aria-label="Shinkyokushinkai"></span>',
+  'background-image: url("https://wkosydney.com.au/assets/images/logo.jpg"), radial-gradient(',
   'data-bundle="experience-v3.css"',
   'data-bundle="art-direction-v3.css"',
   'data-bundle="experience-v3.js"',
@@ -70,6 +72,7 @@ const forbidden = [
   "p4.bin",
   "DecompressionStream",
   "Не удалось загрузить сайт",
+  '<img class="brand-logo"',
   'data-bundle="art-direction-v2.css"',
   'data-bundle="experience.css"',
   'data-bundle="experience.js"'
@@ -148,11 +151,12 @@ if (
   || health.release !== release
   || health.artDirection !== "dojo-editorial-v3"
   || health.staticDirectory !== true
+  || health.brandResilience !== true
   || health.discovery?.structuredLocations !== federationSchema.location.length
   || health.discovery?.robots !== true
   || health.discovery?.sitemap !== true
 ) {
-  throw new Error(`Production health manifest does not match HTML release/runtime/discovery state: ${JSON.stringify(health)}`);
+  throw new Error(`Production health manifest does not match HTML release/runtime/discovery/brand state: ${JSON.stringify(health)}`);
 }
 
 if (!robots.includes("User-agent: *") || !robots.includes("Allow: /") || !robots.includes(`Sitemap: ${canonicalUrl}sitemap.xml`)) {
@@ -176,6 +180,7 @@ console.log(JSON.stringify({
   visualStack: "pure-v3",
   runtimeHeaders: "verified",
   healthCache: "no-store",
+  resilientBrand: true,
   discovery: {
     structuredLocations: federationSchema.location.length,
     robots: true,
