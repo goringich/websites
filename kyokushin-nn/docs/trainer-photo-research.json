@@ -1,0 +1,225 @@
+{
+  "schema_version": "2026-08-25.kyokushin-trainer-photo-research.v1",
+  "status": "in_progress",
+  "system_route": [
+    "public-person-research",
+    "real-media-direction"
+  ],
+  "rules": {
+    "publish_named_portrait_only_when": "The public source page explicitly binds the image/profile to the exact trainer identity and the source/asset pair passes media policy.",
+    "never_identity_from_face": true,
+    "search_thumbnail_is_not_provenance": true,
+    "private_account_bypass": false,
+    "synthetic_documentary_photo": false
+  },
+  "federation": {
+    "official_social_authority": "https://vk.com/club227311328",
+    "secondary_discovery_mirror": "https://shin-nnov.orgs.biz/",
+    "mirror_warning": "orgs.biz explicitly states that the page is a catalog/reference surface and not the official company website.",
+    "use": "Use the mirror to discover federation posts/assets and identity anchors; prefer the exact original VK/profile/event/photographer source before promoting new named portraits."
+  },
+  "trainers": [
+    {
+      "person": "Сергей Жуков",
+      "projectRole": "Инструктор",
+      "identityAnchors": [
+        "Нижегородская федерация СинКёкусинкай каратэ",
+        "Нижний Новгород",
+        "federation legal/organizer records identify Сергей Владимирович Жуков"
+      ],
+      "researchState": "identity_verified_photo_pending",
+      "doneState": null,
+      "evidence": [
+        "https://kyokushinkai.ru/sob/kalendari/2017/2017_kyok_hid/chip_nov_5_12/?p=5",
+        "https://shin-nnov.orgs.biz/"
+      ],
+      "notes": "Name is highly collision-prone. Search returned unrelated singer, football/fitness and other Сергей Жуков profiles; all are rejected unless federation/role anchors match.",
+      "next": "Resolve an exact federation VK/profile/team publication naming Сергей Владимирович Жуков and containing a portrait."
+    },
+    {
+      "person": "Андрей Троцко",
+      "projectRole": "Инструктор · президент федерации",
+      "identityAnchors": [
+        "Нижегородская федерация СинКёкусинкай каратэ",
+        "Нижний Новгород",
+        "federation legal/organizer records identify Андрей Владимирович Троцко"
+      ],
+      "researchState": "identity_verified_photo_pending",
+      "doneState": null,
+      "evidence": [
+        "https://kyokushinkai.ru/sob/kalendari/2017/2017_kyok_hid/chip_nov_5_12/?p=5"
+      ],
+      "rejectedCandidates": [
+        "OK/other results tied to Мариуполь or unrelated people with surname Троцко"
+      ],
+      "next": "Search exact federation VK posts, official event judge/organizer pages and historic federation albums."
+    },
+    {
+      "person": "Владимир Жуков",
+      "projectRole": "Инструктор · спортсмен",
+      "identityAnchors": [
+        "Владимир Сергеевич Жуков",
+        "Нижегородская область",
+        "СПЦ Full Contact",
+        "мастер спорта России / 2 Дан",
+        "competition results in Shinkyokushinkai"
+      ],
+      "researchState": "identity_verified_photo_pending",
+      "doneState": null,
+      "evidence": [
+        "https://shin-nnov.orgs.biz/",
+        "https://www.atemi.org.ru/events/news/main/a3626/",
+        "https://www.atemi.org.ru/events/news/main/a3643/"
+      ],
+      "rejectedCandidates": [
+        "DDX Fitness trainer Vladimir Zhukov",
+        "unrelated TenChat profiles",
+        "unrelated OK profiles"
+      ],
+      "next": "Resolve an exact Full Contact/federation VK portrait or a captioned competition photo. Event group photos remain federation evidence, not a named portrait."
+    },
+    {
+      "person": "Дарья Осинина",
+      "projectRole": "Инструктор",
+      "identityAnchors": [
+        "Нижегородская область",
+        "Shinkyokushinkai athlete result records",
+        "project recruitment data"
+      ],
+      "researchState": "identity_verified_photo_pending",
+      "doneState": null,
+      "evidence": [
+        "Russian WKO competition result indexed for Дарья Осинина — Нижегородская область"
+      ],
+      "rejectedCandidates": [
+        "https://tenchat.ru/4766867 — Москва, курьер; conflicts with project identity"
+      ],
+      "next": "Search federation VK competition posts and athlete/result albums for a captioned/source-bound portrait."
+    },
+    {
+      "person": "Юлия Фролова",
+      "projectRole": "Инструктор",
+      "identityAnchors": [
+        "Нижний Новгород",
+        "official federation recruitment publication",
+        "project-listed professional phone and venues"
+      ],
+      "researchState": "identity_verified_photo_pending",
+      "doneState": null,
+      "evidence": [
+        "https://shin-nnov.orgs.biz/ — 22.08.2025 recruitment publication names Юлия Фролова as instructor"
+      ],
+      "notes": "Many unrelated Юлия Фролова profiles exist; exact federation/venue binding is mandatory.",
+      "next": "Resolve original federation VK recruitment post and related album/profile before selecting a portrait."
+    },
+    {
+      "person": "Иван Гаврилин",
+      "projectRole": "Инструктор · спортсмен",
+      "identityAnchors": [
+        "Нижний Новгород",
+        "official federation recruitment publication",
+        "competition results",
+        "ЖК Анкудиновский парк"
+      ],
+      "researchState": "identity_verified_photo_pending",
+      "doneState": null,
+      "evidence": [
+        "https://shin-nnov.orgs.biz/ — 22.08.2025 recruitment publication names Иван Гаврилин as instructor",
+        "https://shin-nnov.orgs.biz/ — 06.04.2025 result lists Гаврилин Иван 1 место",
+        "https://shin-nnov.orgs.biz/ — 16.11.2025 federation report names Гаврилин Иван among top Russian Championship athletes"
+      ],
+      "rejectedCandidates": [
+        "https://tenchat.ru/Gavrilin — 21-year-old Moscow marketer; identity conflicts with the karate trainer"
+      ],
+      "next": "Resolve original VK competition/recruitment post and find a profile/portrait explicitly naming the trainer."
+    },
+    {
+      "person": "Сергей Глухов",
+      "projectRole": "Инструктор",
+      "identityAnchors": [
+        "Нижний Новгород",
+        "Детский клуб Юность",
+        "project recruitment data"
+      ],
+      "researchState": "ambiguous_identity_photo_pending",
+      "doneState": null,
+      "rejectedCandidates": [
+        "Сергей Андреевич Глухов — Russian curler",
+        "other generic people-search/social results without karate/Нижний Новгород binding"
+      ],
+      "next": "Search exact Детский клуб Юность/federation VK recruitment posts and captioned trainer content. Do not use common-name social profiles."
+    },
+    {
+      "person": "Сергей Захаров",
+      "projectRole": "Инструктор",
+      "identityAnchors": [
+        "Нижний Новгород",
+        "Клуб Восток",
+        "project recruitment data"
+      ],
+      "researchState": "ambiguous_identity_photo_pending",
+      "doneState": null,
+      "notes": "No source-bound public portrait found in the first indexed-web pass.",
+      "next": "Search Клуб Восток social/community pages, federation recruitment posts and event albums with exact name binding."
+    },
+    {
+      "person": "Андрей Коннов",
+      "projectRole": "Инструктор",
+      "identityAnchors": [
+        "Дзержинск",
+        "киокусинкай",
+        "historic accredited trainer records for Нижегородская область"
+      ],
+      "researchState": "identity_verified_photo_pending",
+      "doneState": null,
+      "notes": "Historic result sources contain spelling variants; do not silently merge Коннов/Кононов without source confirmation.",
+      "next": "Search Дзержинск club/school social pages and official VK/event archives for exact Андрей Коннов identity."
+    },
+    {
+      "person": "Георгий Пигиданов",
+      "projectRole": "Инструктор · мастер спорта России",
+      "identityAnchors": [
+        "Георгий Вадимович Пигиданов",
+        "Нижегородская область",
+        "СПЦ Full Contact",
+        "Мастер спорта России 2025"
+      ],
+      "researchState": "verified_photo_found",
+      "doneState": "verified_photo_found",
+      "currentAsset": "https://sun9-54.userapi.com/s/v1/ig2/WUuluYR3wScSgcKv4oCm9jAmB-zvo_4dyFVFIljMw2UJTyrZHVhb0EWfnr3Sxt8TGXwNwaxUR_a_A_Xrc6p3fL8o.jpg?as=32x43%2C48x64%2C72x97%2C108x145%2C160x215%2C240x322%2C360x484%2C480x645%2C540x725%2C640x860%2C720x967%2C953x1280&cs=240x0&from=bu&quality=95",
+      "currentSource": "https://shin-nnov.orgs.biz/",
+      "authority": "https://vk.com/club227311328",
+      "identityEvidence": "Federation publication explicitly names Пигиданов Георгий Вадимович in the Master of Sport announcement and exposes the associated userapi media. Current mirror is secondary, so resolving the exact original VK post remains a provenance improvement.",
+      "next": "Resolve exact original VK post URL and migrate away from generic mirror sourceUrl when available."
+    },
+    {
+      "person": "Кирилл Антоневич",
+      "projectRole": "Инструктор",
+      "identityAnchors": [
+        "Кирилл Андреевич Антоневич",
+        "Нижний Новгород",
+        "тренер по боевым искусствам",
+        "Детский спортивный клуб Мастерская каратэ",
+        "project professional phone"
+      ],
+      "researchState": "verified_photo_found",
+      "doneState": "verified_photo_found",
+      "candidateAsset": "https://cdn1.tenchat.ru/static/vbc-gostinder/user-picture/c5fe4cf5-e2af-4cec-be74-0e4e6b2b3bc7.jpeg?crop=480%2C480%2Cx0%2Cy0&fmt=webp&height=480&width=480",
+      "sourceUrl": "https://tenchat.ru/5138057",
+      "sourcePlatform": "tenchat",
+      "crossCheck": "https://masterskayakarate.ru/",
+      "identityStatus": "verified",
+      "identityEvidence": "The public TenChat profile explicitly names Кирилл Антоневич, Нижний Новгород, calls him a martial-arts trainer, identifies Детский спортивный клуб МАСТЕРСКАЯ КАРАТЕ and links the club website. The club site independently names АНТОНЕВИЧ КИРИЛЛ АНДРЕЕВИЧ as trainer/director and uses the same project professional phone.",
+      "cropSuitability": "Square profile portrait; suitable for trainer card. Keep face/upper torso centered and avoid aggressive mobile crop.",
+      "decision": "approved_candidate_after_policy_support",
+      "next": "Add to CMS content only through the verified social source+asset policy; do not substitute other TenChat people with matching names."
+    }
+  ],
+  "summary": {
+    "verifiedPhotoFound": 2,
+    "identityVerifiedPhotoPending": 6,
+    "ambiguousIdentityPhotoPending": 2,
+    "total": 11,
+    "note": "Counts describe current research evidence, not a claim that indexed public sources have been exhaustively searched."
+  }
+}
