@@ -1,0 +1,290 @@
+{
+  "schema_version": "2026-08-25.kyokushin-trainer-photo-browser-handoff.v3",
+  "status": "active",
+  "target_branch": "feat/kyokushin-all-trainer-photos",
+  "target_pr": 51,
+  "goal": "Resolve the remaining nine instructors to explicit public source pages and exact real portrait assets using public browser/social surfaces, then update the existing branch/PR rather than creating parallel work.",
+  "research_snapshot": {
+    "verified_portraits": 2,
+    "identity_verified_photo_pending": 8,
+    "ambiguous_identity_photo_pending": 1,
+    "only_ambiguous_identity": "Сергей Захаров",
+    "latest_research_commit": "b59f93dc0a1e06259eede8f936fe4cc432db59fd",
+    "latest_ci_run": 32841290097,
+    "note": "Identity verification and portrait verification are separate. The latest indexed-web/image pass produced stronger search fingerprints but no third portrait safe enough to publish."
+  },
+  "completion_gate": {
+    "portrait_count": "11/11",
+    "required_photo_fields": [
+      "src",
+      "sourceUrl"
+    ],
+    "new_social_portrait_fields": [
+      "sourcePlatform",
+      "identityStatus",
+      "identityEvidence"
+    ],
+    "identity_status": "verified",
+    "forbidden": [
+      "face resemblance as identity evidence",
+      "AI face recognition",
+      "generic club/event photo presented as a named portrait",
+      "common-name profile without professional anchors",
+      "search-result thumbnail as provenance",
+      "people-search/data-dump page as identity authority",
+      "private-account/access-control bypass",
+      "synthetic trainer photography"
+    ]
+  },
+  "pending": [
+    {
+      "person": "Сергей Жуков",
+      "exact_identity": "Сергей Владимирович Жуков",
+      "identity_state": "verified_photo_pending",
+      "project_phone": "+7 987 557-31-49",
+      "anchors": [
+        "Нижегородская федерация СинКёкусинкай каратэ",
+        "Школа №44, ул. Надежды Сусловой 5к3",
+        "председатель организационного комитета соревнований федерации",
+        "исполнительный директор федерации",
+        "accredited trainer record",
+        "2026 official Moscow competition protocol lists Иван Гаврилин / СК Фулл Контакт trainer as Жуков С. В."
+      ],
+      "priority_queries": [
+        "\"Сергей Владимирович Жуков\" СинКёкусинкай Нижний Новгород",
+        "\"Жуков С. В.\" \"СК Фулл Контакт\" каратэ",
+        "\"Сергей Владимирович Жуков\" \"Фулл Контакт\""
+      ],
+      "priority_surfaces": [
+        "https://vk.com/club227311328",
+        "FULL CONTACT public social pages",
+        "federation organizer/recruitment/event posts"
+      ],
+      "collision_warning": "Extremely common name. Reject singer, fitness, football, Moscow and unrelated martial-arts identities unless federation/Full Contact/venue anchors match."
+    },
+    {
+      "person": "Андрей Троцко",
+      "exact_identity": "Андрей Владимирович Троцко",
+      "identity_state": "verified_photo_pending",
+      "project_phone": "+7 920 036-48-99",
+      "anchors": [
+        "президент Нижегородской федерации СинКёкусинкай каратэ",
+        "same professional phone in federation event record",
+        "Школа №35 / Школа №55",
+        "federation organizer, judge and accredited-trainer records"
+      ],
+      "priority_queries": [
+        "\"Андрей Владимирович Троцко\" каратэ Нижний Новгород",
+        "\"Андрей Троцко\" \"Нижегородская федерация\""
+      ],
+      "priority_surfaces": [
+        "https://vk.com/club227311328",
+        "federation leadership/event publications",
+        "competition judge/organizer archives"
+      ]
+    },
+    {
+      "person": "Владимир Жуков",
+      "exact_identity": "Владимир Сергеевич Жуков",
+      "identity_state": "verified_photo_pending",
+      "project_phone": "+7 986 752-63-84",
+      "anchors": [
+        "СПЦ FULL CONTACT, ул. Германа Лопатина 12к1",
+        "мастер спорта России",
+        "черный пояс 2 Дан",
+        "15.01.2025 federation recruitment publication",
+        "Нижегородская область competition results"
+      ],
+      "priority_queries": [
+        "\"Владимир Сергеевич Жуков\" \"Фулл Контакт\"",
+        "\"Владимир Сергеевич Жуков\" каратэ Нижегородская область",
+        "\"Владимир Жуков\" \"Германа Лопатина 12к1\""
+      ],
+      "priority_surfaces": [
+        "original federation VK post dated 15.01.2025",
+        "https://vk.com/club227311328",
+        "FULL CONTACT social/profile pages",
+        "captioned federation competition posts"
+      ],
+      "collision_warning": "Reject unrelated fitness trainer and namesakes; event group photos are not portraits unless the source explicitly binds the visible subject to Vladimir."
+    },
+    {
+      "person": "Дарья Осинина",
+      "exact_identity": "Дарья Осинина",
+      "identity_state": "verified_photo_pending",
+      "project_phone": "+7 920 065-43-42",
+      "anchors": [
+        "Нижегородская область",
+        "Russian Cup / WKO Shinkyokushinkai athlete records",
+        "Школа №3, ул. Маслякова 1"
+      ],
+      "priority_queries": [
+        "\"Дарья Осинина\" синкёкусинкай",
+        "\"Дарья Осинина\" каратэ Нижегородская область"
+      ],
+      "priority_surfaces": [
+        "https://vk.com/club227311328",
+        "competition albums/posts",
+        "athlete or federation profiles",
+        "Ольга Осинина federation photo archives when explicit caption binding exists"
+      ],
+      "collision_warning": "Reject the indexed Moscow courier TenChat profile and unrelated people with the same name."
+    },
+    {
+      "person": "Юлия Фролова",
+      "exact_identity": "Юлия Фролова",
+      "identity_state": "verified_photo_pending",
+      "project_phone": "+7 920 044-08-18",
+      "controlled_aliases": [
+        "Юлия Кондратенко",
+        "Юлия Викторовна Кондратенко"
+      ],
+      "anchors": [
+        "same professional phone appears in 2024 federation recruitment under Юлия Кондратенко and 2025 recruitment under Юлия Фролова",
+        "2016 accredited federation trainer list contains exact Юлия Викторовна Кондратенко",
+        "Школа №140, ул. Ветлужская 2/2Б",
+        "Семейный клуб Союз, д. Крутая"
+      ],
+      "priority_queries": [
+        "\"Юлия Викторовна Кондратенко\" каратэ Нижний Новгород",
+        "\"Юлия Кондратенко\" СинКёкусинкай Нижний Новгород",
+        "\"Юлия Фролова\" \"920 044-08-18\""
+      ],
+      "priority_surfaces": [
+        "https://vk.com/club227311328",
+        "2024/2025 federation recruitment posts",
+        "school/club social pages"
+      ],
+      "alias_rule": "Historical alias evidence is strong enough to use for search, but there is still no explicit bridge proving a surname change. Do not change the public current name or combine portrait identity without that bridge."
+    },
+    {
+      "person": "Иван Гаврилин",
+      "exact_identity": "Иван Владимирович Гаврилин",
+      "identity_state": "verified_photo_pending",
+      "project_phone": "+7 920 017-85-50",
+      "athlete_fingerprint": {
+        "birth_date": "12.05.2007",
+        "rank": "КМС",
+        "kyu": "1 кю",
+        "club": "СК Фулл Контакт",
+        "region": "Нижегородская область"
+      },
+      "anchors": [
+        "ЖК Анкудиновский парк / ДС №45",
+        "2025 PFO exact full-name result",
+        "2026 Moscow official competition protocol",
+        "federation recruitment/results"
+      ],
+      "priority_queries": [
+        "\"Гаврилин Иван Владимирович\" \"12.05.2007\"",
+        "\"Иван Гаврилин\" \"СК Фулл Контакт\"",
+        "\"Гаврилин Иван Владимирович\" синкёкусинкай фото"
+      ],
+      "priority_surfaces": [
+        "FULL CONTACT public social pages",
+        "https://vk.com/club227311328",
+        "captioned competition posts/albums",
+        "Ankudinovsky Park training/recruitment posts"
+      ],
+      "collision_warning": "Reject adult entrepreneur/taxi records, unrelated football player and Moscow marketer profiles. The 12.05.2007 + KMS + Full Contact tuple is the discrimination key."
+    },
+    {
+      "person": "Сергей Глухов",
+      "exact_identity": "Сергей Геннадьевич Глухов",
+      "identity_state": "verified_photo_pending",
+      "project_phone": "+7 920 250-70-77",
+      "anchors": [
+        "ДПК Юность",
+        "Каратэ киокусинкай",
+        "official municipal children-center record",
+        "Нижегородская область 2025 PFO judge record",
+        "email serikm3@yandex.ru",
+        "public VK community public193108323"
+      ],
+      "priority_queries": [
+        "\"Сергей Геннадьевич Глухов\" \"ДПК Юность\"",
+        "\"Сергей Геннадьевич Глухов\" каратэ Нижний Новгород",
+        "\"serikm3@yandex.ru\" каратэ"
+      ],
+      "priority_surfaces": [
+        "https://vk.com/public193108323",
+        "ДПК Юность / municipal center publications",
+        "https://vk.com/club227311328"
+      ],
+      "identity_evidence": [
+        "https://ddt20a.ru/s.exe/--2020/04",
+        "https://akrussia.ru/wp-content/uploads/2025/08/Perv_PFO_2025-WKO.pdf"
+      ],
+      "collision_warning": "Reject Sergey Andreevich Glukhov the curler and image-search results from unrelated karate organizations."
+    },
+    {
+      "person": "Сергей Захаров",
+      "exact_identity": "Сергей Захаров",
+      "identity_state": "ambiguous_identity_photo_pending",
+      "project_phone": "+7 910 146-84-28",
+      "anchors": [
+        "Клуб Восток, ул. Героя Юрия Смирнова 13А",
+        "Нижегородская федерация СинКёкусинкай каратэ Autazavod branch",
+        "public VK group https://vk.com/club14718682 / alias https://vk.com/shinkyokushinkainn",
+        "historic site reference www.shinkyokushinkainn.com",
+        "Нижний Новгород"
+      ],
+      "priority_queries": [
+        "\"Сергей Захаров\" \"Смирнова 13а\" каратэ",
+        "\"Сергей Захаров\" shinkyokushinkainn",
+        "\"Захаров\" \"club14718682\"",
+        "\"Захаров\" \"shinkyokushinkainn\""
+      ],
+      "priority_surfaces": [
+        "https://vk.com/club14718682",
+        "https://vk.com/shinkyokushinkainn",
+        "public mirrors/indexes of that exact group",
+        "https://vk.com/club227311328",
+        "recruitment/event posts tied to Смирнова 13А and exact project phone"
+      ],
+      "collision_warning": "Only exact phone/address/group binding is proven. Do not infer a patronymic from generic web matches or scraped people-search pages. A group image does not identify Sergey."
+    },
+    {
+      "person": "Андрей Коннов",
+      "exact_identity": "Андрей Александрович Коннов",
+      "identity_state": "verified_photo_pending",
+      "project_phone": "+7 930 813-78-20",
+      "anchors": [
+        "Дзержинск",
+        "Школа №20, ул. Попова 26А",
+        "клуб киокушинкай, ул. Циолковского 72",
+        "email konnov.dojo@yandex.ru",
+        "exact full name in 2025 PFO judge and 2016 accredited-trainer records"
+      ],
+      "priority_queries": [
+        "\"Андрей Александрович Коннов\" каратэ Дзержинск",
+        "\"konnov.dojo@yandex.ru\"",
+        "\"Андрей Коннов\" киокусинкай Дзержинск"
+      ],
+      "priority_surfaces": [
+        "https://vk.com/shin_nnov",
+        "Dzerzhinsk dojo/school publications",
+        "competition trainer records"
+      ],
+      "identity_evidence": [
+        "https://fitonist.ru/nizhegorodskaya-federatsiya-sinkyokusinkay-karate-4/",
+        "https://akrussia.ru/wp-content/uploads/2025/08/Perv_PFO_2025-WKO.pdf",
+        "https://rnfkk.ru/files/textfiles/2016/b03a033b8a68d9b8a9648904fcd2a1c3.pdf"
+      ],
+      "spelling_warning": "Modern exact sources support Коннов. Historic Конов/Кононов variants remain search-only unless an explicit source connects them."
+    }
+  ],
+  "already_verified": [
+    {
+      "person": "Георгий Пигиданов",
+      "state": "published_existing_legacy_source_chain",
+      "improvement": "Resolve exact original federation VK post when available."
+    },
+    {
+      "person": "Кирилл Антоневич",
+      "state": "published_on_work_branch",
+      "source": "https://tenchat.ru/5138057",
+      "cross_check": "https://masterskayakarate.ru/"
+    }
+  ]
+}
