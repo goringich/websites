@@ -1,0 +1,110 @@
+{
+  "schema_version": "2026-08-25.kyokushin-real-media.v1",
+  "status": "active",
+  "principle": "Photography and video are documentary product content. Search from the exact person/event/place and official source, assign each asset to a semantic slot, preserve provenance, and never replace missing real evidence with generated or unrelated stock media.",
+  "forbidden": [
+    "AI-generated trainer, athlete, child, crowd, camp, venue or event photography presented as real",
+    "AI-generated testimonial portraits",
+    "random stock used as a named federation/event/person/place",
+    "face or identity inference from appearance",
+    "image-search thumbnails or reposts treated as provenance",
+    "another event/year/place captioned as the target event",
+    "generic promotional filler used instead of factual captions",
+    "invented quotes, achievements, biographies or event stories"
+  ],
+  "source_priority": [
+    "owner/project originals",
+    "Nizhny Novgorod Shinkyokushinkai federation official publication",
+    "Красный Плёс official site / official album for camp content",
+    "official event/organizer/venue archive",
+    "named photographer or directly connected publication with explicit binding",
+    "generic stock only for genuinely non-specific atmosphere"
+  ],
+  "search_method": {
+    "query_shape": "<exact entity/person/event> <year/date> <activity/place> <official/profile/album/report>",
+    "rule": "Search engines discover the original source page; they are never the source of record.",
+    "before_search": "Define the media slot job first.",
+    "after_find": "Record source page, publisher, subject, date/context, identity status when relevant, crop intent and fallback."
+  },
+  "slots": [
+    {
+      "id": "hero",
+      "job": "Show real physical training/camp activity immediately, not a decorative river photograph.",
+      "preferred_evidence": "Official Красный Плёс training video or exact-event federation media.",
+      "current_primary": "https://kples.ru/wp-content/uploads/2026/06/VID_20260605_092450.mp4",
+      "source_page": "https://kples.ru/putevki/",
+      "source_publisher": "ДЮООЦ Красный Плёс",
+      "source_context": "The official archive entry dated 04.06.2026 embeds VID_20260605_092450.mp4, VID_20260605_092455.mp4 and VID_20260605_092458.mp4.",
+      "crop": "Full-bleed action; keep the active subject inside the central mobile-safe region.",
+      "fallback": "Intentional dark/typographic hero state; never a broken image or unrelated substitute."
+    },
+    {
+      "id": "camp-gallery",
+      "job": "Document different classes of camp evidence rather than repeat one poster.",
+      "sequence": [
+        "training/action",
+        "people/community",
+        "place/context",
+        "event/report"
+      ],
+      "official_sources": [
+        "https://kples.ru/putevki/",
+        "https://vk.ru/album-4118885_311499888",
+        "https://kples.ru/"
+      ]
+    },
+    {
+      "id": "trainer-portrait",
+      "job": "Identify one named instructor.",
+      "identity_requirement": "The source must explicitly bind the image to that exact person.",
+      "fallback": "Typography/initials poster. No generic club photo may masquerade as a portrait."
+    },
+    {
+      "id": "federation-proof",
+      "job": "Show actual federation training, competition or instructional culture.",
+      "official_source": "https://shin-nnov.orgs.biz/",
+      "notes": "Federation publications include dated training/competition reports and photographer attribution. Use those exact reports for federation-specific evidence rather than generic martial-arts stock."
+    }
+  ],
+  "current_audit": {
+    "keep": [
+      "Official kples.ru training videos",
+      "Official Красный Плёс 2026 photo album link",
+      "Official federation source for source-bound Georgiy Pigidанов portrait",
+      "Typography fallback for trainers without verified portraits"
+    ],
+    "reject": [
+      {
+        "asset_host": "vega52.ru",
+        "reason": "The river photograph is real but semantically weak as a training-video poster and is not the source of the training event. It must not be repeated across every camp video as if it documented those clips."
+      }
+    ],
+    "next_search_targets": [
+      "Exact source-bound portraits for trainers from official federation/team/profile publications",
+      "Distinct official camp stills for place/community slots",
+      "Federation training and competition action frames with dated source pages"
+    ]
+  },
+  "copy_policy": {
+    "factual_fields": [
+      "captions",
+      "person roles",
+      "event names",
+      "dates",
+      "places",
+      "participant/result claims",
+      "photo credits"
+    ],
+    "rule": "Use project data or source wording/facts. Do not invent emotional slogans to compensate for weak evidence.",
+    "ui_microcopy_exception": "Navigation, buttons and ordinary interface labels may be written normally as interface copy."
+  },
+  "done_when": [
+    "Every critical media slot has a semantic job and provenance.",
+    "Named portraits are source-bound.",
+    "No synthetic documentary media exists.",
+    "No unrelated repeated poster substitutes for exact evidence.",
+    "Desktop/mobile crops preserve the evidence selected for each slot.",
+    "Critical remote media fails into intentional UI.",
+    "Rendered media can be traced back to its original source page."
+  ]
+}

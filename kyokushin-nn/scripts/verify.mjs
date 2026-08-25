@@ -1,268 +1,145 @@
 import { readFile } from "node:fs/promises";
-import vm from "node:vm";
 
+const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
 const [
-  html,
-  styles,
-  cards,
-  mediaStyles,
-  artStyles,
-  experienceStyles,
-  script,
-  media,
-  photoScript,
-  trainerPhotoScript,
-  teamScript,
-  finderScript,
-  experienceScript,
-  motionScript,
-  buildScript,
-  packageJson,
-  vercelJson
+  html, script, media, team, photo, finder, experience, trainerPhotos,
+  contentRaw, mediaDirectionRaw, adminHtml, adminJs, adminCss, buildScript, packageRaw, vercelRaw
 ] = await Promise.all([
-  readFile(new URL("../index.html", import.meta.url), "utf8"),
-  readFile(new URL("../styles.css", import.meta.url), "utf8"),
-  readFile(new URL("../cards.css", import.meta.url), "utf8"),
-  readFile(new URL("../media-viewer.css", import.meta.url), "utf8"),
-  readFile(new URL("../art-direction-v3.css", import.meta.url), "utf8"),
-  readFile(new URL("../experience-v3.css", import.meta.url), "utf8"),
-  readFile(new URL("../script.js", import.meta.url), "utf8"),
-  readFile(new URL("../media.js", import.meta.url), "utf8"),
-  readFile(new URL("../photo.js", import.meta.url), "utf8"),
-  readFile(new URL("../trainer-photos.js", import.meta.url), "utf8"),
-  readFile(new URL("../team.js", import.meta.url), "utf8"),
-  readFile(new URL("../finder.js", import.meta.url), "utf8"),
-  readFile(new URL("../experience-v3.js", import.meta.url), "utf8"),
-  readFile(new URL("../motion-v3.js", import.meta.url), "utf8"),
-  readFile(new URL("build-static.mjs", import.meta.url), "utf8"),
-  readFile(new URL("../package.json", import.meta.url), "utf8"),
-  readFile(new URL("../vercel.json", import.meta.url), "utf8")
+  read("../index.html"), read("../script.js"), read("../media.js"), read("../team.js"),
+  read("../photo.js"), read("../finder.js"), read("../experience-v3.js"), read("../trainer-photos.js"),
+  read("../content/site.json"), read("../docs/media-direction.json"), read("../admin/index.html"), read("../admin/admin.js"), read("../admin/admin.css"),
+  read("build-static.mjs"), read("../package.json"), read("../vercel.json")
 ]);
 
-const requiredHtml = [
-  'id="groups"', 'id="searchInput"', 'id="cityFilters"', 'id="dayFilters"',
-  'id="photoMosaic"', 'id="photoCollections"', 'id="photoLightbox"', 'id="team"',
-  'id="trainerRoster"', 'brand-logo', 'wkosydney.com.au/assets/images/logo.jpg',
-  'styles.css', 'cards.css', 'media-viewer.css', 'experience-v3.css', 'art-direction-v3.css',
-  'media.js', 'script.js', 'trainer-photos.js', 'team.js', 'finder.js', 'experience-v3.js', 'motion-v3.js', 'photo.js',
-  'data-art-direction="dojo-editorial-v3"', 'x-kyokushin-art-direction',
-  'site-nav', 'hero-visual', 'hero-proof', 'href="#team"', 'rel="canonical"', 'og:title',
-  'og:image', 'twitter:card', 'lightbox-prev', 'lightbox-next', 'lightbox-source'
-];
-for (const marker of requiredHtml) {
-  if (!html.includes(marker)) throw new Error(`Missing current HTML marker: ${marker}`);
-}
-
-for (const activeLegacy of [
-  '<link rel="stylesheet" href="art-direction-v2.css">',
-  '<link rel="stylesheet" href="experience.css">',
-  '<script src="experience.js"'
-]) {
-  if (html.includes(activeLegacy)) throw new Error(`Rejected V2 visual dependency must not be active: ${activeLegacy}`);
-}
-
-for (const legacyCss of ["photo.css", "clean.css"]) {
-  if (html.includes(legacyCss)) throw new Error(`Legacy conflicting stylesheet must not be linked: ${legacyCss}`);
-}
-
-for (const cssMarker of [".site-nav {", ".hero-visual {", ".hero-proof {", "@media (max-width: 620px)"]) {
-  if (!styles.includes(cssMarker)) throw new Error(`Missing base layout rule: ${cssMarker}`);
-}
-for (const cssMarker of [".photo-story-link", ".instructor-card", ".instructor-panel", ".instructor-photo-frame", ".venue-list:has", "@media (max-width: 620px)"]) {
-  if (!cards.includes(cssMarker)) throw new Error(`Missing component layout rule: ${cssMarker}`);
-}
-for (const cssMarker of [
-  ".archive-cover-card", ".archive-card-cover", ".archive-card-provider", ".archive-card-cta",
-  ".lightbox {", ".lightbox-image", ".lightbox-nav", "body.is-lightbox-open"
-]) {
-  if (!mediaStyles.includes(cssMarker)) throw new Error(`Missing media UX rule: ${cssMarker}`);
-}
-for (const cssMarker of [
-  "--v3-red", "--v3-display", ".team-section {", ".trainer-roster {", ".roster-card,", ".roster-media {",
-  '.roster-card[data-portrait="verified"]', ".hero::before {", ".photo-mosaic {", ".filters {", ".steps {", ".final-cta {",
-  "[data-v3-reveal", "prefers-reduced-motion", "@media (max-width: 1120px)", "@media (max-width: 820px)", "@media (max-width: 620px)"
-]) {
-  if (!artStyles.includes(cssMarker)) throw new Error(`Missing current V3 art-direction rule: ${cssMarker}`);
-}
-for (const cssMarker of [
-  "--page-progress", ".topbar::after", 'body[data-art-direction="dojo-editorial-v3"] .site-nav a',
-  'body[data-art-direction="dojo-editorial-v3"] .hero-actions .button-ghost',
-  'body[data-art-direction="dojo-editorial-v3"] .signal-strip',
-  'body[data-art-direction="dojo-editorial-v3"] .photo-story',
-  ".roster-card:focus-within", "scroll-margin-top"
-]) {
-  if (!experienceStyles.includes(cssMarker)) throw new Error(`Missing current V3 experience rule: ${cssMarker}`);
-}
-if (experienceStyles.includes("[data-reveal]") || experienceStyles.includes("@keyframes hero-enter")) {
-  throw new Error("Rejected generic V2 reveal grammar must not exist in the current experience layer");
-}
-
-if (styles.includes("margin: -28px") || styles.includes("margin: -22px") || cards.includes("margin: -28px")) {
-  throw new Error("Trainer layout must not rely on negative-margin photo hacks");
-}
-if (html.includes(">極<") || html.includes("Shinkyokushin.png")) {
-  throw new Error("Deprecated placeholder/wrong Shinkyokushin logo must not be used");
-}
-for (const slop of ["Проверяем источник", "Если источник не подтверждает", "без случайных картинок", "не рекламные макеты"]) {
-  if (html.includes(slop)) throw new Error(`Public copy must stay clean: ${slop}`);
-}
-for (const marker of ["showModal()", "moveLightbox", "archive-card-cover", "Открыть альбом", "card.remove()"] ) {
-  if (!photoScript.includes(marker)) throw new Error(`Missing premium media behavior: ${marker}`);
-}
-if (photoScript.includes("is-image-error") || photoScript.includes("Фото недоступно")) {
-  throw new Error("Visible broken-image placeholders are forbidden in the gallery renderer");
-}
-
-const cityNnCount = (script.match(/city: "Нижний Новгород"/g) || []).length;
-const cityDzerzhinskCount = (script.match(/city: "Дзержинск"/g) || []).length;
-const phoneCount = (script.match(/phone: "\+7/g) || []).length;
-if (cityNnCount !== 16 || cityDzerzhinskCount !== 2) throw new Error(`Expected 18 venues (16 + 2), got ${cityNnCount + cityDzerzhinskCount}`);
-if (phoneCount !== 11) throw new Error(`Expected 11 instructors, got ${phoneCount}`);
-
+const content = JSON.parse(contentRaw);
+const mediaDirection = JSON.parse(mediaDirectionRaw);
+const packageJson = JSON.parse(packageRaw);
+const vercelJson = JSON.parse(vercelRaw);
 const expectedPeople = [
-  "Сергей Жуков", "Андрей Троцко", "Владимир Жуков", "Дарья Осинина", "Юлия Фролова",
-  "Иван Гаврилин", "Сергей Глухов", "Сергей Захаров", "Андрей Коннов", "Георгий Пигиданов", "Кирилл Антоневич"
+  "Сергей Жуков","Андрей Троцко","Владимир Жуков","Дарья Осинина","Юлия Фролова",
+  "Иван Гаврилин","Сергей Глухов","Сергей Захаров","Андрей Коннов","Георгий Пигиданов","Кирилл Антоневич"
 ];
-const instructorNames = [...script.matchAll(/\n\s{4}name: "([^"]+)",\n\s{4}phone:/g)].map((match) => match[1]);
-if (JSON.stringify(instructorNames) !== JSON.stringify(expectedPeople)) {
-  throw new Error(`Instructor allowlist changed: ${instructorNames.join(", ")}`);
-}
-
-for (const name of expectedPeople) {
-  if (!teamScript.includes(`"${name}"`)) throw new Error(`Trainer roster metadata missing: ${name}`);
-}
-for (const marker of [
-  "rosterPhotoRegistry", "trainerProfileMeta", "hasPortrait", "dataset.portrait", "roster-card",
-  "trainerRoster", "data.trainerFilter", "Показать секции"
-]) {
-  if (!teamScript.includes(marker)) throw new Error(`Missing trainer-roster behavior: ${marker}`);
-}
-if (!teamScript.includes('photo?.kind === "person"') || !teamScript.includes("photo.person === instructor.name")) {
-  throw new Error("Roster may render photos only when person identity exactly matches instructor name");
-}
-if (!teamScript.includes("roster-initials")) {
-  throw new Error("Trainer roster must retain an identity-safe initials fallback");
-}
-if (teamScript.includes("FULL CONTACT · 2 дан") || /"Владимир Жуков"[\s\S]{0,140}мастер спорта России/.test(teamScript)) {
-  throw new Error("Unverified Vladimir Zhukov rank/title must not be published");
-}
-if (!/"Андрей Троцко"[\s\S]{0,140}президент федерации/.test(teamScript)) {
-  throw new Error("Verified federation president role must remain attached to Andrey Trotsko");
-}
-if (!/"Георгий Пигиданов"[\s\S]{0,160}мастер спорта России/.test(teamScript)) {
-  throw new Error("Verified Master of Sport title must remain attached to Georgiy Pigidанов");
-}
+const expectedPhones = [
+  "+7 987 557-31-49","+7 920 036-48-99","+7 986 752-63-84","+7 920 065-43-42","+7 920 044-08-18",
+  "+7 920 017-85-50","+7 920 250-70-77","+7 910 146-84-28","+7 930 813-78-20","+7 910 141-46-95","+7 904 781-78-88"
+];
+const kirillOnlyUrl = "https://masterskayakarate.ru/tpost/czhy6ukv31-zhara-2026-kak-eto-bilo";
+const count = (text, needle) => text.split(needle).length - 1;
 
 for (const marker of [
-  "data-trainer-filter", 'searchParams.set("trainer"', "scrollIntoView", "KYOKUSHIN_FINDER_READY",
-  "instructors.some"
+  'id="groups"','id="photoMosaic"','id="photoCollections"','id="team"','id="trainerRoster"',
+  'data-art-direction="dojo-editorial-v3"','x-kyokushin-art-direction','hero-visual','site-nav',
+  'media.js','script.js','team.js','finder.js','photo.js','experience-v3.js'
 ]) {
-  if (!finderScript.includes(marker)) throw new Error(`Missing smart trainer finder behavior: ${marker}`);
+  if (!html.includes(marker)) throw new Error(`Missing HTML marker: ${marker}`);
 }
-for (const marker of [
-  "IntersectionObserver", "aria-current", "--page-progress", "requestAnimationFrame",
-  "KYOKUSHIN_EXPERIENCE_V3_READY"
+
+if (!Array.isArray(content.instructors) || content.instructors.length !== 11) throw new Error("CMS must contain exactly 11 instructors");
+if (JSON.stringify(content.instructors.map((item) => item.name)) !== JSON.stringify(expectedPeople)) throw new Error("CMS instructor allowlist/order changed");
+if (JSON.stringify(content.instructors.map((item) => item.phone)) !== JSON.stringify(expectedPhones)) throw new Error("CMS instructor phones changed");
+const venueCount = content.instructors.reduce((sum, item) => sum + (item.venues?.length ?? 0), 0);
+const nnCount = content.instructors.flatMap((item) => item.venues ?? []).filter((venue) => venue.city === "Нижний Новгород").length;
+const dzCount = content.instructors.flatMap((item) => item.venues ?? []).filter((venue) => venue.city === "Дзержинск").length;
+if (venueCount !== 18 || nnCount !== 16 || dzCount !== 2) throw new Error(`Expected 18 venues (16+2), got ${venueCount} (${nnCount}+${dzCount})`);
+
+const serialized = JSON.stringify(content);
+if (!String(content.camp?.river || "").includes("Керженец")) throw new Error("CMS camp contract must target Керженец");
+if (content.camp?.name !== "Красный Плёс") throw new Error("CMS camp must be Красный Плёс");
+if (!String(content.hero?.media?.src || "").startsWith("https://kples.ru/")) throw new Error("Hero media must come from official Красный Плёс");
+if (content.hero?.media?.poster && !String(content.hero.media.poster).startsWith("https://kples.ru/")) {
+  throw new Error("Hero poster, when present, must come from the same official camp source family as the documentary media");
+}
+if (!Array.isArray(content.gallery) || content.gallery.length < 5) throw new Error("CMS gallery must contain Kerzhenets camp media");
+if (!Array.isArray(content.photoReports) || content.photoReports.length !== 4) throw new Error("CMS must contain exactly four camp report links");
+
+if (serialized.includes("vega52.ru")) throw new Error("Unrelated Kerzhenets river poster must not return as training/event evidence");
+for (const genericCopy of [
+  "Тренировки, где техника становится характером",
+  "Спортивные сборы, природа и тренировочный ритм",
+  "Движение каждый день"
 ]) {
-  if (!experienceScript.includes(marker)) throw new Error(`Missing current V3 experience behavior: ${marker}`);
-}
-for (const marker of [
-  "requestAnimationFrame", "IntersectionObserver", "pointermove", "prefers-reduced-motion",
-  "--v3-scroll", "--v3-pointer-x", "dataset.v3Reveal", "is-v3-visible", "KYOKUSHIN_ART_DIRECTION_V3_READY"
-]) {
-  if (!motionScript.includes(marker)) throw new Error(`Missing current V3 motion behavior: ${marker}`);
-}
-if (experienceScript.includes("data.reveal") || experienceScript.includes("KYOKUSHIN_EXPERIENCE_READY")) {
-  throw new Error("Rejected V2 experience runtime markers must not return");
+  if (serialized.includes(genericCopy)) throw new Error(`Ungrounded promotional filler must not return: ${genericCopy}`);
 }
 
-const packageConfig = JSON.parse(packageJson);
-const vercelConfig = JSON.parse(vercelJson);
-if (packageConfig.scripts?.build !== "node scripts/build-static.mjs") {
-  throw new Error("Production build script must generate the self-contained bundle");
-}
-if (vercelConfig.buildCommand !== "npm run build" || vercelConfig.outputDirectory !== "dist") {
-  throw new Error("Vercel must serve the generated self-contained dist directory");
-}
-for (const marker of [
-  '"styles.css"', '"experience-v3.css"', '"art-direction-v3.css"', '"finder.js"', '"experience-v3.js"', '"motion-v3.js"',
-  "data-bundle", "dist/index.html", "data-static-directory", "staticDirectory", "Rejected V2 visual dependency"
-]) {
-  if (!buildScript.includes(marker)) throw new Error(`Current self-contained build guard missing: ${marker}`);
+if (mediaDirection.status !== "active") throw new Error("Real-media direction contract must be active");
+if (!String(mediaDirection.principle || "").includes("documentary product content")) throw new Error("Media-direction principle is missing documentary truth ownership");
+if (!mediaDirection.forbidden?.some((item) => item.includes("AI-generated trainer"))) throw new Error("Media-direction contract must explicitly forbid synthetic trainer documentary media");
+if (!mediaDirection.current_audit?.reject?.some((item) => item.asset_host === "vega52.ru")) throw new Error("Media-direction audit must preserve the rejected unrelated poster regression");
+if (!mediaDirection.done_when?.some((item) => item.includes("source-bound"))) throw new Error("Media-direction Done contract must require source-bound named portraits");
+
+for (const instructor of content.instructors) {
+  if (!instructor.photo) continue;
+  if (!instructor.photo.src || !instructor.photo.sourceUrl) throw new Error(`Trainer photo provenance incomplete for ${instructor.name}`);
+  if (!expectedPeople.includes(instructor.name)) throw new Error(`Trainer photo is outside allowlist: ${instructor.name}`);
 }
 
-const publicSource = [
-  html, styles, cards, mediaStyles, artStyles, experienceStyles, script, media,
-  photoScript, trainerPhotoScript, teamScript, finderScript, experienceScript, motionScript
-].join("\n");
-for (const forbidden of ["Горохов", "ИФК", "IFK"]) {
-  if (publicSource.includes(forbidden)) throw new Error(`Forbidden unrelated identity/federation marker found: ${forbidden}`);
-}
-for (const source of [script, media, photoScript, trainerPhotoScript, teamScript, finderScript, experienceScript, motionScript]) {
-  if (source.includes("innerHTML")) throw new Error("Unsafe innerHTML usage is not allowed");
-}
-for (const removedPromoAsset of [
-  "tild3731-3236-4264-a165-653239663730", "tild6633-6639-4866-b935-663238346266",
-  "tild3939-3362-4535-b162-343938356166", "tild6638-3461-4431-b063-336138376236",
-  "tild6361-3663-4064-a531-313031616532", "tild3633-3062-4863-a562-386138386236"
-]) {
-  if (media.includes(removedPromoAsset)) throw new Error(`Promo/synthetic-looking asset must not return: ${removedPromoAsset}`);
+if (/[Жж]ара/.test(serialized)) throw new Error("Visible Cyrillic 'Жара' is forbidden everywhere");
+if (count(serialized, kirillOnlyUrl) !== 1) throw new Error("Kirill project URL must occur exactly once in CMS content");
+if (count(serialized, "masterskayakarate.ru") !== 1) throw new Error("masterskayakarate.ru must occur exactly once in CMS content");
+const kirill = content.instructors.find((item) => item.name === "Кирилл Антоневич");
+if (kirill?.links?.length !== 1 || kirill.links[0]?.url !== kirillOnlyUrl) throw new Error("The only Masterskaya link must be inside Kirill's trainer record");
+if (/жар/i.test(kirill.links[0]?.label || "")) throw new Error("Kirill link label must not mention Жара");
+for (const instructor of content.instructors) {
+  if (instructor.name !== "Кирилл Антоневич" && instructor.links?.length) throw new Error(`Unexpected external link for ${instructor.name}`);
 }
 
-const context = { window: {} };
-vm.createContext(context);
-vm.runInContext(media, context);
-const registry = context.window.KYOKUSHIN_MEDIA;
-if (!registry) throw new Error("Media registry was not initialized");
-if (JSON.stringify([...registry.allowedPeople]) !== JSON.stringify(expectedPeople)) {
-  throw new Error("Media allowlist must exactly match the 11 recruitment instructors");
+const campHosts = new Set(["kples.ru","www.kples.ru","vk.ru","vk.com"]);
+const assertCampUrl = (url, label) => {
+  if (!url) return;
+  const host = new URL(url).hostname;
+  if (!campHosts.has(host)) throw new Error(`${label} must be official Kerzhenets/camp media, got ${host}`);
+};
+assertCampUrl(content.hero.media.src, "hero src");
+assertCampUrl(content.hero.media.poster, "hero poster");
+assertCampUrl(content.hero.media.sourceUrl, "hero source");
+for (const item of content.gallery) {
+  assertCampUrl(item.src, `gallery ${item.id} src`);
+  assertCampUrl(item.poster, `gallery ${item.id} poster`);
+  assertCampUrl(item.sourceUrl, `gallery ${item.id} source`);
 }
-if (registry.verifiedMedia.length !== 9) throw new Error(`Expected 8 real photos + 1 shared story card, got ${registry.verifiedMedia.length}`);
-const realPhotos = registry.verifiedMedia.filter((item) => item.kind !== "story");
-const sharedStories = registry.verifiedMedia.filter((item) => item.kind === "story");
-if (realPhotos.length !== 8 || sharedStories.length !== 1) throw new Error(`Expected 8 real photos and 1 story card, got ${realPhotos.length} + ${sharedStories.length}`);
-if (new URL(sharedStories[0].sourceUrl).hostname !== "masterskayakarate.ru") throw new Error("Masterskaya material must stay inside the common feed");
+for (const item of content.photoReports) assertCampUrl(item.url, `report ${item.title}`);
 
-const isVkImageHost = (hostname) => hostname.endsWith(".userapi.com");
-const isTrainerImageHost = (hostname) => isVkImageHost(hostname) || hostname === "cdn1.tenchat.ru";
-const allowedSourceHosts = new Set(["masterskayakarate.ru", "shin-nnov.orgs.biz", "disk.yandex.ru", "vk.com", "tenchat.ru"]);
-const mediaIds = new Set();
-for (const item of realPhotos) {
-  if (mediaIds.has(item.id)) throw new Error(`Duplicate media id: ${item.id}`);
-  mediaIds.add(item.id);
-  const imageHost = new URL(item.image).hostname;
-  const sourceHost = new URL(item.sourceUrl).hostname;
-  if (!isVkImageHost(imageHost)) throw new Error(`Gallery image must be a federation/VK photo, got: ${imageHost}`);
-  if (sourceHost !== "shin-nnov.orgs.biz") throw new Error(`Gallery photo must come from federation source, got: ${sourceHost}`);
+const publicSource = [html, script, media, team, photo, finder, experience, trainerPhotos, contentRaw].join("\n");
+for (const forbidden of ["Горохов","ИФК","IFK"]) {
+  if (publicSource.includes(forbidden)) throw new Error(`Forbidden public marker: ${forbidden}`);
 }
-
-let personPhotoCount = 0;
-for (const [name, item] of Object.entries(registry.trainerPhotos ?? {})) {
-  if (!expectedPeople.includes(name)) throw new Error(`Unknown trainer photo key: ${name}`);
-  if (item.kind !== "person" || item.person !== name) throw new Error(`Trainer registry may only contain source-bound person photos: ${name}`);
-  if (!item.image || !isTrainerImageHost(new URL(item.image).hostname)) throw new Error(`Trainer portrait must use an approved source-bound image host: ${name}`);
-  if (!item.sourceUrl || !allowedSourceHosts.has(new URL(item.sourceUrl).hostname)) throw new Error(`Trainer portrait must have a trusted source: ${name}`);
-  personPhotoCount += 1;
+for (const source of [script, media, team, photo, finder, experience, trainerPhotos, adminJs]) {
+  if (source.includes("innerHTML")) throw new Error("Unsafe innerHTML usage is forbidden");
 }
-if (personPhotoCount < 2) throw new Error("Expected at least two source-bound trainer portraits");
-if (!registry.trainerPhotos["Кирилл Антоневич"] || new URL(registry.trainerPhotos["Кирилл Антоневич"].sourceUrl).hostname !== "tenchat.ru") {
-  throw new Error("Kirill Antonovich portrait must stay bound to his verified trainer profile");
-}
-if (!trainerPhotoScript.includes("is-placeholder") || trainerPhotoScript.includes("Фото секции")) {
-  throw new Error("Unknown trainer portraits must render as neutral initials, never club-image impersonations");
+for (const removed of ["masterskaya-2026","cdn1.tenchat.ru","tild3731-3236-4264-a165-653239663730"]) {
+  if (publicSource.includes(removed)) throw new Error(`Removed unrelated media must not return: ${removed}`);
 }
 
-if (registry.photoCollections.length !== 4) throw new Error(`Expected exactly 4 federation photo reports, got ${registry.photoCollections.length}`);
-for (const item of registry.photoCollections) {
-  const sourceHost = new URL(item.url).hostname;
-  const coverHost = new URL(item.cover).hostname;
-  if (!allowedSourceHosts.has(sourceHost)) throw new Error(`Unapproved photo collection host: ${sourceHost}`);
-  if (sourceHost === "masterskayakarate.ru") throw new Error("Masterskaya material belongs in the shared feed, not the report archive");
-  if (!item.provider || !item.cover || !item.coverAlt) throw new Error(`Album must have provider, cover and accessible alt: ${item.title}`);
-  if (!isVkImageHost(coverHost)) throw new Error(`Album cover must use federation/VK imagery: ${item.title}`);
+for (const marker of ["window.KYOKUSHIN_CONTENT","KYOKUSHIN_APP","applyContent","content.instructors"]) {
+  if (!script.includes(marker) && !experience.includes(marker)) throw new Error(`CMS runtime marker missing: ${marker}`);
+}
+for (const marker of ["KYOKUSHIN_TEAM","roster-external","instructor.links","roster-initials"]) {
+  if (!team.includes(marker)) throw new Error(`CMS trainer marker missing: ${marker}`);
+}
+for (const marker of ["photo-video-card","KYOKUSHIN_PHOTO","photoContent?.gallery","Керженец"]) {
+  if (!photo.includes(marker) && !experience.includes(marker)) throw new Error(`Kerzhenets gallery marker missing: ${marker}`);
+}
+for (const marker of ["CMS_RAW_URL","raw.githubusercontent.com/goringich/websites/project/kyokushin-nn","cms-hero-video","fetchCmsContent"]) {
+  if (!experience.includes(marker)) throw new Error(`CMS hot-sync marker missing: ${marker}`);
 }
 
-console.log(
-  `verify: pure V3 + resilient recruitment directory + trusted media PASS — ` +
-  `18 venues, 11 instructors, 8 real gallery photos, 1 shared Masterskaya story, ` +
-  `${personPhotoCount} source-bound trainer portrait(s), 4 visual album covers, lightbox enabled`
-);
+for (const marker of ["Kyokushin CMS",'type="password"','id="publishButton"','id="galleryEditor"','id="trainersEditor"']) {
+  if (!adminHtml.includes(marker)) throw new Error(`CMS UI marker missing: ${marker}`);
+}
+for (const marker of ['const REPO = "goringich/websites"','const BRANCH = "project/kyokushin-nn"','const CONTENT_PATH = "kyokushin-nn/content/site.json"']) {
+  if (!adminJs.includes(marker)) throw new Error(`CMS fixed source marker missing: ${marker}`);
+}
+for (const forbiddenStorage of ["localStorage","sessionStorage","indexedDB"]) {
+  if (adminJs.includes(forbiddenStorage)) throw new Error(`CMS must not persist GitHub token via ${forbiddenStorage}`);
+}
+if (!adminJs.includes("Authorization: `Bearer ${token}`") || !adminJs.includes('method: "PUT"')) throw new Error("CMS must publish through GitHub Contents API");
+if (!adminCss.includes(".admin-shell") || !adminCss.includes(".trainer-card")) throw new Error("CMS UI stylesheet is incomplete");
+
+if (!buildScript.includes("readFile(contentUrl") || !buildScript.includes('id="kyokushin-content-seed"') || !buildScript.includes("cp(adminDir")) {
+  throw new Error("Static build must consume CMS content, embed seed, and ship /admin/");
+}
+if (!buildScript.includes("Disallow: /admin/") || !buildScript.includes("cms: {")) throw new Error("Build must expose CMS health and noindex crawl policy");
+if (packageJson.scripts?.build !== "node scripts/build-static.mjs") throw new Error("Build script changed unexpectedly");
+if (vercelJson.outputDirectory !== "dist") throw new Error("Vercel must serve dist");
+
+console.log(`verify: PASS — source-grounded Kerzhenets CMS, ${content.instructors.length} trainers, ${venueCount} venues, ${content.gallery.length} camp media items, exact-one Kirill link`);

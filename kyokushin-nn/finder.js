@@ -18,7 +18,6 @@ const getFilterButtons = (container, key) => container
 const getActiveFilter = (container, key) => {
   const active = getFilterButtons(container, key)
     .find((button) => button.classList.contains("is-active"));
-
   return active?.dataset[key] ?? "all";
 };
 
@@ -26,13 +25,10 @@ const clickFilter = (container, key, value) => {
   const buttons = getFilterButtons(container, key);
   const target = buttons.find((button) => button.dataset[key] === value)
     ?? buttons.find((button) => button.dataset[key] === "all");
-
   target?.click();
 };
 
-const replaceFinderUrl = (url) => {
-  window.history.replaceState({}, "", url);
-};
+const replaceFinderUrl = (url) => window.history.replaceState({}, "", url);
 
 const updateFinderUrlFromControls = () => {
   if (finderHydrating) return;
@@ -57,36 +53,28 @@ const updateFinderUrlFromControls = () => {
     else url.searchParams.delete("q");
   }
 
-  const hasFilters = ["city", "day", "q", "trainer"]
-    .some((key) => url.searchParams.has(key));
+  const hasFilters = ["city", "day", "q", "trainer"].some((key) => url.searchParams.has(key));
   if (hasFilters) url.hash = "groups";
-
   replaceFinderUrl(url);
 };
 
 const updateTrainerUrl = (trainerName) => {
   const url = new URL(window.location.href);
-
   if (trainerName && hasInstructor(trainerName)) {
     url.searchParams.set("trainer", trainerName);
     url.searchParams.delete("q");
     url.hash = "groups";
   } else {
     url.searchParams.delete("trainer");
-    if (url.hash === "#groups" && !["city", "day", "q"].some((key) => url.searchParams.has(key))) {
-      url.hash = "";
-    }
+    if (url.hash === "#groups" && !["city", "day", "q"].some((key) => url.searchParams.has(key))) url.hash = "";
   }
-
   replaceFinderUrl(url);
 };
 
 const applyTrainerFilter = (trainerName, { scroll = true, updateUrl = true } = {}) => {
   if (!finderSearch || !trainerName || !hasInstructor(trainerName)) return;
-
   finderSearch.value = trainerName;
   finderSearch.dispatchEvent(new Event("input", { bubbles: true }));
-
   if (updateUrl) updateTrainerUrl(trainerName);
 
   if (scroll && finderGroups) {
@@ -131,16 +119,14 @@ hydrateFinderFromUrl();
 finderCityFilters?.addEventListener("click", updateFinderUrlFromControls);
 finderDayFilters?.addEventListener("click", updateFinderUrlFromControls);
 finderSearch?.addEventListener("input", updateFinderUrlFromControls);
-
 finderReset?.addEventListener("click", clearFinderUrl);
 finderEmptyReset?.addEventListener("click", clearFinderUrl);
-
 window.addEventListener("popstate", hydrateFinderFromUrl);
+window.addEventListener("kyokushin:content-ready", hydrateFinderFromUrl);
 
 document.addEventListener("click", (event) => {
   const control = event.target.closest("[data-trainer-filter]");
   if (!control) return;
-
   event.preventDefault();
   applyTrainerFilter(control.dataset.trainerFilter);
 });
