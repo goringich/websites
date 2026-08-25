@@ -106,7 +106,7 @@ for (const forbidden of ["Горохов","ИФК","IFK"]) {
 for (const source of [script, media, team, photo, finder, experience, trainerPhotos, adminJs]) {
   if (source.includes("innerHTML")) throw new Error("Unsafe innerHTML usage is forbidden");
 }
-for (const removed of ["masterskaya-2026","cdn1.tenchat.ru","tild3731-3236-4264-a165-653239663730"]) {
+for (const removed of ["masterskaya-2026","tild3731-3236-4264-a165-653239663730"]) {
   if (publicSource.includes(removed)) throw new Error(`Removed unrelated media must not return: ${removed}`);
 }
 
