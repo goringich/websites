@@ -47,12 +47,15 @@ for (const verifiedSourceMarker of [
 }
 
 const verifiedPeople = content.instructors.filter((item) => item.photo?.src && item.photo?.sourceUrl);
-if (verifiedPeople.length < 1) throw new Error("At least one source-bound trainer portrait must remain available");
+if (verifiedPeople.length !== 11) {
+  const missing = content.instructors.filter((item) => !item.photo?.src || !item.photo?.sourceUrl).map((item) => item.name);
+  throw new Error(`Trainer portrait completion gate requires 11/11 source-bound portraits; current=${verifiedPeople.length}/11; missing=${missing.join(", ")}`);
+}
 for (const instructor of content.instructors) {
-  if (instructor.photo && (!instructor.photo.src || !instructor.photo.sourceUrl)) throw new Error(`Incomplete portrait evidence: ${instructor.name}`);
+  if (!instructor.photo?.src || !instructor.photo?.sourceUrl) throw new Error(`Incomplete portrait evidence: ${instructor.name}`);
 }
 if (/data-portrait="verified"[^\{]*\{[^}]*position:\s*absolute/s.test(experience)) {
   throw new Error("Typography overlay must not collapse verified portrait cards");
 }
 
-console.log(`verify-roster-composition: PASS — ${verifiedPeople.length} CMS source-bound portrait(s), remaining trainers use identity-safe typography`);
+console.log("verify-roster-composition: PASS — 11/11 CMS source-bound trainer portraits present");
