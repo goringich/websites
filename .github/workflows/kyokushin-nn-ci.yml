@@ -10,6 +10,12 @@ on:
   pull_request:
     branches:
       - project/kyokushin-nn
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+      - converted_to_draft
     paths:
       - "kyokushin-nn/**"
       - ".github/workflows/kyokushin-nn-ci.yml"
@@ -56,6 +62,12 @@ jobs:
 
       - name: Verify source and release artifact
         run: npm --prefix kyokushin-nn run check
+
+      - name: Enforce portrait completion before merge or release
+        if: >-
+          github.event_name != 'pull_request' ||
+          github.event.pull_request.draft == false
+        run: npm --prefix kyokushin-nn run verify:portrait-completion
 
       - name: Probe Vercel prebuilt output contract
         working-directory: kyokushin-nn
@@ -114,7 +126,9 @@ jobs:
           fi
 
       - name: Verify exact source before production build
-        run: npm --prefix kyokushin-nn run check
+        run: |
+          npm --prefix kyokushin-nn run check
+          npm --prefix kyokushin-nn run verify:portrait-completion
 
       - name: Pull Vercel production configuration
         working-directory: kyokushin-nn
