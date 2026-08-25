@@ -1,7 +1,7 @@
 {
-  "schema_version": "2026-08-24.project-model.v1",
+  "schema_version": "2026-08-25.project-model.v2",
   "project": "kyokushin-nn",
-  "classification": "project_local_site",
+  "classification": "project_local_static_site_with_github_backed_cms",
   "central_ai_os_ownership": "not_declared",
   "mission": "Help a parent or student choose a suitable Shinkyokushinkai hall and contact the correct instructor with trustworthy information and minimal friction.",
   "north_star": "A visitor can go from landing on the site to a correct direct instructor contact for a suitable hall without needing another intermediary.",
@@ -9,84 +9,108 @@
     "Visitors quickly understand the offer and age threshold.",
     "Visitors can find halls by city, day, address, school or instructor.",
     "Visitors can share a filtered hall/instructor URL and recover the same state later.",
+    "The site feels like a real federation through source-grounded camp, training and trainer media rather than synthetic advertising filler.",
     "Federation information and trainer identity remain source-bound and conservative.",
-    "The maintainer can distinguish source health, release health and production health from machine-readable evidence."
+    "A maintainer can edit canonical content through /admin/ without duplicating recruitment facts across JavaScript files.",
+    "The maintainer can distinguish source health, release health, production health and visual acceptance from machine-readable evidence."
   ],
   "target_capabilities": [
     "18-hall recruitment catalogue with direct contacts",
-    "trainer roster with identity-safe portraits",
+    "11-instructor roster with identity-safe portrait states",
     "shareable deterministic hall finder",
-    "real federation media and photo reports",
+    "real Kerzhenets / Krasny Plyos federation-adjacent media and photo reports",
+    "GitHub-backed content/site.json CMS with fail-closed validation",
     "responsive and keyboard-accessible interaction",
     "self-contained production release",
     "exact-release production drift detection",
+    "source-bound media provenance enforcement",
     "machine-readable project state and problem registry",
     "bounded repository-agent entrypoint"
   ],
   "quality_attributes": [
     "factual integrity",
+    "identity provenance",
     "availability",
     "mobile usability",
     "accessibility",
     "release determinism",
     "production observability",
     "low operational complexity",
-    "SEO-readable first response"
+    "SEO-readable first response",
+    "content maintainability"
   ],
   "strengths": [
     {
-      "claim": "Recruitment data and identity constraints are regression guarded.",
-      "evidence": "scripts/verify.mjs checks the 18 halls, 11 instructors, media provenance and trainer identity rules."
+      "claim": "Recruitment/content data has one canonical CMS authority.",
+      "evidence": "content/site.json contains hero, camp media, photo reports, all 11 instructors and 18 venue records; build/runtime/admin paths consume the same content model."
     },
     {
-      "claim": "The runtime can be shipped as one self-contained HTML artifact.",
-      "evidence": "scripts/build-static.mjs inlines the project CSS/JS and the release contract rejects local runtime dependencies and loader fallbacks."
+      "claim": "Named trainer media fails closed instead of guessing identity.",
+      "evidence": "admin/media-policy.js and scripts/verify-media-policy.mjs require supported source-page/asset pairs and verified identity evidence for new social portraits; wrong CDN pairing, weak evidence and secondary-mirror misuse are negative-tested."
     },
     {
-      "claim": "The public production failure mode that used p0.bin..p4.bin reconstruction has been removed.",
-      "evidence": "Vercel production deployment dpl_2k1x8VbTGQtisfTptmeUzfafJane built a 115467-byte direct self-contained HTML release and the public domain returned that HTML."
+      "claim": "The runtime ships as a direct self-contained artifact while retaining editable content surfaces.",
+      "evidence": "scripts/build-static.mjs emits self-contained production HTML plus health/discovery/admin/content assets; release-contract and prebuilt-output verification enforce the artifact shape."
+    },
+    {
+      "claim": "The public production release is attributable to an exact Git commit.",
+      "evidence": "GitHub Actions run 32796544756 deployed 967a8157f32834ce5ba748d4ad22b9627299a6ca to Vercel deployment dpl_72rU2CYTGV1GnDxD1n61nZbqS5Ee and exact public smoke passed."
+    },
+    {
+      "claim": "Critical recruitment information is usable before client JavaScript.",
+      "evidence": "The built and live contract requires 11 instructors and 18 venues in prerendered HTML, with discovery metadata derived from the same canonical data."
     }
   ],
   "tradeoffs": [
     {
-      "choice": "Keep a static zero-runtime-dependency application instead of introducing a framework/backend.",
-      "benefit": "Small attack surface, simple hosting, fast first response and deterministic artifact generation.",
-      "cost": "No server-owned form workflow, analytics pipeline or dynamic content management is provided by the application itself."
+      "choice": "Keep a static application with a GitHub-backed CMS instead of introducing an application database/backend.",
+      "benefit": "Small runtime attack surface, deterministic releases, cheap hosting and one repository-owned source of truth.",
+      "cost": "Editing depends on GitHub repository access and the application does not provide a server-owned transactional workflow."
     },
     {
-      "choice": "Use conservative identity fallbacks when a trainer portrait is not source-bound.",
-      "benefit": "Avoids publishing a wrong person's image.",
-      "cost": "Some trainer cards remain less visually rich until a verified source is available."
+      "choice": "Use conservative typography fallbacks when a trainer portrait is not source-bound.",
+      "benefit": "Avoids publishing the wrong person's image and keeps identity claims auditable.",
+      "cost": "Most trainer cards remain less visually rich until exact public portrait provenance is resolved."
+    },
+    {
+      "choice": "Use selected third-party real media with explicit provenance instead of synthetic promotional imagery.",
+      "benefit": "The page remains truthful to real training/camp context.",
+      "cost": "External hosts can fail or change, so first-screen and media behavior needs deterministic fallback guards."
     }
   ],
   "accepted_debt": [
     {
-      "id": "unattended-vercel-auth",
-      "debt": "The Vercel project is not Git-linked and unattended GitHub-to-Vercel deployment still depends on a repository VERCEL_TOKEN secret being available.",
-      "why_accepted_now": "Production can be recovered through authenticated Vercel OAuth while the source pipeline fails closed instead of silently serving a stale build.",
-      "exit_condition": "A push to project/kyokushin-nn completes verify -> Vercel production deploy -> exact-release public smoke without manual intervention."
+      "id": "browser-perceptual-qa",
+      "debt": "Current source/build/live contracts are deterministic, but representative current desktop/mobile perceptual evidence and owner visual acceptance are still pending.",
+      "why_accepted_now": "Functional and production correctness can be proven independently, while visual acceptance requires an actual rendered artifact review rather than inference from CI.",
+      "exit_condition": "Review the exact current desktop/mobile render, fix visible defects and record an owner-review candidate/decision."
     },
     {
-      "id": "browser-qa-environment",
-      "debt": "The current execution container cannot complete Chromium screenshot QA because Chromium hangs in its D-Bus/zygote environment.",
-      "why_accepted_now": "HTTP production evidence and deterministic source/release checks prove the delivery incident independently of that test environment.",
-      "exit_condition": "A normal browser-capable runner executes responsive visual/runtime QA against the exact production release."
+      "id": "trainer-portrait-coverage",
+      "debt": "Production currently has one source-bound named trainer portrait; active draft PR #51 has two of the required eleven.",
+      "why_accepted_now": "Publishing an identity-safe typography card is safer than filling visual space with an ambiguous person or generic event photo.",
+      "exit_condition": "Resolve and verify exact source-page-to-asset portrait chains for all 11 instructors and pass verify:portrait-completion."
     }
   ],
   "next_demonstrable_increment": {
-    "outcome": "Make every production release attributable to one exact Git commit and prove that exact release on the public domain.",
+    "outcome": "Complete all 11 trainer portraits with auditable source-bound identity evidence without reducing the current media trust boundary.",
+    "work_branch": "feat/kyokushin-all-trainer-photos",
+    "pull_request": 51,
     "acceptance": [
-      "dist/index.html contains x-kyokushin-release",
-      "dist/health.json exposes the same release identity",
-      "release-contract verifies the identity pair",
-      "production-smoke rejects a stale release when KYOKUSHIN_EXPECTED_RELEASE is set",
-      "CI artifacts include both index.html and health.json"
+      "11/11 instructors have photo.src and photo.sourceUrl from an allowed provenance chain",
+      "new social portraits carry identityStatus=verified and non-trivial identityEvidence",
+      "no identity is inferred from face resemblance, a common name, generic event imagery or a search thumbnail",
+      "draft incremental CI remains green while work is incomplete",
+      "ready-for-review and release paths fail unless verify:portrait-completion is 11/11",
+      "exact production release and public smoke pass after merge"
     ],
     "evidence_required": [
-      "green PR verification",
-      "production deployment build log",
-      "public HTML release marker",
-      "public health.json release marker"
+      "source pages that explicitly bind each identity",
+      "exact portrait asset URLs",
+      "green media-policy negative and positive tests",
+      "green non-draft portrait completion gate",
+      "exact GitHub Actions production run",
+      "public exact-release smoke"
     ]
   },
   "rules": {
