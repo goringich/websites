@@ -1,5 +1,5 @@
 {
-  "schema_version": "2026-08-25.kyokushin-trainer-photo-research.v1",
+  "schema_version": "2026-08-25.kyokushin-trainer-photo-research.v2",
   "status": "in_progress",
   "system_route": [
     "public-person-research",
@@ -23,36 +23,45 @@
       "person": "Сергей Жуков",
       "projectRole": "Инструктор",
       "identityAnchors": [
+        "Сергей Владимирович Жуков",
         "Нижегородская федерация СинКёкусинкай каратэ",
         "Нижний Новгород",
-        "federation legal/organizer records identify Сергей Владимирович Жуков"
+        "председатель организационного комитета соревнований федерации",
+        "исполнительный директор федерации"
       ],
       "researchState": "identity_verified_photo_pending",
       "doneState": null,
       "evidence": [
         "https://kyokushinkai.ru/sob/kalendari/2017/2017_kyok_hid/chip_nov_5_12/?p=5",
+        "https://checko.ru/company/nfskk-1065262018197",
+        "https://rnfkk.ru/files/textfiles/2016/b03a033b8a68d9b8a9648904fcd2a1c3.pdf",
         "https://shin-nnov.orgs.biz/"
       ],
-      "notes": "Name is highly collision-prone. Search returned unrelated singer, football/fitness and other Сергей Жуков profiles; all are rejected unless federation/role anchors match.",
+      "notes": "The exact full name is grounded by federation organizer/legal records and the accredited-trainer list. The name is highly collision-prone; unrelated singer, football, fitness and other Сергей Жуков profiles remain rejected.",
       "next": "Resolve an exact federation VK/profile/team publication naming Сергей Владимирович Жуков and containing a portrait."
     },
     {
       "person": "Андрей Троцко",
       "projectRole": "Инструктор · президент федерации",
       "identityAnchors": [
-        "Нижегородская федерация СинКёкусинкай каратэ",
+        "Андрей Владимирович Троцко",
+        "президент Нижегородской федерации СинКёкусинкай каратэ",
         "Нижний Новгород",
-        "federation legal/organizer records identify Андрей Владимирович Троцко"
+        "federation organizer and judge records",
+        "project phone +7 920 036-48-99"
       ],
       "researchState": "identity_verified_photo_pending",
       "doneState": null,
       "evidence": [
-        "https://kyokushinkai.ru/sob/kalendari/2017/2017_kyok_hid/chip_nov_5_12/?p=5"
+        "https://kyokushinkai.ru/sob/kalendari/2017/2017_kyok_hid/chip_nov_5_12/?p=5",
+        "https://checko.ru/company/nfskk-1065262018197",
+        "https://rnfkk.ru/files/textfiles/2016/b03a033b8a68d9b8a9648904fcd2a1c3.pdf"
       ],
       "rejectedCandidates": [
         "OK/other results tied to Мариуполь or unrelated people with surname Троцко"
       ],
-      "next": "Search exact federation VK posts, official event judge/organizer pages and historic federation albums."
+      "notes": "The federation event record binds the exact full name to the same professional phone used by the project; legal/leadership and accredited-trainer records independently support the identity.",
+      "next": "Search exact federation VK posts, official event judge/organizer pages and historic federation albums for a source-bound portrait."
     },
     {
       "person": "Владимир Жуков",
@@ -74,14 +83,16 @@
       "rejectedCandidates": [
         "DDX Fitness trainer Vladimir Zhukov",
         "unrelated TenChat profiles",
-        "unrelated OK profiles"
+        "unrelated namesakes returned by generic people search"
       ],
-      "next": "Resolve an exact Full Contact/federation VK portrait or a captioned competition photo. Event group photos remain federation evidence, not a named portrait."
+      "notes": "Federation discovery material ties Владимир Сергеевич Жуков to СПЦ FULL CONTACT and the project venue; independent competition result pages tie the exact full name to Нижегородская область. Group/event imagery is not promoted without an explicit image-to-person binding.",
+      "next": "Resolve an exact Full Contact/federation VK portrait or a captioned competition photo whose source explicitly binds the visible subject to Владимир Сергеевич Жуков."
     },
     {
       "person": "Дарья Осинина",
       "projectRole": "Инструктор",
       "identityAnchors": [
+        "Дарья Осинина",
         "Нижегородская область",
         "Shinkyokushinkai athlete result records",
         "project recruitment data"
@@ -89,11 +100,12 @@
       "researchState": "identity_verified_photo_pending",
       "doneState": null,
       "evidence": [
-        "Russian WKO competition result indexed for Дарья Осинина — Нижегородская область"
+        "https://akrussia.ru/wp-content/uploads/2023/12/Kubok-Rossii-2023.pdf"
       ],
       "rejectedCandidates": [
         "https://tenchat.ru/4766867 — Москва, курьер; conflicts with project identity"
       ],
+      "notes": "The official competition result anchors Дарья Осинина to Нижегородская область. No safe source-page-to-portrait chain has been resolved yet.",
       "next": "Search federation VK competition posts and athlete/result albums for a captioned/source-bound portrait."
     },
     {
@@ -102,20 +114,23 @@
       "identityAnchors": [
         "Нижний Новгород",
         "official federation recruitment publication",
-        "project-listed professional phone and venues"
+        "project professional phone +7 920 044-08-18",
+        "Школа №140 / Семейный клуб Союз"
       ],
       "researchState": "identity_verified_photo_pending",
       "doneState": null,
       "evidence": [
-        "https://shin-nnov.orgs.biz/ — 22.08.2025 recruitment publication names Юлия Фролова as instructor"
+        "https://shin-nnov.orgs.biz/ — 22.08.2025 recruitment publication names Юлия Фролова with the project professional phone",
+        "https://shin-nnov.orgs.biz/ — 08.09.2024 recruitment publication names Юлия Кондратенко with the same professional phone"
       ],
-      "notes": "Many unrelated Юлия Фролова profiles exist; exact federation/venue binding is mandatory.",
-      "next": "Resolve original federation VK recruitment post and related album/profile before selecting a portrait."
+      "notes": "The same federation recruitment contact appears under Юлия Кондратенко in 2024 and Юлия Фролова in 2025. This is a high-value prior-surname search anchor, not permission to rewrite the current public name or infer a legal name change without an explicit source. Many unrelated Юлия Фролова profiles exist.",
+      "next": "Resolve the original federation VK recruitment posts and a public profile/album that explicitly binds the current trainer identity to a portrait; use Юлия Кондратенко only as a controlled search alias."
     },
     {
       "person": "Иван Гаврилин",
       "projectRole": "Инструктор · спортсмен",
       "identityAnchors": [
+        "Иван Владимирович Гаврилин",
         "Нижний Новгород",
         "official federation recruitment publication",
         "competition results",
@@ -137,17 +152,27 @@
       "person": "Сергей Глухов",
       "projectRole": "Инструктор",
       "identityAnchors": [
+        "Сергей Геннадьевич Глухов",
         "Нижний Новгород",
-        "Детский клуб Юность",
-        "project recruitment data"
+        "ДПК Юность",
+        "Каратэ киокусинкай",
+        "official municipal children-center record",
+        "Нижегородская область competition judge record",
+        "serikm3@yandex.ru"
       ],
-      "researchState": "ambiguous_identity_photo_pending",
+      "researchState": "identity_verified_photo_pending",
       "doneState": null,
+      "evidence": [
+        "https://ddt20a.ru/s.exe/--2020/04",
+        "https://akrussia.ru/wp-content/uploads/2025/08/Perv_PFO_2025-WKO.pdf",
+        "https://vk.com/public193108323"
+      ],
       "rejectedCandidates": [
         "Сергей Андреевич Глухов — Russian curler",
-        "other generic people-search/social results without karate/Нижний Новгород binding"
+        "generic people-search/social results without Юность/karate/Нижний Новгород binding"
       ],
-      "next": "Search exact Детский клуб Юность/federation VK recruitment posts and captioned trainer content. Do not use common-name social profiles."
+      "notes": "Identity ambiguity is resolved: the municipal children-center page explicitly binds Сергей Геннадьевич Глухов to ДПК «Юность» and каратэ киокусинкай and exposes the linked public VK community; the 2025 PFO official judge list independently binds the same full name to Нижегородская область. A portrait still requires an exact source-page/asset pair.",
+      "next": "Search the linked public VK community and federation posts for a named profile/post/album with an exact portrait asset; do not use generic namesake profiles."
     },
     {
       "person": "Сергей Захаров",
@@ -159,21 +184,31 @@
       ],
       "researchState": "ambiguous_identity_photo_pending",
       "doneState": null,
-      "notes": "No source-bound public portrait found in the first indexed-web pass.",
-      "next": "Search Клуб Восток social/community pages, federation recruitment posts and event albums with exact name binding."
+      "notes": "No source-bound public portrait or independent full-name record has been found in the indexed-web pass. Do not infer a patronymic from generic namesakes.",
+      "next": "Search Клуб Восток / ЦДТ Автозаводского района social pages, federation recruitment posts and event albums tied to ул. Смирнова 13А and project phone +7 910 146-84-28."
     },
     {
       "person": "Андрей Коннов",
       "projectRole": "Инструктор",
       "identityAnchors": [
+        "Андрей Александрович Коннов",
         "Дзержинск",
+        "Нижегородская область",
+        "Школа №20 / ул. Попова 26А",
         "киокусинкай",
-        "historic accredited trainer records for Нижегородская область"
+        "project phone +7 930 813-78-20",
+        "konnov.dojo@yandex.ru"
       ],
       "researchState": "identity_verified_photo_pending",
       "doneState": null,
-      "notes": "Historic result sources contain spelling variants; do not silently merge Коннов/Кононов without source confirmation.",
-      "next": "Search Дзержинск club/school social pages and official VK/event archives for exact Андрей Коннов identity."
+      "evidence": [
+        "https://fitonist.ru/nizhegorodskaya-federatsiya-sinkyokusinkay-karate-4/",
+        "https://akrussia.ru/wp-content/uploads/2025/08/Perv_PFO_2025-WKO.pdf",
+        "https://rnfkk.ru/files/textfiles/2016/b03a033b8a68d9b8a9648904fcd2a1c3.pdf",
+        "https://vk.com/shin_nnov"
+      ],
+      "notes": "The Дзержинск federation listing matches the project phone, email, ул. Попова 26А and public VK route. The 2025 PFO judge list and 2016 accredited-trainer list independently use the exact full name Андрей Александрович Коннов for Нижегородская область. Older sources may contain Конов/Кононов variants; those variants remain search-only until explicitly connected.",
+      "next": "Search the exact linked Дзержинск VK community and official competition/federation archives for a source-bound portrait."
     },
     {
       "person": "Георгий Пигиданов",
@@ -212,14 +247,14 @@
       "identityEvidence": "The public TenChat profile explicitly names Кирилл Антоневич, Нижний Новгород, calls him a martial-arts trainer, identifies Детский спортивный клуб МАСТЕРСКАЯ КАРАТЕ and links the club website. The club site independently names АНТОНЕВИЧ КИРИЛЛ АНДРЕЕВИЧ as trainer/director and uses the same project professional phone.",
       "cropSuitability": "Square profile portrait; suitable for trainer card. Keep face/upper torso centered and avoid aggressive mobile crop.",
       "decision": "approved_candidate_after_policy_support",
-      "next": "Add to CMS content only through the verified social source+asset policy; do not substitute other TenChat people with matching names."
+      "next": "Keep the source-bound TenChat portrait chain; do not substitute other TenChat people with matching names."
     }
   ],
   "summary": {
     "verifiedPhotoFound": 2,
-    "identityVerifiedPhotoPending": 6,
-    "ambiguousIdentityPhotoPending": 2,
+    "identityVerifiedPhotoPending": 8,
+    "ambiguousIdentityPhotoPending": 1,
     "total": 11,
-    "note": "Counts describe current research evidence, not a claim that indexed public sources have been exhaustively searched."
+    "note": "Counts describe current research evidence, not a claim that indexed public sources have been exhaustively searched. The strict 11/11 portrait merge gate remains intentionally unsatisfied until each pending identity has an exact source-page-to-asset chain."
   }
 }
