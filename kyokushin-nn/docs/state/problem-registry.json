@@ -1,6 +1,7 @@
 {
-  "schema_version": "2026-08-24.kyokushin-problems.v3",
+  "schema_version": "2026-08-25.kyokushin-problems.v4",
   "project": "kyokushin-nn",
+  "updated_at": "2026-08-25T03:23:00Z",
   "rules": {
     "evidence_required": true,
     "unknown_root_cause_must_remain_unknown": true,
@@ -11,51 +12,78 @@
     {
       "id": "production-binary-bootstrap",
       "severity": "critical",
-      "status": "resolved",
+      "status": "resolved_live",
       "class": "deployment_artifact_mismatch",
       "symptom": "Users could receive 'Не удалось загрузить сайт' before the real page rendered.",
-      "root_cause": "Production served a browser bootstrap that fetched p0.bin..p4.bin and reconstructed/decompressed the real HTML client-side instead of serving the verified self-contained page directly.",
-      "resolution": "Production deployment dpl_2k1x8VbTGQtisfTptmeUzfafJane builds and serves the project as direct self-contained HTML. Release/live guards forbid the old loader markers.",
-      "verification": "Vercel build log: 115467-byte direct self-contained PASS; public kyokushin-nn.vercel.app returned HTTP 200 with x-kyokushin-build=self-contained and real UI markers.",
+      "root_cause": "Production once served a browser bootstrap that reconstructed the real HTML client-side instead of serving the verified self-contained page directly.",
+      "resolution": "The production lane now builds and deploys direct self-contained HTML and release/live guards reject the old bootstrap markers.",
+      "verification": "Push CI #140 deployed exact release 967a8157f32834ce5ba748d4ad22b9627299a6ca; production smoke passed with build=self-contained.",
       "source_affected": false,
       "runtime_affected": false
     },
     {
       "id": "deployment-not-source-linked",
       "severity": "high",
-      "status": "active_root_cause_proven",
+      "status": "resolved_live",
       "class": "delivery_control_gap",
-      "symptom": "Merged, green source changes do not publish the exact verified commit to the public Vercel domain.",
-      "root_cause": "GitHub Actions does not have VERCEL_TOKEN. PR #27 added a bounded diagnostic and CI run 32744059135 printed VERCEL_TOKEN_PRESENT=false without exposing any secret value. The Vercel project is also not Git-linked, so the existing Actions deployment lane is the intended publication path.",
-      "source_affected": false,
-      "runtime_affected": false,
+      "symptom": "Merged source changes previously could not publish the exact verified commit because GitHub Actions lacked the Vercel credential.",
+      "root_cause": "VERCEL_TOKEN was absent from GitHub Actions and the Vercel project uses the explicit Actions/CLI lane rather than automatic Git-linked deployment.",
+      "resolution": "The bounded VERCEL_TOKEN was restored. The existing exact-SHA verify -> prebuilt verify -> production deploy -> public smoke lane remains the delivery authority.",
+      "verification": "Issue #26 is closed completed. Push CI #140 for 967a8157f32834ce5ba748d4ad22b9627299a6ca passed verify and deploy-production; Vercel deployment dpl_72rU2CYTGV1GnDxD1n61nZbqS5Ee is READY and aliased to the canonical domain; exact-release production smoke passed.",
       "issue": 26,
-      "mitigation": "Source/release CI continues to fail closed for production deployment without credentials; release-aware smoke prevents stale production from being reported as current. Do not replace this with a binary/bootstrap or manual unverified deploy path.",
-      "completion_gate": "Restore a bounded VERCEL_TOKEN, then a push to project/kyokushin-nn completes verify -> exact-SHA Vercel production deploy -> exact-release public smoke without exposing the credential."
-    },
-    {
-      "id": "browser-qa-environment",
-      "severity": "medium",
-      "status": "active",
-      "class": "qa_environment_gap",
-      "symptom": "Headless Chromium screenshot QA hangs in the current container, preventing trustworthy desktop/mobile perceptual acceptance.",
-      "root_cause": "Repeated tests, including trivial pages and the exact CI artifact, point to the execution container's D-Bus/zygote environment rather than a website runtime defect. WeasyPrint is insufficient because it does not faithfully support the site's modern browser CSS/runtime behavior.",
       "source_affected": false,
-      "runtime_affected": false,
-      "completion_gate": "Run responsive visual/runtime QA on a normal browser-capable runner against an exact release and preserve representative desktop/mobile evidence."
+      "runtime_affected": false
     },
     {
       "id": "javascript-only-recruitment-directory",
       "severity": "high",
-      "status": "resolved_in_source_not_yet_public",
+      "status": "resolved_live",
       "class": "progressive_enhancement_gap",
-      "symptom": "If script.js failed or JavaScript was disabled, the shipped HTML contained an empty #instructorList, hiding the practical 18-hall directory, schedules and direct phone/map actions.",
-      "root_cause": "Recruitment cards were rendered only on the client even though the same canonical instructor data is available at build time.",
-      "resolution": "PR #29 makes build-static.mjs prerender the complete 11-instructor / 18-venue directory from the canonical instructors array. JavaScript progressively replaces the fallback when available; health/release/live guards require staticDirectory=true.",
-      "verification": "GitHub Actions run 32745390974: build staticDirectory=18/11 PASS; release-contract staticDirectory=true PASS; verify-static-directory confirmed 11 instructors / 18 venues before JavaScript enhancement.",
+      "symptom": "If client JavaScript failed, the original shipped HTML could hide the practical hall directory and direct contacts.",
+      "root_cause": "Recruitment cards were originally rendered only on the client even though canonical instructor/venue data was available at build time.",
+      "resolution": "The CMS-backed static build prerenders all 11 instructors and 18 venue records before JavaScript enhancement.",
+      "verification": "Push CI #140 and its exact public smoke report staticDirectory instructors=11 and venues=18 on release 967a8157f32834ce5ba748d4ad22b9627299a6ca.",
       "source_affected": false,
-      "runtime_affected": true,
-      "completion_gate": "Deploy merge b76254091934e3a4d3406f1348692988c5ce9aca or a later verified descendant and pass exact public production smoke."
+      "runtime_affected": false
+    },
+    {
+      "id": "stale-project-state-authority",
+      "severity": "high",
+      "status": "resolved",
+      "class": "agent_context_drift",
+      "symptom": "Project-local state files still described V3.6, missing VERCEL_TOKEN and the old V2 recovery runtime after CMS/media-policy releases were already live.",
+      "root_cause": "The final V3.6.1 state snapshot PR was superseded and never merged, while later product/media PRs advanced runtime truth without updating the canonical state bundle.",
+      "resolution": "Canonical state is being synchronized directly on project/kyokushin-nn under the existing docs-only no-release semantics, so agents read the current 4.0.1 CMS/media/release state instead of reopening closed delivery work.",
+      "verification": "docs/state/current.json v10 records release 967a8157..., CI #140, deployment dpl_72rU2..., operational VERCEL_TOKEN, active PR #51 and the current portrait blockers.",
+      "source_affected": false,
+      "runtime_affected": false
+    },
+    {
+      "id": "trainer-portrait-completion",
+      "severity": "medium",
+      "status": "active",
+      "class": "content_identity_provenance_gap",
+      "symptom": "The trainer roster is complete and usable, but most named instructors still use intentional identity-safe typography because source-bound portrait chains are missing.",
+      "root_cause": "A public full-name match or event photo is insufficient evidence for a named portrait; exact source-page-to-asset identity binding must be established individually.",
+      "work_branch": "feat/kyokushin-all-trainer-photos",
+      "pull_request": 51,
+      "current_progress": "2/11 verified portraits on the draft work branch; production remains 1/11; 10/11 professional identities are source-backed on the work branch.",
+      "only_identity_ambiguous_trainer": "Сергей Захаров",
+      "mitigation": "Keep identity-safe typography for every unresolved trainer and reject namesakes, generic group/event photos, search thumbnails, face matching, private-account bypass and synthetic trainer photography.",
+      "completion_gate": "PR #51 must remain draft until verify:portrait-completion passes 11/11; the same completion gate runs again for project-branch release and before production deployment.",
+      "source_affected": true,
+      "runtime_affected": false
+    },
+    {
+      "id": "browser-perceptual-qa",
+      "severity": "medium",
+      "status": "active",
+      "class": "qa_evidence_gap",
+      "symptom": "Deterministic source/build/live checks are green, but representative current desktop/mobile perceptual review and owner visual acceptance are not yet recorded.",
+      "root_cause": "Visual quality cannot be inferred from source, CI, HTTP health or Vercel READY state.",
+      "source_affected": false,
+      "runtime_affected": false,
+      "completion_gate": "Inspect the exact current rendered desktop/mobile first screen, trainer roster and directory; fix visible defects; preserve evidence; then present an owner-review candidate without claiming owner acceptance prematurely."
     }
   ]
 }
