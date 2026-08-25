@@ -42,6 +42,87 @@ updateV3PageProgress();
 
 const CMS_RAW_URL = "https://raw.githubusercontent.com/goringich/websites/project/kyokushin-nn/kyokushin-nn/content/site.json";
 const CMS_LOCAL_URL = "/content/site.json";
+const CMS_EXPECTED_PEOPLE = [
+  "Сергей Жуков","Андрей Троцко","Владимир Жуков","Дарья Осинина","Юлия Фролова",
+  "Иван Гаврилин","Сергей Глухов","Сергей Захаров","Андрей Коннов","Георгий Пигиданов","Кирилл Антоневич"
+];
+const CMS_CAMP_HOSTS = new Set(["kples.ru", "www.kples.ru", "vk.ru", "vk.com"]);
+const CMS_TRAINER_ASSET_HOSTS = new Set([
+  "sun9-54.userapi.com",
+  "sun1-96.userapi.com",
+  "sun9-62.userapi.com",
+  "sun9-50.userapi.com",
+  "sun9-66.userapi.com"
+]);
+const CMS_TRAINER_SOURCE_HOSTS = new Set(["vk.ru", "vk.com", "shin-nnov.orgs.biz"]);
+const CMS_FORBIDDEN_MEDIA_HOSTS = new Set(["vega52.ru", "www.vega52.ru"]);
+const CMS_FORBIDDEN_FILLER = [
+  "Тренировки, где техника становится характером",
+  "Спортивные сборы, природа и тренировочный ритм",
+  "Движение каждый день"
+];
+
+const cmsUrlHost = (url) => {
+  if (!url) return "";
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return null;
+  }
+};
+
+const cmsUrlAllowed = (url, hosts, { allowEmpty = true } = {}) => {
+  if (!url) return allowEmpty;
+  const host = cmsUrlHost(url);
+  return Boolean(host && hosts.has(host) && !CMS_FORBIDDEN_MEDIA_HOSTS.has(host));
+};
+
+const cmsMediaPolicyErrors = (content) => {
+  const errors = [];
+  if (!content || typeof content !== "object") return ["content-not-object"];
+
+  const people = content.instructors?.map((item) => item.name) ?? [];
+  if (JSON.stringify(people) !== JSON.stringify(CMS_EXPECTED_PEOPLE)) errors.push("trainer-identity-list");
+  const venueCount = content.instructors?.reduce((sum, item) => sum + (item.venues?.length ?? 0), 0) ?? 0;
+  if (venueCount !== 18) errors.push("venue-count");
+
+  const heroMedia = content.hero?.media;
+  if (!heroMedia?.src || !cmsUrlAllowed(heroMedia.src, new Set(["kples.ru", "www.kples.ru"]), { allowEmpty: false })) {
+    errors.push("hero-media-authority");
+  }
+  if (!cmsUrlAllowed(heroMedia?.poster, CMS_CAMP_HOSTS)) errors.push("hero-poster-authority");
+  if (!cmsUrlAllowed(heroMedia?.sourceUrl, CMS_CAMP_HOSTS, { allowEmpty: false })) errors.push("hero-source-authority");
+
+  for (const item of content.gallery ?? []) {
+    if (!cmsUrlAllowed(item.src, CMS_CAMP_HOSTS)) errors.push(`gallery-src:${item.id || "unknown"}`);
+    if (!cmsUrlAllowed(item.poster, CMS_CAMP_HOSTS)) errors.push(`gallery-poster:${item.id || "unknown"}`);
+    if (!cmsUrlAllowed(item.sourceUrl, CMS_CAMP_HOSTS, { allowEmpty: false })) errors.push(`gallery-source:${item.id || "unknown"}`);
+  }
+
+  for (const item of content.photoReports ?? []) {
+    if (!cmsUrlAllowed(item.url, CMS_CAMP_HOSTS, { allowEmpty: false })) errors.push(`report-source:${item.title || "unknown"}`);
+  }
+
+  for (const instructor of content.instructors ?? []) {
+    if (!instructor.photo) continue;
+    if (!cmsUrlAllowed(instructor.photo.src, CMS_TRAINER_ASSET_HOSTS, { allowEmpty: false })) {
+      errors.push(`trainer-photo-asset:${instructor.name}`);
+    }
+    if (!cmsUrlAllowed(instructor.photo.sourceUrl, CMS_TRAINER_SOURCE_HOSTS, { allowEmpty: false })) {
+      errors.push(`trainer-photo-source:${instructor.name}`);
+    }
+  }
+
+  const serialized = JSON.stringify(content);
+  for (const host of CMS_FORBIDDEN_MEDIA_HOSTS) {
+    if (serialized.includes(host)) errors.push(`forbidden-media-host:${host}`);
+  }
+  for (const phrase of CMS_FORBIDDEN_FILLER) {
+    if (serialized.includes(phrase)) errors.push(`ungrounded-copy:${phrase}`);
+  }
+
+  return errors;
+};
 
 const installCmsRuntimeStyle = () => {
   if (document.querySelector("#cms-runtime-style")) return;
@@ -140,13 +221,14 @@ const applyHeroContent = (content) => {
   if (ogAlt) ogAlt.content = media.alt || "Спортивные сборы на Керженце";
 };
 
-const isValidCmsContent = (content) => Boolean(
-  content && Array.isArray(content.instructors) && content.instructors.length === 11
-  && Array.isArray(content.gallery) && content.hero?.media?.src
-);
+const isValidCmsContent = (content) => cmsMediaPolicyErrors(content).length === 0;
 
 const applyCmsContent = (content) => {
-  if (!isValidCmsContent(content)) return false;
+  const policyErrors = cmsMediaPolicyErrors(content);
+  if (policyErrors.length) {
+    console.warn("Kyokushin CMS content rejected by media/data policy", policyErrors);
+    return false;
+  }
   window.KYOKUSHIN_CONTENT = content;
   window.KYOKUSHIN_MEDIA_APPLY_CONTENT?.(content);
   window.KYOKUSHIN_APP?.applyContent?.(content);
@@ -179,6 +261,7 @@ fetchCmsContent();
 window.KYOKUSHIN_CMS_RUNTIME = {
   refresh: fetchCmsContent,
   apply: applyCmsContent,
+  validate: cmsMediaPolicyErrors,
   source: CMS_RAW_URL
 };
 window.KYOKUSHIN_EXPERIENCE_V3_READY = true;
