@@ -3,15 +3,16 @@ import { readFile } from "node:fs/promises";
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
 const [
   html, script, media, team, photo, finder, experience, trainerPhotos,
-  contentRaw, adminHtml, adminJs, adminCss, buildScript, packageRaw, vercelRaw
+  contentRaw, mediaDirectionRaw, adminHtml, adminJs, adminCss, buildScript, packageRaw, vercelRaw
 ] = await Promise.all([
   read("../index.html"), read("../script.js"), read("../media.js"), read("../team.js"),
   read("../photo.js"), read("../finder.js"), read("../experience-v3.js"), read("../trainer-photos.js"),
-  read("../content/site.json"), read("../admin/index.html"), read("../admin/admin.js"), read("../admin/admin.css"),
+  read("../content/site.json"), read("../docs/media-direction.json"), read("../admin/index.html"), read("../admin/admin.js"), read("../admin/admin.css"),
   read("build-static.mjs"), read("../package.json"), read("../vercel.json")
 ]);
 
 const content = JSON.parse(contentRaw);
+const mediaDirection = JSON.parse(mediaDirectionRaw);
 const packageJson = JSON.parse(packageRaw);
 const vercelJson = JSON.parse(vercelRaw);
 const expectedPeople = [
@@ -45,9 +46,32 @@ const serialized = JSON.stringify(content);
 if (!String(content.camp?.river || "").includes("Керженец")) throw new Error("CMS camp contract must target Керженец");
 if (content.camp?.name !== "Красный Плёс") throw new Error("CMS camp must be Красный Плёс");
 if (!String(content.hero?.media?.src || "").startsWith("https://kples.ru/")) throw new Error("Hero media must come from official Красный Плёс");
-if (!String(content.hero?.media?.poster || "").includes("vega52.ru")) throw new Error("Hero poster must use real Kerzhenets nature evidence");
+if (content.hero?.media?.poster && !String(content.hero.media.poster).startsWith("https://kples.ru/")) {
+  throw new Error("Hero poster, when present, must come from the same official camp source family as the documentary media");
+}
 if (!Array.isArray(content.gallery) || content.gallery.length < 5) throw new Error("CMS gallery must contain Kerzhenets camp media");
 if (!Array.isArray(content.photoReports) || content.photoReports.length !== 4) throw new Error("CMS must contain exactly four camp report links");
+
+if (serialized.includes("vega52.ru")) throw new Error("Unrelated Kerzhenets river poster must not return as training/event evidence");
+for (const genericCopy of [
+  "Тренировки, где техника становится характером",
+  "Спортивные сборы, природа и тренировочный ритм",
+  "Движение каждый день"
+]) {
+  if (serialized.includes(genericCopy)) throw new Error(`Ungrounded promotional filler must not return: ${genericCopy}`);
+}
+
+if (mediaDirection.status !== "active") throw new Error("Real-media direction contract must be active");
+if (!String(mediaDirection.principle || "").includes("documentary product content")) throw new Error("Media-direction principle is missing documentary truth ownership");
+if (!mediaDirection.forbidden?.some((item) => item.includes("AI-generated trainer"))) throw new Error("Media-direction contract must explicitly forbid synthetic trainer documentary media");
+if (!mediaDirection.current_audit?.reject?.some((item) => item.asset_host === "vega52.ru")) throw new Error("Media-direction audit must preserve the rejected unrelated poster regression");
+if (!mediaDirection.done_when?.some((item) => item.includes("source-bound"))) throw new Error("Media-direction Done contract must require source-bound named portraits");
+
+for (const instructor of content.instructors) {
+  if (!instructor.photo) continue;
+  if (!instructor.photo.src || !instructor.photo.sourceUrl) throw new Error(`Trainer photo provenance incomplete for ${instructor.name}`);
+  if (!expectedPeople.includes(instructor.name)) throw new Error(`Trainer photo is outside allowlist: ${instructor.name}`);
+}
 
 if (/[Жж]ара/.test(serialized)) throw new Error("Visible Cyrillic 'Жара' is forbidden everywhere");
 if (count(serialized, kirillOnlyUrl) !== 1) throw new Error("Kirill project URL must occur exactly once in CMS content");
@@ -59,11 +83,11 @@ for (const instructor of content.instructors) {
   if (instructor.name !== "Кирилл Антоневич" && instructor.links?.length) throw new Error(`Unexpected external link for ${instructor.name}`);
 }
 
-const campHosts = new Set(["kples.ru","www.kples.ru","vk.ru","vk.com","vega52.ru","www.vega52.ru"]);
+const campHosts = new Set(["kples.ru","www.kples.ru","vk.ru","vk.com"]);
 const assertCampUrl = (url, label) => {
   if (!url) return;
   const host = new URL(url).hostname;
-  if (!campHosts.has(host)) throw new Error(`${label} must be Kerzhenets/camp media, got ${host}`);
+  if (!campHosts.has(host)) throw new Error(`${label} must be official Kerzhenets/camp media, got ${host}`);
 };
 assertCampUrl(content.hero.media.src, "hero src");
 assertCampUrl(content.hero.media.poster, "hero poster");
@@ -118,4 +142,4 @@ if (!buildScript.includes("Disallow: /admin/") || !buildScript.includes("cms: {"
 if (packageJson.scripts?.build !== "node scripts/build-static.mjs") throw new Error("Build script changed unexpectedly");
 if (vercelJson.outputDirectory !== "dist") throw new Error("Vercel must serve dist");
 
-console.log(`verify: PASS — Kerzhenets CMS, ${content.instructors.length} trainers, ${venueCount} venues, ${content.gallery.length} camp media items, exact-one Kirill link`);
+console.log(`verify: PASS — source-grounded Kerzhenets CMS, ${content.instructors.length} trainers, ${venueCount} venues, ${content.gallery.length} camp media items, exact-one Kirill link`);
