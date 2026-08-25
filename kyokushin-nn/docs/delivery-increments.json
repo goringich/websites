@@ -1,233 +1,123 @@
 {
-  "schema_version": "2026-08-24.delivery-increments.v7",
+  "schema_version": "2026-08-25.delivery-increments.v10",
   "project": "kyokushin-nn",
+  "updated_at": "2026-08-25T03:23:00Z",
   "increments": [
     {
-      "id": "recruitment-site-v2",
-      "status": "production_usable_but_stale",
-      "outcome": "A visitor can understand the karate recruitment offer, browse the team, find one of 18 halls, inspect the schedule and contact the correct instructor directly.",
-      "acceptance": [
-        "18 halls and 11 instructors pass deterministic guards",
-        "search and city/day filters work from one page",
-        "trainer selection can be shared through URL state",
-        "personal photos are source-bound or replaced by neutral fallbacks",
-        "production serves direct self-contained HTML"
-      ],
+      "id": "recruitment-directory-v1",
+      "status": "complete_live_verified",
+      "outcome": "Visitors can find one of 18 section records, inspect schedules and contact the correct instructor directly; the complete 11-instructor / 18-venue directory exists before JavaScript enhancement.",
       "evidence": [
-        "scripts/verify.mjs",
+        "content/site.json",
         "scripts/verify-finder-state.mjs",
-        "scripts/release-contract.mjs",
-        "Vercel deployment dpl_2k1x8VbTGQtisfTptmeUzfafJane"
-      ],
-      "note": "The live V2 recovery release remains usable but is no longer the current source/design release."
+        "scripts/verify-static-directory.mjs",
+        "GitHub Actions run 32796544756",
+        "live exact-release smoke for 967a8157f32834ce5ba748d4ad22b9627299a6ca"
+      ]
     },
     {
       "id": "release-intelligence-v1",
-      "status": "source_ready_runtime_blocked_by_missing_credential",
-      "outcome": "Source, artifact and public production can be tied to one exact release identity so stale or drifted production fails closed.",
-      "acceptance": [
-        "HTML contains x-kyokushin-release",
-        "/health.json contains the same release",
-        "release contract validates both",
-        "live smoke rejects a mismatched expected release",
-        "CI preserves the complete dist artifact",
-        "manual production dispatch is explicit, exact-project-ref bound and verify-first",
-        "public production is verified after deployment"
-      ],
+      "status": "complete_live_verified",
+      "outcome": "Source, Vercel prebuilt artifact and public production are bound to one exact Git release identity and stale/drifted production fails closed.",
       "evidence": [
-        "scripts/build-static.mjs",
         "scripts/release-contract.mjs",
+        "scripts/verify-vercel-prebuilt-output.mjs",
         "scripts/production-smoke.mjs",
         ".github/workflows/kyokushin-nn-ci.yml",
-        "PR #27 / CI run 32744059135 bounded credential observation",
-        "PR #41 / CI run 32774068128 explicit exact-ref manual deployment path",
-        "issue #26"
-      ],
-      "blocker": "VERCEL_TOKEN is absent in GitHub Actions. Repeated bounded diagnostics print VERCEL_TOKEN_PRESENT=false, so exact-SHA production deployment cannot authenticate until the owner restores the secret."
+        "closed issue #26",
+        "GitHub Actions run 32796544756",
+        "Vercel deployment dpl_72rU2CYTGV1GnDxD1n61nZbqS5Ee",
+        "live release 967a8157f32834ce5ba748d4ad22b9627299a6ca"
+      ]
     },
     {
       "id": "dojo-editorial-v3",
-      "status": "implemented_candidate_pure_stack_refined_v36",
-      "outcome": "Replace the owner-rejected generic athletic landing-page skeleton with a distinctive Shinkyokushinkai editorial/poster experience while preserving practical recruitment functionality.",
-      "initial_source_commit": "94ad1b62f84e53e0a2e74399940a8b3d237ac907",
-      "pure_stack_commit": "52c92802888018e9b0ee396add0ba4d0a902e6c0",
-      "v35_source_commit": "e26e1633c1dbf207f935e9c6ae1f142a4ac9207f",
-      "current_design_commit": "d03c292314123765cf961c109fd8e8a13009b16a",
-      "acceptance": [
-        "explicit owner rejection is retained as a negative reference",
-        "art direction changes composition rather than only tokens/effects",
-        "owner-rejected V2 art-direction and generic experience layers are physically retired from the active project",
-        "real federation photography carries the emotional narrative",
-        "loaded Unbounded/Manrope typography uses actual available font weights rather than synthetic weights",
-        "hero has one dominant CTA and does not repeat a second proof strip before the photo chapter",
-        "trainer roster has separate intentional visual languages for verified portraits and identity-safe no-portrait states",
-        "unverified trainers do not consume large fake/empty portrait slots and do not receive invented imagery",
-        "hall finder remains easy to use and becomes an editorial directory rather than a nested card stack",
-        "motion follows one entry/scroll/interaction/state-change grammar",
-        "prefers-reduced-motion remains complete",
-        "mobile sections are recomposed independently",
-        "deterministic source/release CI passes",
-        "representative desktop/mobile rendered artifacts receive perceptual review",
-        "visible issues discovered in perceptual review are fixed",
-        "owner review candidate is explicitly reviewed and accepted or rejected"
-      ],
+      "status": "live_perceptual_review_pending",
+      "outcome": "The rejected generic athletic/SaaS skeleton is replaced by the pure Dojo Editorial / Competition Poster direction while practical recruitment remains intact.",
       "evidence": [
         "docs/design/art-direction-v3.json",
         "docs/design/audit-2026-08-24.md",
         "art-direction-v3.css",
         "experience-v3.css",
-        "experience-v3.js",
         "motion-v3.js",
         "scripts/verify-art-direction-v3.mjs",
         "scripts/verify-editorial-refinement.mjs",
-        "scripts/verify-roster-composition.mjs",
-        "PR #28 editorial refinement",
-        "PR #31 current-V3 verifier",
-        "PR #32 physical V2 source retirement",
-        "PR #38 first-screen resilience",
-        "PR #40 V3.6 trainer composition / CI run 32773661308"
+        "live artDirection=dojo-editorial-v3"
       ],
       "blocked_acceptance": [
-        "current_v3_live_or_preview_deployment",
-        "perceptual_review_pass",
+        "representative_desktop_mobile_perceptual_review",
         "owner_acceptance"
       ]
     },
     {
-      "id": "trainer-roster-composition-v1",
-      "status": "source_complete_runtime_not_yet_deployed",
-      "outcome": "Portrait scarcity becomes an intentional editorial composition: two verified trainers remain photo-led and the remaining identity-safe states become typography-led dojo posters instead of empty photo cards.",
-      "source_commit": "d03c292314123765cf961c109fd8e8a13009b16a",
-      "acceptance": [
-        "team.js retains explicit verified/pending portrait state",
-        "verified portraits remain real image-backed roster cards",
-        "pending media becomes decorative poster geometry rather than a reserved photo row",
-        "pending cards contain no invented portrait URL or synthetic identity",
-        "name/role/facts/actions own the pending-card hierarchy",
-        "mobile pending cards use a compact complete-poster composition instead of a large empty media slot",
-        "deterministic roster-composition gate passes in the full Kyokushin suite"
-      ],
+      "id": "github-backed-content-system-v1",
+      "status": "complete_live_verified",
+      "outcome": "Hero, camp/media stories, photo reports, instructors and venue schedules are maintained in one GitHub-backed content model instead of duplicated across hand-edited JavaScript registries.",
       "evidence": [
-        "experience-v3.css",
-        "team.js",
-        "scripts/verify-roster-composition.mjs",
-        "PR #40",
-        "GitHub Actions run 32773661308",
-        "merge d03c292314123765cf961c109fd8e8a13009b16a"
-      ],
-      "blocked_acceptance": [
-        "public_exact_release_deployment",
-        "perceptual_review_pass"
+        "PR #48",
+        "content/site.json",
+        "/admin/",
+        "server.mjs runtime hot-sync",
+        "scripts/build-static.mjs",
+        "live /health.json cms.enabled=true",
+        "live /content/site.json"
       ]
     },
     {
-      "id": "static-recruitment-directory-v1",
-      "status": "source_complete_runtime_not_yet_deployed",
-      "outcome": "The practical recruitment directory remains usable in production HTML even when client JavaScript fails or is disabled.",
-      "source_commit": "b76254091934e3a4d3406f1348692988c5ce9aca",
-      "acceptance": [
-        "build extracts recruitment data from the canonical instructors array instead of duplicating it manually",
-        "build fails unless canonical data remains exactly 11 instructors / 18 venues",
-        "dist/index.html contains the complete 11/18 directory before JavaScript executes",
-        "phones, schedules, addresses and map links are present in prerendered HTML",
-        "interactive script progressively replaces the fallback when JavaScript runs",
-        "health.json reports staticDirectory=true",
-        "release contract and production smoke require the static directory"
-      ],
+      "id": "real-media-provenance-v1",
+      "status": "complete_live_verified",
+      "outcome": "Runtime, admin and CI reject untrusted or mis-bound documentary media instead of allowing arbitrary images to become federation/trainer truth.",
       "evidence": [
-        "scripts/build-static.mjs",
-        "scripts/verify-static-directory.mjs",
-        "PR #29",
-        "GitHub Actions run 32745390974",
-        "merge b76254091934e3a4d3406f1348692988c5ce9aca"
-      ],
-      "blocked_acceptance": ["public_exact_release_deployment"]
+        "PR #49",
+        "admin/media-policy.js",
+        "scripts/verify-media-policy.mjs",
+        "official federation social authority https://vk.com/club227311328",
+        "secondary-only discovery mirror classification for https://shin-nnov.orgs.biz/",
+        "GitHub Actions run 32796544756"
+      ]
     },
     {
-      "id": "runtime-hardening-v1",
-      "status": "source_complete_runtime_not_yet_deployed",
-      "outcome": "The public release has a deterministic response-security/cache contract and exact-release health cannot be proven from stale cache.",
-      "source_commit": "f1eae7a0994e0286f82a881c7ed42833742ed737",
-      "acceptance": [
-        "vercel.json pins the official schema",
-        "global response headers include nosniff, anti-framing, referrer and bounded permissions policy",
-        "minimal CSP prevents framing/base/object abuse without constraining current external media/font dependencies",
-        "health.json is no-store at browser/CDN configuration layers",
-        "live production smoke verifies delivered response headers and no-store health",
-        "duplicate/ambiguous header rules fail deterministic verification"
-      ],
+      "id": "public-person-research-integration-v1",
+      "status": "complete_source_and_live_policy",
+      "outcome": "Trainer portrait research uses explicit public professional identity anchors and source-page/asset pairing while common-name false positives remain rejected.",
       "evidence": [
-        "vercel.json",
-        "scripts/verify-runtime-headers.mjs",
-        "scripts/production-smoke.mjs",
-        "PR #33",
-        "GitHub Actions run 32752199637",
-        "merge f1eae7a0994e0286f82a881c7ed42833742ed737"
-      ],
-      "blocked_acceptance": ["public_exact_release_deployment"]
+        "PR #50",
+        "docs/trainer-photo-research.json",
+        "scripts/verify-media-policy.mjs",
+        "live release 967a8157f32834ce5ba748d4ad22b9627299a6ca"
+      ]
     },
     {
-      "id": "discovery-contract-v1",
-      "status": "source_complete_runtime_not_yet_deployed",
-      "outcome": "Search engines and machine clients receive canonical source-derived organization/location metadata plus robots and sitemap artifacts without duplicating recruitment facts manually.",
-      "source_commit": "1a10048a6b516057205078862d041282cbc1ba85",
-      "acceptance": [
-        "SportsOrganization JSON-LD is generated from canonical recruitment data",
-        "18 section records are represented as 17 unique physical Place objects after exact city/name/address deduplication",
-        "structured place address, phone set and map URL match script.js",
-        "dist includes canonical robots.txt and single-page sitemap.xml",
-        "health.json records discovery artifact state and structured-location count",
-        "release contract and live production smoke require discovery surfaces"
-      ],
+      "id": "trainer-portrait-completion-v1",
+      "status": "in_progress_draft_pr_51",
+      "outcome": "All 11 named instructors receive real source-bound portraits while unresolved identities continue to render intentional typography rather than invented/ambiguous photography.",
+      "work_branch": "feat/kyokushin-all-trainer-photos",
+      "pull_request": 51,
+      "current_work_head": "84f13fad5c1ea1d367486442d7371c6805a1baa4",
+      "progress": {
+        "production_verified_portraits": 1,
+        "work_branch_verified_portraits": 2,
+        "work_branch_source_backed_professional_identities": 10,
+        "total_instructors": 11,
+        "only_identity_ambiguous_trainer": "Сергей Захаров"
+      },
+      "completion_gate": "11/11 source-bound portraits; draft CI may skip only the explicit completion gate, while ready-for-review, project-branch release and production deployment must run it fail-closed.",
       "evidence": [
-        "scripts/build-static.mjs",
-        "scripts/verify-discovery.mjs",
-        "scripts/release-contract.mjs",
-        "scripts/production-smoke.mjs",
-        "PR #34",
-        "GitHub Actions run 32752809901",
-        "merge 1a10048a6b516057205078862d041282cbc1ba85"
-      ],
-      "blocked_acceptance": ["public_exact_release_deployment"]
+        "PR #51",
+        "docs/trainer-photo-research.json",
+        "docs/trainer-photo-browser-handoff.json",
+        "scripts/verify-portrait-completion.mjs on the work branch",
+        "draft CI run 32804699273 passed source/build/prebuilt checks"
+      ]
     },
     {
-      "id": "first-screen-resilience-v1",
-      "status": "source_complete_runtime_not_yet_deployed",
-      "outcome": "Critical third-party first-screen media fail into intentional neutral design states instead of browser broken-image UI while retaining truthful real-media behavior when available.",
-      "source_commit": "e26e1633c1dbf207f935e9c6ae1f142a4ac9207f",
-      "acceptance": [
-        "official external Shinkyokushinkai mark remains the preferred source without using a failure-visible img element",
-        "brand mark has critical and final-cascade neutral fallback layers and preserves accessible naming",
-        "real federation hero photo remains the source of successful hero photography and retains existing motion",
-        "hero photo is visually hidden until successful load/naturalWidth evidence",
-        "pre-JS image failure and later error both fail into the neutral hero field without broken-image UI",
-        "no synthetic athlete/photo or invented logo identity is introduced",
-        "reduced-motion removes hero media reveal transition",
-        "source gate, built release contract and live smoke pin the failure behavior"
-      ],
+      "id": "state-release-separation-v1",
+      "status": "complete_operational",
+      "outcome": "Project-state maintenance can be synchronized without creating a new production release identity, while runtime/source/workflow changes still trigger exact deployment verification.",
       "evidence": [
-        "experience-v3.css",
-        "motion-v3.js",
-        "scripts/verify-brand-resilience.mjs",
-        "scripts/release-contract.mjs",
-        "scripts/production-smoke.mjs",
-        "PR #38",
-        "GitHub Actions run 32760816754",
-        "merge e26e1633c1dbf207f935e9c6ae1f142a4ac9207f"
-      ],
-      "blocked_acceptance": ["public_exact_release_deployment"]
-    },
-    {
-      "id": "ci-runtime-node24-v1",
-      "status": "complete",
-      "outcome": "Kyokushin verification uses GitHub Actions releases that run natively on Node 24 instead of relying on forced execution of deprecated Node 20 action runtimes.",
-      "source_commit": "780fec11b7e7f3b73ea2f62ddde51eb6339cd565",
-      "evidence": [
-        "PR #36",
-        "GitHub Actions run 32753457564",
-        "actions/checkout@v7",
-        "actions/setup-node@v7",
-        "actions/upload-artifact@v6"
+        "PR #46",
+        ".github/workflows/kyokushin-nn-ci.yml",
+        "docs-only state sync commits on project/kyokushin-nn"
       ]
     }
   ]
