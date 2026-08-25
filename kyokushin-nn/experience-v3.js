@@ -47,25 +47,19 @@ const CMS_EXPECTED_PEOPLE = [
   "Иван Гаврилин","Сергей Глухов","Сергей Захаров","Андрей Коннов","Георгий Пигиданов","Кирилл Антоневич"
 ];
 const CMS_CAMP_HOSTS = new Set(["kples.ru", "www.kples.ru", "vk.ru", "vk.com"]);
-const CMS_TRAINER_ASSET_HOSTS = new Set([
-  "sun9-54.userapi.com",
-  "sun1-96.userapi.com",
-  "sun9-62.userapi.com",
-  "sun9-50.userapi.com",
-  "sun9-66.userapi.com"
-]);
-const CMS_TRAINER_SOURCE_HOSTS = new Set(["vk.ru", "vk.com", "shin-nnov.orgs.biz"]);
 const CMS_FORBIDDEN_MEDIA_HOSTS = new Set(["vega52.ru", "www.vega52.ru"]);
 const CMS_FORBIDDEN_FILLER = [
   "Тренировки, где техника становится характером",
   "Спортивные сборы, природа и тренировочный ритм",
   "Движение каждый день"
 ];
+const CMS_VERIFIED_IDENTITY_STATUS = "verified";
+const CMS_MIN_IDENTITY_EVIDENCE_LENGTH = 24;
 
 const cmsUrlHost = (url) => {
   if (!url) return "";
   try {
-    return new URL(url).hostname;
+    return new URL(url).hostname.toLowerCase();
   } catch {
     return null;
   }
@@ -75,6 +69,84 @@ const cmsUrlAllowed = (url, hosts, { allowEmpty = true } = {}) => {
   if (!url) return allowEmpty;
   const host = cmsUrlHost(url);
   return Boolean(host && hosts.has(host) && !CMS_FORBIDDEN_MEDIA_HOSTS.has(host));
+};
+
+const cmsHostOrSubdomain = (host, domain) => Boolean(
+  host && (host === domain || host.endsWith(`.${domain}`))
+);
+
+const cmsIsUserApiAsset = (url) => cmsHostOrSubdomain(cmsUrlHost(url), "userapi.com");
+const cmsIsTenChatAsset = (url) => cmsHostOrSubdomain(cmsUrlHost(url), "tenchat.ru");
+const cmsIsInstagramAsset = (url) => cmsHostOrSubdomain(cmsUrlHost(url), "cdninstagram.com");
+const cmsIsFacebookAsset = (url) => cmsHostOrSubdomain(cmsUrlHost(url), "fbcdn.net");
+const cmsIsOkAsset = (url) => {
+  const host = cmsUrlHost(url);
+  return cmsHostOrSubdomain(host, "okcdn.ru") || cmsHostOrSubdomain(host, "mycdn.me");
+};
+
+const cmsTrainerSourceClass = (sourceUrl) => {
+  const host = cmsUrlHost(sourceUrl);
+  if (!host) return null;
+  if (host === "vk.ru" || host === "vk.com") return "vk";
+  if (cmsHostOrSubdomain(host, "tenchat.ru")) return "tenchat";
+  if (cmsHostOrSubdomain(host, "instagram.com")) return "instagram";
+  if (cmsHostOrSubdomain(host, "facebook.com")) return "facebook";
+  if (cmsHostOrSubdomain(host, "ok.ru")) return "ok";
+  if (host === "shin-nnov.orgs.biz") return "federation-mirror";
+  return null;
+};
+
+const cmsTrainerAssetMatchesSource = (photo, sourceClass) => {
+  if (sourceClass === "vk") return cmsIsUserApiAsset(photo.src);
+  if (sourceClass === "tenchat") return cmsIsTenChatAsset(photo.src);
+  if (sourceClass === "instagram") return cmsIsInstagramAsset(photo.src) || cmsIsFacebookAsset(photo.src);
+  if (sourceClass === "facebook") return cmsIsFacebookAsset(photo.src);
+  if (sourceClass === "ok") return cmsIsOkAsset(photo.src);
+  return false;
+};
+
+const cmsIsLegacyGeorgiyPhoto = (instructor) => Boolean(
+  instructor?.name === "Георгий Пигиданов"
+  && cmsTrainerSourceClass(instructor.photo?.sourceUrl) === "federation-mirror"
+  && cmsIsUserApiAsset(instructor.photo?.src)
+);
+
+const cmsTrainerPhotoErrors = (instructor) => {
+  const photo = instructor?.photo;
+  if (!photo) return [];
+
+  const errors = [];
+  const assetHost = cmsUrlHost(photo.src);
+  const sourceHost = cmsUrlHost(photo.sourceUrl);
+  if (!photo.src || assetHost === null || CMS_FORBIDDEN_MEDIA_HOSTS.has(assetHost)) {
+    errors.push(`trainer-photo-asset:${instructor.name}`);
+    return errors;
+  }
+  if (!photo.sourceUrl || sourceHost === null || CMS_FORBIDDEN_MEDIA_HOSTS.has(sourceHost)) {
+    errors.push(`trainer-photo-source:${instructor.name}`);
+    return errors;
+  }
+
+  if (cmsIsLegacyGeorgiyPhoto(instructor)) return errors;
+
+  const sourceClass = cmsTrainerSourceClass(photo.sourceUrl);
+  if (!sourceClass || sourceClass === "federation-mirror") {
+    errors.push(`trainer-photo-source-class:${instructor.name}`);
+    return errors;
+  }
+  if (!cmsTrainerAssetMatchesSource(photo, sourceClass)) {
+    errors.push(`trainer-photo-asset-source-pair:${instructor.name}`);
+  }
+  if (photo.identityStatus !== CMS_VERIFIED_IDENTITY_STATUS) {
+    errors.push(`trainer-photo-identity-status:${instructor.name}`);
+  }
+  if (String(photo.identityEvidence || "").trim().length < CMS_MIN_IDENTITY_EVIDENCE_LENGTH) {
+    errors.push(`trainer-photo-identity-evidence:${instructor.name}`);
+  }
+  if (photo.sourcePlatform && photo.sourcePlatform !== sourceClass) {
+    errors.push(`trainer-photo-platform:${instructor.name}`);
+  }
+  return errors;
 };
 
 const cmsMediaPolicyErrors = (content) => {
@@ -104,13 +176,7 @@ const cmsMediaPolicyErrors = (content) => {
   }
 
   for (const instructor of content.instructors ?? []) {
-    if (!instructor.photo) continue;
-    if (!cmsUrlAllowed(instructor.photo.src, CMS_TRAINER_ASSET_HOSTS, { allowEmpty: false })) {
-      errors.push(`trainer-photo-asset:${instructor.name}`);
-    }
-    if (!cmsUrlAllowed(instructor.photo.sourceUrl, CMS_TRAINER_SOURCE_HOSTS, { allowEmpty: false })) {
-      errors.push(`trainer-photo-source:${instructor.name}`);
-    }
+    errors.push(...cmsTrainerPhotoErrors(instructor));
   }
 
   const serialized = JSON.stringify(content);
@@ -121,7 +187,7 @@ const cmsMediaPolicyErrors = (content) => {
     if (serialized.includes(phrase)) errors.push(`ungrounded-copy:${phrase}`);
   }
 
-  return errors;
+  return [...new Set(errors)];
 };
 
 const installCmsRuntimeStyle = () => {
