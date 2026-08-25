@@ -1,5 +1,5 @@
 {
-  "schema_version": "2026-08-25.kyokushin-trainer-photo-research.v2",
+  "schema_version": "2026-08-25.kyokushin-trainer-photo-research.v3",
   "status": "in_progress",
   "system_route": [
     "public-person-research",
@@ -10,7 +10,9 @@
     "never_identity_from_face": true,
     "search_thumbnail_is_not_provenance": true,
     "private_account_bypass": false,
-    "synthetic_documentary_photo": false
+    "synthetic_documentary_photo": false,
+    "generic_event_photo_is_not_named_portrait": true,
+    "people_search_dump_is_not_identity_authority": true
   },
   "federation": {
     "official_social_authority": "https://vk.com/club227311328",
@@ -37,7 +39,7 @@
         "https://rnfkk.ru/files/textfiles/2016/b03a033b8a68d9b8a9648904fcd2a1c3.pdf",
         "https://shin-nnov.orgs.biz/"
       ],
-      "notes": "The exact full name is grounded by federation organizer/legal records and the accredited-trainer list. The name is highly collision-prone; unrelated singer, football, fitness and other Сергей Жуков profiles remain rejected.",
+      "notes": "The 2017 Нижегородская федерация event page explicitly names Сергей Владимирович Жуков as chairman of the organizing committee. Corporate/federation and accredited-trainer records independently reinforce the same exact identity. The name remains highly collision-prone, so unrelated singer, football, fitness and generic Сергей Жуков profiles stay rejected.",
       "next": "Resolve an exact federation VK/profile/team publication naming Сергей Владимирович Жуков and containing a portrait."
     },
     {
@@ -70,23 +72,25 @@
         "Владимир Сергеевич Жуков",
         "Нижегородская область",
         "СПЦ Full Contact",
+        "ул. Германа Лопатина 12к1",
         "мастер спорта России / 2 Дан",
         "competition results in Shinkyokushinkai"
       ],
       "researchState": "identity_verified_photo_pending",
       "doneState": null,
       "evidence": [
-        "https://shin-nnov.orgs.biz/",
+        "https://shin-nnov.orgs.biz/ — 15.01.2025 FULL CONTACT recruitment publication explicitly names Владимир Сергеевич Жуков as trainer, Master of Sport and 2 Dan at Германа Лопатина 12к1",
         "https://www.atemi.org.ru/events/news/main/a3626/",
         "https://www.atemi.org.ru/events/news/main/a3643/"
       ],
       "rejectedCandidates": [
         "DDX Fitness trainer Vladimir Zhukov",
         "unrelated TenChat profiles",
-        "unrelated namesakes returned by generic people search"
+        "unrelated namesakes returned by generic people search",
+        "event/group images whose caption does not bind the visible subject to Владимир Сергеевич Жуков"
       ],
-      "notes": "Federation discovery material ties Владимир Сергеевич Жуков to СПЦ FULL CONTACT and the project venue; independent competition result pages tie the exact full name to Нижегородская область. Group/event imagery is not promoted without an explicit image-to-person binding.",
-      "next": "Resolve an exact Full Contact/federation VK portrait or a captioned competition photo whose source explicitly binds the visible subject to Владимир Сергеевич Жуков."
+      "notes": "Federation recruitment material now gives an especially strong professional tuple: exact full name + СПЦ FULL CONTACT + project venue + Master of Sport + 2 Dan. Independent competition result pages tie the exact full name to Нижегородская область. This resolves identity strongly but still does not convert generic event imagery into a named portrait.",
+      "next": "Resolve the original 15.01.2025 federation VK recruitment post or an exact Full Contact profile/post where the portrait asset is explicitly bound to Владимир Сергеевич Жуков."
     },
     {
       "person": "Дарья Осинина",
@@ -100,40 +104,50 @@
       "researchState": "identity_verified_photo_pending",
       "doneState": null,
       "evidence": [
+        "https://akrussia.ru/wp-content/uploads/2023/11/RusCup_2023-WKO.pdf",
         "https://akrussia.ru/wp-content/uploads/2023/12/Kubok-Rossii-2023.pdf"
       ],
       "rejectedCandidates": [
-        "https://tenchat.ru/4766867 — Москва, курьер; conflicts with project identity"
+        "https://tenchat.ru/4766867 — Москва, курьер; conflicts with project identity",
+        "unrelated public profiles returned for the same name"
       ],
-      "notes": "The official competition result anchors Дарья Осинина to Нижегородская область. No safe source-page-to-portrait chain has been resolved yet.",
-      "next": "Search federation VK competition posts and athlete/result albums for a captioned/source-bound portrait."
+      "notes": "Official competition records anchor Дарья Осинина to Нижегородская область. Indexed image search still did not yield a safe page-to-portrait chain.",
+      "next": "Search original federation VK competition posts and athlete/result albums for a captioned/source-bound portrait."
     },
     {
       "person": "Юлия Фролова",
       "projectRole": "Инструктор",
       "identityAnchors": [
+        "Юлия Фролова",
         "Нижний Новгород",
         "official federation recruitment publication",
         "project professional phone +7 920 044-08-18",
         "Школа №140 / Семейный клуб Союз"
       ],
+      "controlledSearchAliases": [
+        "Юлия Кондратенко",
+        "Юлия Викторовна Кондратенко"
+      ],
       "researchState": "identity_verified_photo_pending",
       "doneState": null,
       "evidence": [
         "https://shin-nnov.orgs.biz/ — 22.08.2025 recruitment publication names Юлия Фролова with the project professional phone",
-        "https://shin-nnov.orgs.biz/ — 08.09.2024 recruitment publication names Юлия Кондратенко with the same professional phone"
+        "https://shin-nnov.orgs.biz/ — 08.09.2024 recruitment publication names Юлия Кондратенко with the same professional phone",
+        "https://rnfkk.ru/files/textfiles/2016/b03a033b8a68d9b8a9648904fcd2a1c3.pdf — accredited trainer list contains Кондратенко Юлия Викторовна in the same Нижегородская federation cluster"
       ],
-      "notes": "The same federation recruitment contact appears under Юлия Кондратенко in 2024 and Юлия Фролова in 2025. This is a high-value prior-surname search anchor, not permission to rewrite the current public name or infer a legal name change without an explicit source. Many unrelated Юлия Фролова profiles exist.",
-      "next": "Resolve the original federation VK recruitment posts and a public profile/album that explicitly binds the current trainer identity to a portrait; use Юлия Кондратенко only as a controlled search alias."
+      "notes": "The controlled historical alias is now stronger: the 2016 accredited-trainer list gives the exact federation-context name Юлия Викторовна Кондратенко, while 2024 federation recruitment uses Юлия Кондратенко with the same professional phone later used for Юлия Фролова in 2025. This materially improves search precision but is still not explicit proof of a surname change; do not rewrite the current public name or merge identities without a direct bridge source.",
+      "next": "Search exact Юлия Викторовна Кондратенко federation/social archives plus the 2024/2025 recruitment posts for a public profile or post that explicitly bridges the historical alias to current Юлия Фролова and binds a portrait asset."
     },
     {
       "person": "Иван Гаврилин",
       "projectRole": "Инструктор · спортсмен",
       "identityAnchors": [
         "Иван Владимирович Гаврилин",
-        "Нижний Новгород",
+        "12.05.2007",
+        "Нижегородская область",
+        "СК Фулл Контакт",
+        "КМС / 1 кю",
         "official federation recruitment publication",
-        "competition results",
         "ЖК Анкудиновский парк"
       ],
       "researchState": "identity_verified_photo_pending",
@@ -141,12 +155,18 @@
       "evidence": [
         "https://shin-nnov.orgs.biz/ — 22.08.2025 recruitment publication names Иван Гаврилин as instructor",
         "https://shin-nnov.orgs.biz/ — 06.04.2025 result lists Гаврилин Иван 1 место",
-        "https://shin-nnov.orgs.biz/ — 16.11.2025 federation report names Гаврилин Иван among top Russian Championship athletes"
+        "https://shin-nnov.orgs.biz/ — 16.11.2025 federation report names Гаврилин Иван among top Russian Championship athletes",
+        "https://akrussia.ru/wp-content/uploads/2025/08/Perv_PFO_2025-WKO.pdf — exact Иван Владимирович Гаврилин, Нижегородская область, 3rd place",
+        "https://kyokushinkai.mossport.ru/files/getFile.php?extension=pdf&file=cca403b56b3382e6a75b0f0c010798ed&title=%D0%9F%D1%80%D0%BE%D1%82%D0%BE%D0%BA%D0%BE%D0%BB+%D1%81%D0%BE%D1%80%D0%B5%D0%B2%D0%BD%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F+56270+23.02.2026+-+23.02.2026+%D0%A7%D0%B5%D0%BC%D0%BF%D0%B8%D0%BE%D0%BD%D0%B0%D1%82+%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D1%8B — exact full name, birth date 12.05.2007, КМС, 1 кю, СК Фулл Контакт"
       ],
       "rejectedCandidates": [
-        "https://tenchat.ru/Gavrilin — 21-year-old Moscow marketer; identity conflicts with the karate trainer"
+        "https://tenchat.ru/Gavrilin — Moscow marketer; identity conflicts with the karate trainer",
+        "unrelated adult entrepreneur/taxi records",
+        "unrelated football/person-search namesakes",
+        "competition images without an explicit image-to-athlete binding"
       ],
-      "next": "Resolve original VK competition/recruitment post and find a profile/portrait explicitly naming the trainer."
+      "notes": "Official competition documents now give a strong athlete fingerprint: Иван Владимирович Гаврилин, born 12.05.2007, КМС, 1 кю, СК Фулл Контакт / Нижегородская область. This should sharply reduce namesake noise in portrait searches.",
+      "next": "Search athlete-specific Full Contact/federation competition posts using the exact full name plus 12.05.2007 / КМС / 1 кю; promote only a post/profile that explicitly binds the portrait."
     },
     {
       "person": "Сергей Глухов",
@@ -158,7 +178,8 @@
         "Каратэ киокусинкай",
         "official municipal children-center record",
         "Нижегородская область competition judge record",
-        "serikm3@yandex.ru"
+        "serikm3@yandex.ru",
+        "public VK community public193108323"
       ],
       "researchState": "identity_verified_photo_pending",
       "doneState": null,
@@ -169,23 +190,37 @@
       ],
       "rejectedCandidates": [
         "Сергей Андреевич Глухов — Russian curler",
-        "generic people-search/social results without Юность/karate/Нижний Новгород binding"
+        "generic people-search/social results without Юность/karate/Нижний Новгород binding",
+        "image-search results from unrelated karate organizations"
       ],
-      "notes": "Identity ambiguity is resolved: the municipal children-center page explicitly binds Сергей Геннадьевич Глухов to ДПК «Юность» and каратэ киокусинкай and exposes the linked public VK community; the 2025 PFO official judge list independently binds the same full name to Нижегородская область. A portrait still requires an exact source-page/asset pair.",
-      "next": "Search the linked public VK community and federation posts for a named profile/post/album with an exact portrait asset; do not use generic namesake profiles."
+      "notes": "The municipal children-center page explicitly binds ДПК «Юность» + «Каратэ КИОКУСИНКАЙ» + Глухов Сергей Геннадьевич + public VK community public193108323 + serikm3@yandex.ru. The 2025 PFO judge list independently binds the same exact full name to Нижегородская область. Identity is strong; only an exact portrait chain is missing.",
+      "next": "Search public193108323 and federation archives for a post/profile where Сергей Геннадьевич Глухов is explicitly named and the exact portrait asset is attached."
     },
     {
       "person": "Сергей Захаров",
       "projectRole": "Инструктор",
       "identityAnchors": [
+        "Сергей Захаров",
         "Нижний Новгород",
         "Клуб Восток",
-        "project recruitment data"
+        "ул. Героя Юрия Смирнова 13А",
+        "project professional phone +7 910 146-84-28",
+        "Autazavod federation branch public VK group club14718682"
       ],
       "researchState": "ambiguous_identity_photo_pending",
       "doneState": null,
-      "notes": "No source-bound public portrait or independent full-name record has been found in the indexed-web pass. Do not infer a patronymic from generic namesakes.",
-      "next": "Search Клуб Восток / ЦДТ Автозаводского района social pages, federation recruitment posts and event albums tied to ул. Смирнова 13А and project phone +7 910 146-84-28."
+      "evidence": [
+        "https://yandex.com/maps/org/nizhegorodskaya_federatsiya_sinkekusinkay_karate/18915306979/ — exact project phone + address",
+        "https://rusedu.center/org/nizhegorodskaya-federatsiya-sinkekusinkay-karate-000324763/ — exact project phone + address + public VK club14718682",
+        "https://vk.com/club14718682"
+      ],
+      "rejectedCandidates": [
+        "generic Сергей Захаров namesakes",
+        "people-search/data-dump pages that happen to contain the phone number",
+        "club/federation photos that do not explicitly identify Сергей Захаров"
+      ],
+      "notes": "A useful new route is resolved: the exact project phone +7 910 146-84-28 and Смирнова 13А map to the public Autazavod federation/karate VK group club14718682. This narrows the social archive substantially, but the public indexed sources still do not independently expose a patronymic or a person-bound portrait. Keep identity ambiguous rather than inferring from phone collisions in scraped people-search pages.",
+      "next": "Search club14718682 posts/about/admin-visible public material plus federation recruitment archives for an explicit Сергей Захаров identity statement and portrait. Do not infer a patronymic from phone-only search hits."
     },
     {
       "person": "Андрей Коннов",
@@ -207,7 +242,7 @@
         "https://rnfkk.ru/files/textfiles/2016/b03a033b8a68d9b8a9648904fcd2a1c3.pdf",
         "https://vk.com/shin_nnov"
       ],
-      "notes": "The Дзержинск federation listing matches the project phone, email, ул. Попова 26А and public VK route. The 2025 PFO judge list and 2016 accredited-trainer list independently use the exact full name Андрей Александрович Коннов for Нижегородская область. Older sources may contain Конов/Кононов variants; those variants remain search-only until explicitly connected.",
+      "notes": "The Дзержинск federation listing matches the project phone, email, ул. Попова 26А and public VK route. The 2025 PFO judge list and 2016 accredited-trainer list independently use the exact full name Андрей Александрович Коннов for Нижегородская область. Older Конов/Кононов variants remain search-only until explicitly connected.",
       "next": "Search the exact linked Дзержинск VK community and official competition/federation archives for a source-bound portrait."
     },
     {
@@ -255,6 +290,12 @@
     "identityVerifiedPhotoPending": 8,
     "ambiguousIdentityPhotoPending": 1,
     "total": 11,
-    "note": "Counts describe current research evidence, not a claim that indexed public sources have been exhaustively searched. The strict 11/11 portrait merge gate remains intentionally unsatisfied until each pending identity has an exact source-page-to-asset chain."
+    "highValueNewLeads": [
+      "Сергей Захаров -> exact project phone/address now resolve to public VK group club14718682, but identity/portrait remain ambiguous",
+      "Юлия Фролова -> controlled historical alias strengthened to exact federation-context Юлия Викторовна Кондратенко",
+      "Иван Гаврилин -> exact athlete fingerprint now includes 12.05.2007, КМС, 1 кю, СК Фулл Контакт",
+      "Владимир Жуков -> exact FULL CONTACT recruitment tuple resolved"
+    ],
+    "note": "The search pass materially narrowed four unresolved identities but found no additional portrait that satisfies the exact source-page-to-asset identity gate. Portrait count therefore remains 2/11 instead of promoting unsafe images."
   }
 }
