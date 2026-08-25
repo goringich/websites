@@ -1,30 +1,32 @@
 {
-  "schema_version": "2026-08-25.kyokushin-real-media.v1",
+  "schema_version": "2026-08-25.kyokushin-real-media.v2",
   "status": "active",
-  "principle": "Photography and video are documentary product content. Search from the exact person/event/place and official source, assign each asset to a semantic slot, preserve provenance, and never replace missing real evidence with generated or unrelated stock media.",
+  "principle": "Photography and video are documentary product content. Search from the exact person/event/place and authoritative source, assign each asset to a semantic slot, preserve provenance, and never replace missing real evidence with generated or unrelated stock media.",
   "forbidden": [
     "AI-generated trainer, athlete, child, crowd, camp, venue or event photography presented as real",
     "AI-generated testimonial portraits",
     "random stock used as a named federation/event/person/place",
     "face or identity inference from appearance",
     "image-search thumbnails or reposts treated as provenance",
+    "a catalog or mirror described as an official publisher",
     "another event/year/place captioned as the target event",
     "generic promotional filler used instead of factual captions",
     "invented quotes, achievements, biographies or event stories"
   ],
   "source_priority": [
     "owner/project originals",
-    "Nizhny Novgorod Shinkyokushinkai federation official publication",
+    "official federation VK publication https://vk.com/club227311328",
     "Красный Плёс official site / official album for camp content",
     "official event/organizer/venue archive",
     "named photographer or directly connected publication with explicit binding",
+    "catalog/mirror only as discovery or secondary provenance evidence when its relationship is stated honestly",
     "generic stock only for genuinely non-specific atmosphere"
   ],
   "search_method": {
     "query_shape": "<exact entity/person/event> <year/date> <activity/place> <official/profile/album/report>",
-    "rule": "Search engines discover the original source page; they are never the source of record.",
+    "rule": "Search engines and catalog mirrors discover the original source surface; neither becomes official authority merely because it indexes the content.",
     "before_search": "Define the media slot job first.",
-    "after_find": "Record source page, publisher, subject, date/context, identity status when relevant, crop intent and fallback."
+    "after_find": "Record source page, publisher class, authority page when different, subject, date/context, identity status when relevant, crop intent and fallback."
   },
   "slots": [
     {
@@ -34,7 +36,7 @@
       "current_primary": "https://kples.ru/wp-content/uploads/2026/06/VID_20260605_092450.mp4",
       "source_page": "https://kples.ru/putevki/",
       "source_publisher": "ДЮООЦ Красный Плёс",
-      "source_context": "The official archive entry dated 04.06.2026 embeds VID_20260605_092450.mp4, VID_20260605_092455.mp4 and VID_20260605_092458.mp4.",
+      "source_context": "The official camp archive embeds VID_20260605_092450.mp4, VID_20260605_092455.mp4 and VID_20260605_092458.mp4 in the 2026 training-day material.",
       "crop": "Full-bleed action; keep the active subject inside the central mobile-safe region.",
       "fallback": "Intentional dark/typographic hero state; never a broken image or unrelated substitute."
     },
@@ -56,33 +58,38 @@
     {
       "id": "trainer-portrait",
       "job": "Identify one named instructor.",
-      "identity_requirement": "The source must explicitly bind the image to that exact person.",
+      "identity_requirement": "The source must explicitly bind the image to that exact person. An official profile/post is preferred; a mirror may support identity only when its non-official status is recorded and the official authority surface is also known.",
       "fallback": "Typography/initials poster. No generic club photo may masquerade as a portrait."
     },
     {
       "id": "federation-proof",
       "job": "Show actual federation training, competition or instructional culture.",
-      "official_source": "https://shin-nnov.orgs.biz/",
-      "notes": "Federation publications include dated training/competition reports and photographer attribution. Use those exact reports for federation-specific evidence rather than generic martial-arts stock."
+      "official_source": "https://vk.com/club227311328",
+      "secondary_mirror": "https://shin-nnov.orgs.biz/",
+      "notes": "orgs.biz explicitly identifies itself as a catalog and says the information is reference-only, so it must not be described as the official federation website. It can help discover dated federation posts and userapi assets; final provenance should prefer the VK federation page, exact VK album/post, named photographer archive or another direct source."
     }
   ],
   "current_audit": {
     "keep": [
       "Official kples.ru training videos",
       "Official Красный Плёс 2026 photo album link",
-      "Official federation source for source-bound Georgiy Pigidанов portrait",
+      "Georgiy Pigidанов image only with explicit identity-binding provenance metadata; the orgs.biz page is a mirror, not federation authority",
       "Typography fallback for trainers without verified portraits"
     ],
     "reject": [
       {
         "asset_host": "vega52.ru",
         "reason": "The river photograph is real but semantically weak as a training-video poster and is not the source of the training event. It must not be repeated across every camp video as if it documented those clips."
+      },
+      {
+        "asset_host": "shin-nnov.orgs.biz",
+        "reason": "Do not label this catalog mirror as the official federation website. It is acceptable only as explicitly classified secondary/discovery evidence when the original authority surface is recorded separately."
       }
     ],
     "next_search_targets": [
-      "Exact source-bound portraits for trainers from official federation/team/profile publications",
+      "Exact source-bound trainer portraits from the federation VK page, direct team/profile publications or photographer archives",
       "Distinct official camp stills for place/community slots",
-      "Federation training and competition action frames with dated source pages"
+      "Federation training and competition action frames with exact dated VK/album/source pages"
     ]
   },
   "copy_policy": {
@@ -93,18 +100,20 @@
       "dates",
       "places",
       "participant/result claims",
-      "photo credits"
+      "photo credits",
+      "publisher/source classification"
     ],
-    "rule": "Use project data or source wording/facts. Do not invent emotional slogans to compensate for weak evidence.",
+    "rule": "Use project data or source wording/facts. Do not invent emotional slogans to compensate for weak evidence, and do not upgrade a mirror/catalog into an official source by wording.",
     "ui_microcopy_exception": "Navigation, buttons and ordinary interface labels may be written normally as interface copy."
   },
   "done_when": [
     "Every critical media slot has a semantic job and provenance.",
     "Named portraits are source-bound.",
+    "Official, secondary and discovery sources are classified correctly.",
     "No synthetic documentary media exists.",
     "No unrelated repeated poster substitutes for exact evidence.",
     "Desktop/mobile crops preserve the evidence selected for each slot.",
     "Critical remote media fails into intentional UI.",
-    "Rendered media can be traced back to its original source page."
+    "Rendered media can be traced back to its original or explicitly classified secondary source page."
   ]
 }
