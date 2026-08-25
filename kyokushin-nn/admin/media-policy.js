@@ -2,7 +2,6 @@
   const CONTENT_API_FRAGMENT = "/repos/goringich/websites/contents/kyokushin-nn/content/site.json";
   const CAMP_HOSTS = new Set(["kples.ru", "www.kples.ru", "vk.ru", "vk.com"]);
   const HERO_ASSET_HOSTS = new Set(["kples.ru", "www.kples.ru"]);
-  const TRAINER_SOURCE_HOSTS = new Set(["vk.ru", "vk.com", "shin-nnov.orgs.biz"]);
   const FORBIDDEN_HOSTS = new Set([
     "vega52.ru",
     "www.vega52.ru"
@@ -12,11 +11,13 @@
     "Спортивные сборы, природа и тренировочный ритм",
     "Движение каждый день"
   ];
+  const VERIFIED_IDENTITY_STATUS = "verified";
+  const MIN_IDENTITY_EVIDENCE_LENGTH = 24;
 
   const hostOf = (url) => {
     if (!url) return "";
     try {
-      return new URL(url).hostname;
+      return new URL(url).hostname.toLowerCase();
     } catch {
       return null;
     }
@@ -28,9 +29,80 @@
     return Boolean(host && allowed.has(host) && !FORBIDDEN_HOSTS.has(host));
   };
 
-  const isUserApiAsset = (url) => {
+  const isHostOrSubdomain = (host, domain) => Boolean(
+    host && (host === domain || host.endsWith(`.${domain}`))
+  );
+
+  const isUserApiAsset = (url) => isHostOrSubdomain(hostOf(url), "userapi.com");
+  const isTenChatAsset = (url) => isHostOrSubdomain(hostOf(url), "tenchat.ru");
+  const isInstagramAsset = (url) => isHostOrSubdomain(hostOf(url), "cdninstagram.com");
+  const isFacebookAsset = (url) => isHostOrSubdomain(hostOf(url), "fbcdn.net");
+  const isOkAsset = (url) => {
     const host = hostOf(url);
-    return Boolean(host && (host === "userapi.com" || host.endsWith(".userapi.com")));
+    return isHostOrSubdomain(host, "okcdn.ru") || isHostOrSubdomain(host, "mycdn.me");
+  };
+
+  const trainerSourceClass = (sourceUrl) => {
+    const host = hostOf(sourceUrl);
+    if (!host) return null;
+    if (host === "vk.ru" || host === "vk.com") return "vk";
+    if (isHostOrSubdomain(host, "tenchat.ru")) return "tenchat";
+    if (isHostOrSubdomain(host, "instagram.com")) return "instagram";
+    if (isHostOrSubdomain(host, "facebook.com")) return "facebook";
+    if (isHostOrSubdomain(host, "ok.ru")) return "ok";
+    if (host === "shin-nnov.orgs.biz") return "federation-mirror";
+    return null;
+  };
+
+  const trainerAssetMatchesSource = (photo, sourceClass) => {
+    if (sourceClass === "vk") return isUserApiAsset(photo.src);
+    if (sourceClass === "tenchat") return isTenChatAsset(photo.src);
+    if (sourceClass === "instagram") return isInstagramAsset(photo.src) || isFacebookAsset(photo.src);
+    if (sourceClass === "facebook") return isFacebookAsset(photo.src);
+    if (sourceClass === "ok") return isOkAsset(photo.src);
+    return false;
+  };
+
+  const isLegacyGeorgiyPhoto = (instructor) => Boolean(
+    instructor?.name === "Георгий Пигиданов"
+    && trainerSourceClass(instructor.photo?.sourceUrl) === "federation-mirror"
+    && isUserApiAsset(instructor.photo?.src)
+  );
+
+  const trainerPhotoErrors = (instructor) => {
+    const photo = instructor?.photo;
+    if (!photo) return [];
+
+    const errors = [];
+    if (!photo.src || hostOf(photo.src) === null || FORBIDDEN_HOSTS.has(hostOf(photo.src))) {
+      errors.push(`${instructor.name}: некорректный или запрещённый asset фотографии.`);
+      return errors;
+    }
+    if (!photo.sourceUrl || hostOf(photo.sourceUrl) === null || FORBIDDEN_HOSTS.has(hostOf(photo.sourceUrl))) {
+      errors.push(`${instructor.name}: для портрета обязателен исходный публичный профиль/пост/альбом.`);
+      return errors;
+    }
+
+    if (isLegacyGeorgiyPhoto(instructor)) return errors;
+
+    const sourceClass = trainerSourceClass(photo.sourceUrl);
+    if (!sourceClass || sourceClass === "federation-mirror") {
+      errors.push(`${instructor.name}: источник портрета не входит в подтверждённые публичные social/profile source classes.`);
+      return errors;
+    }
+    if (!trainerAssetMatchesSource(photo, sourceClass)) {
+      errors.push(`${instructor.name}: CDN/asset не соответствует исходной social-платформе ${sourceClass}.`);
+    }
+    if (photo.identityStatus !== VERIFIED_IDENTITY_STATUS) {
+      errors.push(`${instructor.name}: identityStatus должен быть verified до публикации именованного портрета.`);
+    }
+    if (String(photo.identityEvidence || "").trim().length < MIN_IDENTITY_EVIDENCE_LENGTH) {
+      errors.push(`${instructor.name}: требуется краткое source-bound доказательство личности.`);
+    }
+    if (photo.sourcePlatform && photo.sourcePlatform !== sourceClass) {
+      errors.push(`${instructor.name}: sourcePlatform не совпадает с фактическим источником ${sourceClass}.`);
+    }
+    return errors;
   };
 
   const validate = (content) => {
@@ -59,13 +131,7 @@
     }
 
     for (const instructor of content.instructors ?? []) {
-      if (!instructor.photo) continue;
-      if (!instructor.photo.src || !isUserApiAsset(instructor.photo.src)) {
-        errors.push(`${instructor.name}: фото тренера должно быть реальным source-bound asset из подтверждённой публикации, а не произвольной картинкой.`);
-      }
-      if (!hostAllowed(instructor.photo.sourceUrl, TRAINER_SOURCE_HOSTS, { allowEmpty: false })) {
-        errors.push(`${instructor.name}: для портрета обязателен источник, явно связывающий фото с человеком.`);
-      }
+      errors.push(...trainerPhotoErrors(instructor));
     }
 
     const serialized = JSON.stringify(content);
@@ -146,7 +212,8 @@
 
   window.KYOKUSHIN_ADMIN_MEDIA_POLICY = {
     validate,
+    trainerPhotoErrors,
     campHosts: [...CAMP_HOSTS],
-    trainerSourceHosts: [...TRAINER_SOURCE_HOSTS]
+    trainerSourceClasses: ["vk", "tenchat", "instagram", "facebook", "ok"]
   };
 })();
