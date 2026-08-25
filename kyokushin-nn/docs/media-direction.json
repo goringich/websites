@@ -1,5 +1,5 @@
 {
-  "schema_version": "2026-08-25.kyokushin-real-media.v2",
+  "schema_version": "2026-08-25.kyokushin-real-media.v3",
   "status": "active",
   "principle": "Photography and video are documentary product content. Search from the exact person/event/place and authoritative source, assign each asset to a semantic slot, preserve provenance, and never replace missing real evidence with generated or unrelated stock media.",
   "forbidden": [
@@ -26,7 +26,8 @@
     "query_shape": "<exact entity/person/event> <year/date> <activity/place> <official/profile/album/report>",
     "rule": "Search engines and catalog mirrors discover the original source surface; neither becomes official authority merely because it indexes the content.",
     "before_search": "Define the media slot job first.",
-    "after_find": "Record source page, publisher class, authority page when different, subject, date/context, identity status when relevant, crop intent and fallback."
+    "after_find": "Record source page, publisher class, authority page when different, subject, date/context, identity status when relevant, crop intent and fallback.",
+    "promotion_gate": "A discovered binary is not public-ready until the source relationship is strong enough for the claim made by its slot. Secondary mirrors may generate candidates, not automatic production media."
   },
   "slots": [
     {
@@ -69,6 +70,43 @@
       "notes": "orgs.biz explicitly identifies itself as a catalog and says the information is reference-only, so it must not be described as the official federation website. It can help discover dated federation posts and userapi assets; final provenance should prefer the VK federation page, exact VK album/post, named photographer archive or another direct source."
     }
   ],
+  "candidate_research": [
+    {
+      "id": "federation-kihon-2024-11-24",
+      "intended_slot": "federation-proof / training-action",
+      "subject": "Учебно-тренировочные сборы по базовой технике, 24.11.2024",
+      "asset": "https://sun9-62.userapi.com/s/v1/ig2/aPpH7wetO9uWCbrzS7kfjavhGMFkgYit3wEM3MZbruZP1wEsIjcwzUnj5LucQYYmmoZivfcJHD10wLkJDMDGcNtV.jpg?as=32x21%2C48x32%2C72x48%2C108x72%2C160x107%2C240x160%2C360x240%2C480x320%2C540x360%2C640x426%2C720x480%2C1080x720%2C1280x853%2C1440x960%2C2560x1706&cs=200x133&from=bu&quality=95",
+      "secondaryEvidencePage": "https://shin-nnov.orgs.biz/",
+      "authority": "https://vk.com/club227311328",
+      "credit": "Ольга Осинина",
+      "status": "research_only",
+      "promotionRequirement": "Resolve the exact original VK post/album or photographer archive before using as production documentary media.",
+      "crop": "Landscape action frame; preserve full training line/technique context."
+    },
+    {
+      "id": "federation-kumite-2024-10-20",
+      "intended_slot": "federation-proof / kumite-action",
+      "subject": "Учебно-тренировочные сборы по кумитэ, 20.10.2024",
+      "asset": "https://sun9-50.userapi.com/s/v1/ig2/w697dF8VZ5hLJIqcMpDy7Co5ZY8KsHECaSBbcFkIGK8mGMQn2CYCGBuGt4SE7eENvjPam3oOM9HAZI8Wss1dNv2l.jpg?as=32x21%2C48x32%2C72x48%2C108x72%2C160x107%2C240x160%2C360x240%2C480x320%2C540x360%2C640x426%2C720x480%2C1080x720%2C1280x853%2C1440x960%2C2560x1706&cs=200x133&from=bu&quality=95",
+      "secondaryEvidencePage": "https://shin-nnov.orgs.biz/",
+      "authority": "https://vk.com/club227311328",
+      "credit": "Ольга Осинина",
+      "status": "research_only",
+      "promotionRequirement": "Resolve the exact original VK post/album or photographer archive before using as production documentary media.",
+      "crop": "Landscape action frame; do not crop away the paired kumite interaction."
+    },
+    {
+      "id": "federation-regionals-2025-04-06",
+      "intended_slot": "federation-proof / competition",
+      "subject": "Первенство Нижегородской области по киокусинкай, 06.04.2025",
+      "asset": "https://sun9-66.userapi.com/s/v1/ig2/FdmEQ_6KhbV9pLXFPhf0E3rC3QTalONpx9wB87_TMoDll6luKiFGZgHcZwmGeGUHgiI2Qv132RhkcNU77N-_qhAz.jpg?as=32x24%2C48x36%2C72x54%2C108x81%2C160x120%2C240x180%2C360x270%2C480x360%2C540x405%2C640x480%2C720x540%2C900x675&cs=200x150&from=bu&quality=95",
+      "secondaryEvidencePage": "https://shin-nnov.orgs.biz/",
+      "authority": "https://vk.com/club227311328",
+      "status": "research_only",
+      "promotionRequirement": "Resolve the exact original competition/federation publication before using. Do not infer identities of visible athletes from the result list.",
+      "crop": "Keep competition context; no person-specific caption unless independently source-bound."
+    }
+  ],
   "current_audit": {
     "keep": [
       "Official kples.ru training videos",
@@ -89,7 +127,7 @@
     "next_search_targets": [
       "Exact source-bound trainer portraits from the federation VK page, direct team/profile publications or photographer archives",
       "Distinct official camp stills for place/community slots",
-      "Federation training and competition action frames with exact dated VK/album/source pages"
+      "Resolve original VK/photographer sources for the researched federation action candidates before promotion"
     ]
   },
   "copy_policy": {
@@ -110,6 +148,7 @@
     "Every critical media slot has a semantic job and provenance.",
     "Named portraits are source-bound.",
     "Official, secondary and discovery sources are classified correctly.",
+    "Research candidates are not promoted before their required original-source gate passes.",
     "No synthetic documentary media exists.",
     "No unrelated repeated poster substitutes for exact evidence.",
     "Desktop/mobile crops preserve the evidence selected for each slot.",
