@@ -1793,3 +1793,9 @@ body::before {
     opacity: 1 !important;
   }
 }
+/* Mobile Lighthouse: reserve at least 44px touch targets, including CMS runtime overrides. */
+body .roster-actions .roster-call,
+body .roster-actions .roster-external {
+  min-width: 44px;
+  min-height: 44px;
+}

@@ -6,18 +6,17 @@ const [html, experienceStyles, artStyles, motionSource] = await Promise.all([
   readFile(new URL("../art-direction-v3.css", import.meta.url), "utf8"),
   readFile(new URL("../motion-v3.js", import.meta.url), "utf8")
 ]);
-const logoUrl = "https://wkosydney.com.au/assets/images/logo.jpg";
-const fallbackMarker = "radial-gradient(circle at center, #ef2d1d 0 32%, #fff 33% 100%)";
+const deniedLogoOrigin = "wkosydney.com.au";
+const fallbackMarker = "font: 700 24px/1 Georgia, serif";
 
 if (html.includes('<img class="brand-logo"')) {
   throw new Error("Brand mark must not regress to a failure-visible external <img> hotlink");
 }
 
 for (const marker of [
-  '<span class="brand-logo" role="img" aria-label="Shinkyokushinkai"></span>',
-  `background-image: url("${logoUrl}"), radial-gradient(`,
-  "background-color: #fff",
-  "background-size: contain, cover"
+  '<span class="brand-logo" aria-hidden="true">極</span>',
+  "border: 2px solid #b93026",
+  "background: #fff"
 ]) {
   if (!html.includes(marker)) {
     throw new Error(`Brand resilience critical-source contract is missing: ${marker}`);
@@ -26,9 +25,9 @@ for (const marker of [
 
 for (const marker of [
   'body[data-art-direction="dojo-editorial-v3"] .brand-logo',
-  `url("${logoUrl}")`,
-  fallbackMarker,
-  "background-size: contain, cover"
+  "display: grid",
+  "place-items: center",
+  fallbackMarker
 ]) {
   if (!experienceStyles.includes(marker)) {
     throw new Error(`Brand resilience final-cascade contract is missing: ${marker}`);
@@ -47,10 +46,8 @@ if (/background(?:-image)?\s*:/.test(artBrandBlock)) {
   throw new Error("Late art-direction .brand-logo rule must not erase the resilient experience-layer background");
 }
 
-const htmlLogoOccurrences = html.split(logoUrl).length - 1;
-const experienceLogoOccurrences = experienceStyles.split(logoUrl).length - 1;
-if (htmlLogoOccurrences !== 1 || experienceLogoOccurrences !== 1) {
-  throw new Error(`Brand URL references must stay controlled at one critical + one final-cascade declaration, got html=${htmlLogoOccurrences}, experience=${experienceLogoOccurrences}`);
+if ([html, experienceStyles, artStyles].some(source => source.includes(deniedLogoOrigin))) {
+  throw new Error("Remote unowned logo host must not be in first-screen brand source");
 }
 
 for (const marker of [

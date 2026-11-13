@@ -2,6 +2,7 @@ const photoMosaic = document.querySelector("#photoMosaic");
 const photoCollectionsNode = document.querySelector("#photoCollections");
 
 let photoContent = window.KYOKUSHIN_CONTENT ?? null;
+let photoRenderSignature = null;
 
 const externalLink = (className, href) => {
   const link = document.createElement("a");
@@ -39,12 +40,12 @@ const createVideoCard = (item) => {
 
   const video = document.createElement("video");
   video.className = "photo-video";
-  video.src = item.src;
+  // Defer src until hover: preload=metadata can fetch full remote videos.
   if (item.poster) video.poster = item.poster;
   video.muted = true;
   video.loop = true;
   video.playsInline = true;
-  video.preload = "metadata";
+  video.preload = "none";
   video.setAttribute("aria-hidden", "true");
 
   const overlay = document.createElement("span");
@@ -58,7 +59,10 @@ const createVideoCard = (item) => {
   badge.className = "photo-video-badge";
   badge.textContent = "Видео ↗";
 
-  card.addEventListener("mouseenter", () => video.play().catch(() => {}));
+  card.addEventListener("mouseenter", () => {
+    if (!video.hasAttribute("src")) video.src = item.src;
+    video.play().catch(() => {});
+  });
   card.addEventListener("mouseleave", () => video.pause());
   card.append(video, overlay, title, badge);
   return card;
@@ -106,15 +110,14 @@ const createArchiveCard = (item, index) => {
 };
 
 const renderPhotoContent = () => {
-  if (photoMosaic) {
-    const items = Array.isArray(photoContent?.gallery) ? photoContent.gallery : [];
-    photoMosaic.replaceChildren(...items.map(createPhotoCard));
-  }
+  const items = Array.isArray(photoContent?.gallery) ? photoContent.gallery : [];
+  const reports = Array.isArray(photoContent?.photoReports) ? photoContent.photoReports : [];
+  const signature = JSON.stringify([items, reports]);
+  if (signature === photoRenderSignature) return;
+  photoRenderSignature = signature;
 
-  if (photoCollectionsNode) {
-    const reports = Array.isArray(photoContent?.photoReports) ? photoContent.photoReports : [];
-    photoCollectionsNode.replaceChildren(...reports.map(createArchiveCard));
-  }
+  if (photoMosaic) photoMosaic.replaceChildren(...items.map(createPhotoCard));
+  if (photoCollectionsNode) photoCollectionsNode.replaceChildren(...reports.map(createArchiveCard));
 };
 
 window.KYOKUSHIN_PHOTO = {

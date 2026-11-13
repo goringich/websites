@@ -49,6 +49,8 @@ const makeRosterCard = (instructor, index) => {
     const image = document.createElement("img");
     image.className = "roster-photo";
     image.src = instructor.photo.src;
+    image.width = 240;
+    image.height = 320;
     image.alt = instructor.name;
     image.loading = index < 2 ? "eager" : "lazy";
     image.decoding = "async";
