@@ -1793,9 +1793,36 @@ body::before {
     opacity: 1 !important;
   }
 }
-/* Mobile Lighthouse: reserve at least 44px touch targets, including CMS runtime overrides. */
+/* Give mobile actions real box dimensions; min-height does not apply to inline links. */
+.hero-visual > .hero-video-play {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 150px;
+  min-height: 48px;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 20px;
+  background: #ef2d1d;
+  color: #fff;
+  font: 800 13px/1.2 Manrope, sans-serif;
+  cursor: pointer;
+}
+.hero-visual > .hero-video-play:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
 body .roster-actions .roster-call,
+body .roster-actions .roster-halls,
 body .roster-actions .roster-external {
-  min-width: 44px;
-  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
 }
