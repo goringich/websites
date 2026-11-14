@@ -18,13 +18,11 @@
 }
 
 body[data-art-direction="dojo-editorial-v3"] .brand-logo {
-  background-color: #fff;
-  background-image:
-    url("https://wkosydney.com.au/assets/images/logo.jpg"),
-    radial-gradient(circle at center, #ef2d1d 0 32%, #fff 33% 100%);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain, cover;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  color: #b93026;
+  font: 700 24px/1 Georgia, serif;
 }
 
 /* External hero photography is progressive enhancement. Until a real image has decoded successfully,

@@ -1793,3 +1793,83 @@ body::before {
     opacity: 1 !important;
   }
 }
+/* Give mobile actions real box dimensions; min-height does not apply to inline links. */
+.hero-visual > .hero-video-play {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 150px;
+  min-height: 48px;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 20px;
+  background: #ef2d1d;
+  color: #fff;
+  font: 800 13px/1.2 Manrope, sans-serif;
+  cursor: pointer;
+}
+.hero-visual > .hero-video-play:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+body .roster-actions .roster-call,
+body .roster-actions .roster-halls,
+body .roster-actions .roster-external {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+/* Accessibility regression: WCAG AA contrast for functional small text. */
+body .topbar-link,
+body .button.button-primary,
+body .venue-actions .mini-button.call,
+body .hero-visual > .hero-video-play {
+  background-color: #c92019 !important;
+  border-color: #c92019 !important;
+  color: #fff !important;
+}
+body .hero-proof div > span {
+  color: rgba(255, 255, 255, .62) !important;
+}
+body .photo-story-link {
+  background-color: #c92019 !important;
+}
+body .photo-story-link .photo-story-kicker,
+body .photo-story-link .photo-story-meta {
+  color: #fff !important;
+}
+body .team-heading .kicker,
+body .groups-heading .kicker {
+  color: #a91e14 !important;
+}
+body .filter-label {
+  color: #5b564d !important;
+}
+body .roster-card-featured .roster-halls {
+  color: #fff !important;
+}
+body .roster-card-featured .roster-role {
+  color: #ff6255 !important;
+}
+/* Include runtime-created venue links and filter chips in touch target sizing. */
+body .venue-actions .mini-button,
+body .instructor-phone,
+body .chip,
+body .skip-link,
+body .brand,
+body .topbar-link,
+body .button.button-ghost,
+body .hero-photo-link {
+  min-height: 48px !important;
+}
+body .chip {
+  min-width: 48px !important;
+}

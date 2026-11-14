@@ -209,6 +209,7 @@ const installCmsRuntimeStyle = () => {
   document.head.append(style);
 };
 
+let activeHeroMediaSignature = null;
 const applyHeroContent = (content) => {
   const hero = content?.hero;
   if (!hero) return;
@@ -235,6 +236,9 @@ const applyHeroContent = (content) => {
   if (!visual || !hero.media) return;
 
   const media = hero.media;
+  const signature = JSON.stringify(media);
+  if (signature === activeHeroMediaSignature) return;
+  activeHeroMediaSignature = signature;
   const shade = document.createElement("div");
   shade.className = "hero-visual-shade";
   shade.setAttribute("aria-hidden", "true");
@@ -255,18 +259,28 @@ const applyHeroContent = (content) => {
   source.textContent = media.sourceUrl ? "Источник ↗" : "Смотреть фото ↘";
 
   let mediaNode;
+  let playButton = null;
   if (media.type === "video") {
     const video = document.createElement("video");
     video.className = "cms-hero-video";
-    video.src = media.src;
     if (media.poster) video.poster = media.poster;
-    video.autoplay = true;
     video.muted = true;
     video.loop = true;
     video.playsInline = true;
-    video.preload = "metadata";
+    video.preload = "none";
     video.setAttribute("aria-label", media.alt || "Спортивные сборы на Керженце");
-    video.addEventListener("canplay", () => video.play().catch(() => {}), { once: true });
+    playButton = document.createElement("button");
+    playButton.type = "button";
+    playButton.className = "hero-video-play";
+    playButton.textContent = "Смотреть видео ▶";
+    playButton.setAttribute("aria-label", `Воспроизвести видео: ${media.alt || "Спортивные сборы на Керженце"}`);
+    playButton.addEventListener("click", () => {
+      if (!video.hasAttribute("src")) video.src = media.src;
+      video.controls = true;
+      video.play().then(() => playButton.remove()).catch(() => {
+        playButton.textContent = "Повторить воспроизведение ▶";
+      });
+    });
     mediaNode = video;
     visual.dataset.media = "video";
   } else {
@@ -279,7 +293,7 @@ const applyHeroContent = (content) => {
     visual.dataset.media = "image";
   }
 
-  visual.replaceChildren(mediaNode, shade, copy, source);
+  visual.replaceChildren(mediaNode, shade, copy, source, ...(playButton ? [playButton] : []));
 
   const ogImage = document.querySelector('meta[property="og:image"]');
   if (ogImage && media.poster) ogImage.content = media.poster;
