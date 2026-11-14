@@ -1826,3 +1826,50 @@ body .roster-actions .roster-external {
   min-width: 48px;
   min-height: 48px;
 }
+
+/* Accessibility regression: WCAG AA contrast for functional small text. */
+body .topbar-link,
+body .button.button-primary,
+body .venue-actions .mini-button.call,
+body .hero-visual > .hero-video-play {
+  background-color: #c92019 !important;
+  border-color: #c92019 !important;
+  color: #fff !important;
+}
+body .hero-proof div > span {
+  color: rgba(255, 255, 255, .62) !important;
+}
+body .photo-story-link {
+  background-color: #c92019 !important;
+}
+body .photo-story-link .photo-story-kicker,
+body .photo-story-link .photo-story-meta {
+  color: #fff !important;
+}
+body .team-heading .kicker,
+body .groups-heading .kicker {
+  color: #a91e14 !important;
+}
+body .filter-label {
+  color: #5b564d !important;
+}
+body .roster-card-featured .roster-halls {
+  color: #fff !important;
+}
+body .roster-card-featured .roster-role {
+  color: #ff6255 !important;
+}
+/* Include runtime-created venue links and filter chips in touch target sizing. */
+body .venue-actions .mini-button,
+body .instructor-phone,
+body .chip,
+body .skip-link,
+body .brand,
+body .topbar-link,
+body .button.button-ghost,
+body .hero-photo-link {
+  min-height: 48px !important;
+}
+body .chip {
+  min-width: 48px !important;
+}

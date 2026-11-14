@@ -42,6 +42,7 @@ const makeRosterCard = (instructor, index) => {
 
   const fallback = document.createElement("span");
   fallback.className = "roster-initials";
+  fallback.setAttribute("aria-hidden", "true");
   fallback.textContent = rosterInitials(instructor.name);
   media.append(fallback);
 
